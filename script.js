@@ -191,3 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
   runApp();
 });
 
+function setDebug(text) {
+  const el = document.getElementById('debug');
+  if (el) el.textContent = text;
+}
