@@ -10,6 +10,17 @@ function findBookById(id) {
 return books.find(book => book.id === id);
 }
 
+//добавление функции чтения startapp
+function getBookIdFromTelegram() {
+  if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
+    const startParam = Telegram.WebApp.initDataUnsafe.start_param;
+    if (startParam && startParam.startsWith('book_')) {
+      return Number(startParam.replace('book_', ''));
+    }
+  }
+  return null;
+}
+
 
 const books = [
   {
@@ -141,16 +152,23 @@ function openReader(book) {
   showReader();
 }
 
-//автооткрытие книги при загрузке index.html?bookId=1
+//автооткрытие книги
+//при обычном открытии показывается библиотека
+//при ?bookId=1 открывается книга
+
+const bookIdFromTelegram = getBookIdFromTelegram();
 const bookIdFromUrl = getBookIdFromUrl();
 
-  if (bookIdFromUrl) {
-    const book = findBookById(bookIdFromUrl);
-    if (book) {
-      openReader(book);
-    } else {
-      showLibrary();
-    }
-  } else {
-    showLibrary();
+let bookToOpen = null;
+
+if (bookIdFromTelegram) {
+  bookToOpen = findBookById(bookIdFromTelegram);
+} else if (bookIdFromUrl) {
+  bookToOpen = findBookById(bookIdFromUrl);
+}
+
+if (bookToOpen) {
+  openReader(bookToOpen);
+} else {
+  showLibrary();
 }
