@@ -10,6 +10,23 @@ function findBookById(id) {
 return books.find(book => book.id === id);
 }
 
+//добавление функции чтения startapp
+function getBookIdFromTelegram() {
+  try {
+    if (window.Telegram && Telegram.WebApp) {
+      const unsafe = Telegram.WebApp.initDataUnsafe || {};
+      const startParam = unsafe.start_param;
+
+      if (startParam && typeof startParam === 'string' && startParam.startsWith('book_')) {
+        const id = Number(startParam.replace('book_', ''));
+        return Number.isFinite(id) ? id : null;
+      }
+    }
+  } catch (e) {
+    // ничего
+  }
+  return null;
+}
 
 
 
@@ -143,34 +160,34 @@ function openReader(book) {
   showReader();
 }
 
-//добавление функции чтения startapp
-function getBookIdFromTelegram() {
-  if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
-    const startParam = Telegram.WebApp.initDataUnsafe.start_param;
-    if (startParam && startParam.startsWith('book_')) {
-      return Number(startParam.replace('book_', ''));
-    }
-  }
-  return null;
-}
-
 //автооткрытие книги
 //при обычном открытии показывается библиотека
 //при ?bookId=1 открывается книга
+//обернули запуск автооткрытия в runApp() и запускаем его после ready
 
-const bookIdFromTelegram = getBookIdFromTelegram();
-const bookIdFromUrl = getBookIdFromUrl();
+function runApp() {
+  const bookIdFromTelegram = getBookIdFromTelegram();
+  const bookIdFromUrl = getBookIdFromUrl();
 
-let bookToOpen = null;
+  let bookToOpen = null;
 
-if (bookIdFromTelegram) {
-  bookToOpen = findBookById(bookIdFromTelegram);
-} else if (bookIdFromUrl) {
-  bookToOpen = findBookById(bookIdFromUrl);
+  if (bookIdFromTelegram) {
+    bookToOpen = findBookById(bookIdFromTelegram);
+  } else if (bookIdFromUrl) {
+    bookToOpen = findBookById(bookIdFromUrl);
+  }
+
+  if (bookToOpen) {
+    openReader(bookToOpen);
+  } else {
+    showLibrary();
+  }
 }
 
-if (bookToOpen) {
-  openReader(bookToOpen);
-} else {
-  showLibrary();
-}
+document.addEventListener('DOMContentLoaded', () => {
+  if (window.Telegram && Telegram.WebApp) {
+    Telegram.WebApp.ready();
+  }
+  runApp();
+});
+
