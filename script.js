@@ -168,6 +168,13 @@ function openReader(book) {
 function runApp() {
   const bookIdFromTelegram = getBookIdFromTelegram();
   const bookIdFromUrl = getBookIdFromUrl();
+const tgStart = (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe)
+  ? Telegram.WebApp.initDataUnsafe.start_param
+  : null;
+
+setDebug(
+  `tg=${!!window.Telegram} start_param=${tgStart || 'null'} urlBookId=${getBookIdFromUrl() || 'null'}`
+);
 
   let bookToOpen = null;
 
