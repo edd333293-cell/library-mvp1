@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MVP-1 — Библиотека</title>
+<!-- добавлен файл текстовых стилей styles.css -->
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+<header>
+  <h1>Библиотека</h1>
+  <p>Коллекция произведений</p>
+</header>
+<main>
+  <!-- библиотека, карточки книг -->
+  <section id="library">
+    <h2>Список книг</h2>
+    <div class="book-list">
+    </div>
+  </section>
+  <!-- читалка -->
+  <section id="reader" class="hidden">
+    <button id="back-to-library">← Назад к списку книг</button>
+    <h2 id="reader-title">Заголовок книги</h2>
+    <div id="reader-content">
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>MVP-1 · День 10</p>
+</footer>
+
+<!-- подключили JavaScript  -->
+<script src="script.js"></script>
+
+</body>
+</html>
