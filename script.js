@@ -10,23 +10,32 @@ function findBookById(id) {
 return books.find(book => book.id === id);
 }
 
-//добавление функции чтения startapp
+//добавление функции startapp
 function getBookIdFromTelegram() {
   try {
     if (window.Telegram && Telegram.WebApp) {
       const unsafe = Telegram.WebApp.initDataUnsafe || {};
       const startParam = unsafe.start_param;
 
-      if (startParam && typeof startParam === 'string' && startParam.startsWith('book_')) {
+      if (!startParam) return null;
+
+      // если просто число: ?startapp=5
+      const numericId = Number(startParam);
+      if (Number.isFinite(numericId)) {
+        return numericId;
+      }
+
+      // если формат book_5
+      if (typeof startParam === 'string' && startParam.startsWith('book_')) {
         const id = Number(startParam.replace('book_', ''));
         return Number.isFinite(id) ? id : null;
       }
     }
-  } catch (e) {
-    // ничего
-  }
+  } catch (e) {}
+
   return null;
 }
+
 
 
 
@@ -85,7 +94,7 @@ const books = [
 ];
 
 //получение ссылок на шесть элементов читалки
-const bookListElement = document.querySelector('.book-list');
+//const bookListElement = document.querySelector('.book-list');
 const librarySection = document.querySelector('#library');
 const readerSection = document.querySelector('#reader');
 const readerTitle = document.querySelector('#reader-title');
@@ -168,13 +177,6 @@ function openReader(book) {
 function runApp() {
   const bookIdFromTelegram = getBookIdFromTelegram();
   const bookIdFromUrl = getBookIdFromUrl();
-const tgStart = (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe)
-  ? Telegram.WebApp.initDataUnsafe.start_param
-  : null;
-
-setDebug(
-  `tg=${!!window.Telegram} start_param=${tgStart || 'null'} urlBookId=${getBookIdFromUrl() || 'null'}`
-);
 
   let bookToOpen = null;
 
@@ -198,7 +200,3 @@ document.addEventListener('DOMContentLoaded', () => {
   runApp();
 });
 
-function setDebug(text) {
-  const el = document.getElementById('debug');
-  if (el) el.textContent = text;
-}
