@@ -196,8 +196,17 @@ let holdTimer = null;
 
 function enableLongPressToToggle(panel) {
   const toggle = () => {
-    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+  const isHidden = panel.style.display === 'none';
+  if (isHidden) {
+    // обновляем данные прямо перед показом
+    const pre = panel.querySelector("#debug-panel-pre");
+    if (pre) pre.textContent = safeJson(buildDebugState());
+    panel.style.display = 'block';
+  } else {
+    panel.style.display = 'none';
+  }
   };
+
 
   const start = () => {
     holdTimer = setTimeout(toggle, 700);
@@ -215,29 +224,33 @@ function enableLongPressToToggle(panel) {
 }
 
   function mount() {
-    if (!shouldShow()) return;
+  const panel = createPanel();
+  document.body.appendChild(panel);
 
-    const panel = createPanel();
-    document.body.appendChild(panel);
-    enableLongPressToToggle(panel);
-    panel.style.display = 'none';
+  // включаем жест (работает всегда)
+  enableLongPressToToggle(panel);
 
+  // наполняем данными
+  const state = buildDebugState();
+  const pre = document.getElementById("debug-panel-pre");
+  if (pre) pre.textContent = safeJson(state);
 
-    const state = buildDebugState();
-    const pre = document.getElementById("debug-panel-pre");
-    if (pre) pre.textContent = safeJson(state);
+  // показываем автоматически только если нужно,
+  // иначе скрываем и открываем по удержанию
+  panel.style.display = shouldShow() ? "block" : "none";
 
-    // Попробуем корректно "развернуть" WebApp, если мы в Telegram
-    try {
-      const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
-      if (tg) {
-        tg.ready();
-        tg.expand();
-      }
-    } catch (e) {
-      // ignore
+  // Попробуем корректно "развернуть" WebApp, если мы в Telegram
+  try {
+    const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+    if (tg) {
+      tg.ready();
+      tg.expand();
     }
+  } catch (e) {
+    // ignore
   }
+  }
+
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", mount);
