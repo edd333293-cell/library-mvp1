@@ -11,30 +11,30 @@ return books.find(book => book.id === id);
 }
 
 //добавление функции startapp
-function getBookIdFromUrl() {
-  const params = new URLSearchParams(window.location.search);
+function getBookIdFromTelegram() {
+  try {
+    if (window.Telegram && Telegram.WebApp) {
+      const unsafe = Telegram.WebApp.initDataUnsafe || {};
+      const startParam = unsafe.start_param;
 
-  // 1) стандартный параметр Telegram Mini Apps
-  const tgStart = params.get('tgWebAppStartParam');
-  if (tgStart) {
-    const n = Number(tgStart);
-    if (Number.isFinite(n)) return n;
-    if (typeof tgStart === 'string' && tgStart.startsWith('book_')) {
-      const id = Number(tgStart.replace('book_', ''));
-      return Number.isFinite(id) ? id : null;
+      if (!startParam) return null;
+
+      // если просто число: ?startapp=5
+      const numericId = Number(startParam);
+      if (Number.isFinite(numericId)) {
+        return numericId;
+      }
+
+      // если формат book_5
+      if (typeof startParam === 'string' && startParam.startsWith('book_')) {
+        const id = Number(startParam.replace('book_', ''));
+        return Number.isFinite(id) ? id : null;
+      }
     }
-  }
-
-  // 2) твой старый параметр
-  const id = params.get('bookId');
-  if (id) {
-    const n = Number(id);
-    return Number.isFinite(n) ? n : null;
-  }
+  } catch (e) {}
 
   return null;
 }
-
 
 
 
