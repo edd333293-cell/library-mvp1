@@ -46,6 +46,7 @@
     const startParamFromInitData = parseStartParamFromInitData(initData);
 
     const startParamFromUrl =
+      queryParams.tgWebAppStartParam ||
       queryParams.startapp ||
       queryParams.start ||
       queryParams.start_param ||
@@ -55,6 +56,7 @@
 
     // Популярные варианты, которые часто используют в учебных проектах:
     const urlBookId =
+      queryParams.tgWebAppStartParam ||
       queryParams.bookId ||
       queryParams.id ||
       (queryParams.book ? queryParams.book : null) ||
