@@ -191,11 +191,37 @@
     return suspected;
   }
 
+// панель добавляется жестом 0.7сек
+let holdTimer = null;
+
+function enableLongPressToToggle(panel) {
+  const toggle = () => {
+    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+  };
+
+  const start = () => {
+    holdTimer = setTimeout(toggle, 700);
+  };
+
+  const end = () => {
+    if (holdTimer) clearTimeout(holdTimer);
+    holdTimer = null;
+  };
+
+  document.addEventListener('touchstart', start, { passive: true });
+  document.addEventListener('touchend', end);
+  document.addEventListener('mousedown', start);
+  document.addEventListener('mouseup', end);
+}
+
   function mount() {
     if (!shouldShow()) return;
 
     const panel = createPanel();
     document.body.appendChild(panel);
+    enableLongPressToToggle(panel);
+    panel.style.display = 'none';
+
 
     const state = buildDebugState();
     const pre = document.getElementById("debug-panel-pre");
