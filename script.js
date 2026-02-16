@@ -141,6 +141,18 @@ const adminPreviewBlock = document.querySelector('#admin-preview-block');
 const adminPreviewContent = document.querySelector('#admin-preview-content');
 // end новые переменные админки
 
+//Генерация объекта книги. Добавь переменные:
+const adminGenerateButton = document.querySelector('#admin-generate');
+const adminOutputBlock = document.querySelector('#admin-output-block');
+const adminOutput = document.querySelector('#admin-output');
+
+//Генерация объекта книги. Добавь функцию генерации id
+function generateNextId() {
+const ids = books.map(b => b.id);
+return ids.length ? Math.max(...ids) + 1 : 1;
+}
+
+
 //функции показа/скрытия админки
 function showAdmin() {
   librarySection.classList.add('hidden');
@@ -153,7 +165,6 @@ function hideAdmin() {
 }
 
 //Добавь функцию разбивки на абзацы админки
-
 //function splitTextIntoParagraphs(text) {
 //  return text
 //    .split('\n')
@@ -182,7 +193,6 @@ function splitTextIntoParagraphs(input) {
     .filter(p => p.length > 0);
 }
 
-
 //обработчик админки
 if (isAdmin()) {
   adminOpenButton.classList.remove('hidden');
@@ -209,6 +219,25 @@ adminPreviewButton.addEventListener('click', () => {
 
   adminPreviewBlock.classList.remove('hidden');
 });
+
+//Генерация объекта книги. Добавь обработчик генерации
+adminGenerateButton.addEventListener('click', () => {
+  const id = generateNextId();
+  const title = adminTitle.value.trim();
+  const description = adminDescription.value.trim();
+  const paragraphs = splitTextIntoParagraphs(adminText.value);
+
+  const bookObject = {
+    id,
+    title,
+    description,
+    content: paragraphs
+  };
+
+  adminOutput.value = JSON.stringify(bookObject, null, 2);
+  adminOutputBlock.classList.remove('hidden');
+});
+
 
 //конец по админке
 
