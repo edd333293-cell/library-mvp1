@@ -155,8 +155,7 @@ function hideAdmin() {
 //Добавь функцию разбивки на абзацы админки
 function splitTextIntoParagraphs(text) {
   return text
-    .split('
-')
+    .split('')
     .map(p => p.trim())
     .filter(p => p.length > 0);
 }
