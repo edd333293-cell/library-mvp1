@@ -153,12 +153,35 @@ function hideAdmin() {
 }
 
 //Добавь функцию разбивки на абзацы админки
-function splitTextIntoParagraphs(text) {
+
+//function splitTextIntoParagraphs(text) {
+//  return text
+//    .split('\n')
+//    .map(p => p.trim())
+//    .filter(p => p.length > 0);
+//}
+
+//Самый надёжный вариант: поддержка Windows/Unix переносов и разделение по пустым строкам (как в книгах)
+function splitTextIntoParagraphs(input) {
+  let text = input;
+
+  // на всякий: если вдруг прилетел массив — склеим
+  if (Array.isArray(text)) text = text.join('');
+
+  // если не строка — приводим к строке
+  if (typeof text !== 'string') text = String(text ?? '');
+
+  // нормализуем переносы строк
+  text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim();
+  if (!text) return [];
+
+  // делим по пустым строкам (абзацам)
   return text
-    .split('\n')
-    .map(p => p.trim())
+    .split(/\n\s*\n+/)
+    .map(p => p.replace(/[ \t]+/g, ' ').trim())
     .filter(p => p.length > 0);
 }
+
 
 //обработчик админки
 if (isAdmin()) {
