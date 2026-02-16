@@ -132,6 +132,14 @@ const bookList = document.querySelector('.book-list');
 const adminOpenButton = document.querySelector('#admin-open');
 const adminSection = document.querySelector('#admin');
 const backFromAdminButton = document.querySelector('#back-from-admin');
+  //новые переменные админки
+const adminTitle = document.querySelector('#admin-title');
+const adminDescription = document.querySelector('#admin-description');
+const adminText = document.querySelector('#admin-text');
+const adminPreviewButton = document.querySelector('#admin-preview');
+const adminPreviewBlock = document.querySelector('#admin-preview-block');
+const adminPreviewContent = document.querySelector('#admin-preview-content');
+// end новые переменные админки
 
 //функции показа/скрытия админки
 function showAdmin() {
@@ -144,6 +152,15 @@ function hideAdmin() {
   showLibrary();
 }
 
+//Добавь функцию разбивки на абзацы админки
+function splitTextIntoParagraphs(text) {
+  return text
+    .split('
+')
+    .map(p => p.trim())
+    .filter(p => p.length > 0);
+}
+
 //обработчик админки
 if (isAdmin()) {
   adminOpenButton.classList.remove('hidden');
@@ -154,6 +171,23 @@ adminOpenButton.addEventListener('click', () => {
 backFromAdminButton.addEventListener('click', () => {
   hideAdmin();
 });
+
+//Добавь обработчик предпросмотра 
+adminPreviewButton.addEventListener('click', () => {
+  const text = adminText.value;
+  const paragraphs = splitTextIntoParagraphs(text);
+
+  adminPreviewContent.innerHTML = '';
+
+  paragraphs.forEach(p => {
+    const el = document.createElement('p');
+    el.textContent = p;
+    adminPreviewContent.appendChild(el);
+  });
+
+  adminPreviewBlock.classList.remove('hidden');
+});
+
 //конец по админке
 
 
