@@ -98,6 +98,25 @@ if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
   console.log('TG USER:', Telegram.WebApp.initDataUnsafe.user);
 }
 
+//добавили переменную ADMIN_ID и функцию isAdmin
+const ADMIN_ID = 6283474141; // сюда вставь свой реальный Telegram user_id
+
+function getTelegramUserId() {
+  try {
+    if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
+      const user = Telegram.WebApp.initDataUnsafe.user;
+      return user && user.id ? Number(user.id) : null;
+    }
+  } catch (e) {}
+  return null;
+}
+
+function isAdmin() {
+  const uid = getTelegramUserId();
+  return uid !== null && uid === ADMIN_ID;
+}
+//конец вкладки админ-библиотекарь
+
 //получение ссылок на шесть элементов читалки
 //const bookListElement = document.querySelector('.book-list');
 const librarySection = document.querySelector('#library');
