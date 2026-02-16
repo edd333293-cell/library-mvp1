@@ -115,7 +115,7 @@ function isAdmin() {
   const uid = getTelegramUserId();
   return uid !== null && uid === ADMIN_ID;
 }
-//конец вкладки админ-библиотекарь
+//конец вкладки админ
 
 //получение ссылок на шесть элементов читалки
 //const bookListElement = document.querySelector('.book-list');
@@ -127,6 +127,35 @@ const backButton = document.querySelector('#back-to-library');
 
 
 const bookList = document.querySelector('.book-list');
+
+//элементы админки
+const adminOpenButton = document.querySelector('#admin-open');
+const adminSection = document.querySelector('#admin');
+const backFromAdminButton = document.querySelector('#back-from-admin');
+
+//функции показа/скрытия админки
+function showAdmin() {
+  librarySection.classList.add('hidden');
+  readerSection.classList.add('hidden');
+  adminSection.classList.remove('hidden');
+}
+function hideAdmin() {
+  adminSection.classList.add('hidden');
+  showLibrary();
+}
+
+//обработчик админки
+if (isAdmin()) {
+  adminOpenButton.classList.remove('hidden');
+}
+adminOpenButton.addEventListener('click', () => {
+  showAdmin();
+});
+backFromAdminButton.addEventListener('click', () => {
+  hideAdmin();
+});
+//конец по админке
+
 
 //генерация карточек
 function createBookCard(book) {

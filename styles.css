@@ -58,3 +58,10 @@ margin-top: 0;
 margin-top: 10px;
 padding: 8px 12px;
 }
+
+#admin {
+margin-top: 16px;
+}
+#back-from-admin {
+margin-bottom: 12px;
+}
