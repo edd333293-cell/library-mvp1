@@ -53,3 +53,8 @@ font-size: 16px;
 #reader-title {
 margin-top: 0;
 }
+
+#admin-open {
+margin-top: 10px;
+padding: 8px 12px;
+}
