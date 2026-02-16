@@ -33,11 +33,38 @@
     <buton id="back-from-admin">← Назад</button>
     <h2>Админка</h2>
     <p>Здесь будет загрузка и проверка текстов произведений.</p>
+    
+    <!--Добавить форму в секцию #admin-->
+    <div id="admin-form">
+      <label>Название</label>
+      <input type="text" id="admin-title" />
+
+      <label>Краткое описание</label>
+      <textarea id="admin-description"></textarea>
+
+      <label>Полный текст произведения</label>
+      <textarea id="admin-text" rows="10"></textarea>
+
+      <button id="admin-preview">Предпросмотр</button>
+      <button id="admin-generate">Сгенерировать объект</button>
+    </div>
+
+    <div id="admin-preview-block" class="hidden">
+      <h3>Предпросмотр</h3>
+      <div id="admin-preview-content"></div>
+    </div>
+
+    <div id="admin-output-block" class="hidden">
+      <h3>Сгенерированный объект</h3>
+      <textarea id="admin-output" rows="8"></textarea>
+    </div>
+    <!--end Добавить форму в секцию #admin-->
+    
   </section>
 </main>
 
 <footer>
-  <p>MVP-1 · День 14</p>
+  <p>MVP-1 · День 15</p>
 </footer>
 
 <!-- подключили JavaScript  -->
