@@ -93,6 +93,11 @@ const books = [
   }  
 ];
 
+// Временная отладка: посмотреть Telegram user_id в мини-приложении
+if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
+  console.log('TG USER:', Telegram.WebApp.initDataUnsafe.user);
+}
+
 //получение ссылок на шесть элементов читалки
 //const bookListElement = document.querySelector('.book-list');
 const librarySection = document.querySelector('#library');
