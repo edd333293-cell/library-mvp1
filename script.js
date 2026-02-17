@@ -1,3 +1,8 @@
+//временная отладка чтобы через консоль получиь user id. часть 1 из 2х
+console.log('[DBG] script.js loaded at', new Date().toISOString());
+
+
+
 //чтение параметров URL, для перехода из тг к конкретной книге
 function getBookIdFromUrl() {
 const params = new URLSearchParams(window.location.search);
@@ -357,6 +362,30 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Временная отладка: посмотреть Telegram user_id в мини-приложении
-if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
-  console.log('TG USER:', Telegram.WebApp.initDataUnsafe.user);
-}
+//if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
+//  console.log('TG USER:', Telegram.WebApp.initDataUnsafe.user);
+//}
+// часть 2 из 2х по user id
+document.addEventListener('DOMContentLoaded', () => {
+  const tg = window.Telegram && window.Telegram.WebApp
+    ? window.Telegram.WebApp
+    : null;
+
+  console.log('[DBG] DOMContentLoaded');
+  console.log('[DBG] Telegram detected:', !!tg);
+
+  if (tg) {
+    try {
+      tg.ready();
+    } catch (e) {
+      console.log('[DBG] tg.ready error:', e);
+    }
+
+    const unsafe = tg.initDataUnsafe || {};
+
+    console.log('[DBG] initData length:', (tg.initData || '').length);
+    console.log('[DBG] TG USER:', unsafe.user || null);
+  } else {
+    console.log('[DBG] Not inside Telegram WebApp');
+  }
+});
