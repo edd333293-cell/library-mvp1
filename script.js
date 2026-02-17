@@ -353,7 +353,7 @@ function createBookCard(book) {
         <h3 class="book-title">${book.title}</h3>
         <p class="book-author">Автор: ${book.author}</p>
         <p class="book-description">${book.description}</p>
-        <button class="book-read">Читать</button>
+        <button class="book-read" type="button">Читать</button>
       </div>
     `;
     
