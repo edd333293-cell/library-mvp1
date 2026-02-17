@@ -1,14 +1,29 @@
 //чтение параметров URL, для перехода из тг к конкретной книге
-function getBookIdFromUrl() {
-const params = new URLSearchParams(window.location.search);
-const id = params.get('bookId');
-return id ? Number(id) : null;
-}
+//function getBookIdFromUrl() {
+//const params = new URLSearchParams(window.location.search);
+//const id = params.get('bookId');
+//return id ? Number(id) : null;
+//}
+
+//Быстрый бонус (чтобы ловить такие падения сразу)
+//Тогда даже в WebView будет видно, что именно упало.
+window.addEventListener('error', (e) => {
+  console.log('[JS ERROR]', e.message, 'at', e.filename, e.lineno + ':' + e.colno);
+});
+
 
 //поиск книги по id в массиве
+//function findBookById(id) {
+//return books.find(book => book.id === id);
+//}
+
+//новый поиск книги по id в массиве
 function findBookById(id) {
-return books.find(book => book.id === id);
+  const n = Number(id);
+  if (!Number.isFinite(n)) return undefined;
+  return books.find(book => Number(book.id) === n);
 }
+
 
 //1-1. сделаем одну универсальную функцию, которая:
 //Берёт start_param из Telegram.WebApp.initDataUnsafe
@@ -68,30 +83,30 @@ function parseBookId(value) {
 //end 1-1,1-2
 
 //добавление функции startapp
-function getBookIdFromTelegram() {
-  try {
-    if (window.Telegram && Telegram.WebApp) {
-      const unsafe = Telegram.WebApp.initDataUnsafe || {};
-      const startParam = unsafe.start_param;
+//function getBookIdFromTelegram() {
+//  try {
+//    if (window.Telegram && Telegram.WebApp) {
+//      const unsafe = Telegram.WebApp.initDataUnsafe || {};
+//      const startParam = unsafe.start_param;
 
-      if (!startParam) return null;
+//      if (!startParam) return null;
 
       // если просто число: ?startapp=5
-      const numericId = Number(startParam);
-      if (Number.isFinite(numericId)) {
-        return numericId;
-      }
+//      const numericId = Number(startParam);
+//      if (Number.isFinite(numericId)) {
+//        return numericId;
+//      }
 
       // если формат book_5
-      if (typeof startParam === 'string' && startParam.startsWith('book_')) {
-        const id = Number(startParam.replace('book_', ''));
-        return Number.isFinite(id) ? id : null;
-      }
-    }
-  } catch (e) {}
+//      if (typeof startParam === 'string' && startParam.startsWith('book_')) {
+//        const id = Number(startParam.replace('book_', ''));
+//        return Number.isFinite(id) ? id : null;
+//      }
+//    }
+//  } catch (e) {}
 
-  return null;
-}
+//  return null;
+//}
 
 
 
@@ -302,12 +317,22 @@ adminGenerateButton.addEventListener('click', () => {
   const description = adminDescription.value.trim();
   const paragraphs = splitTextIntoParagraphs(adminText.value);
 
+//  const bookObject = {
+//    id,
+//    title,
+//    description,
+//    content: paragraphs
+//  };
+  
   const bookObject = {
     id,
     title,
+    author: 'Имя Автора', // можно оставить пустым/шаблонным
     description,
-    content: paragraphs
+    cover: 'https://via.placeholder.com/120x180',
+    fullText: paragraphs
   };
+
 
   adminOutput.value = JSON.stringify(bookObject, null, 2);
   adminOutputBlock.classList.remove('hidden');
@@ -387,24 +412,6 @@ function openReader(book) {
 //при ?bookId=1 открывается книга
 //обернули запуск автооткрытия в runApp() и запускаем его после ready
 
-//function runApp() {
-//  const bookIdFromTelegram = getBookIdFromTelegram();
-//  const bookIdFromUrl = getBookIdFromUrl();
-
-//  let bookToOpen = null;
-
-//  if (bookIdFromTelegram !== null) {
-//    bookToOpen = findBookById(bookIdFromTelegram);
-//  } else if (bookIdFromUrl !== null) {
-//    bookToOpen = findBookById(bookIdFromUrl);
-//  }
-
-//  if (bookToOpen) {
-//    openReader(bookToOpen);
-//  } else {
-//    showLibrary();
-//  }
-//}
 //новая runApp
 function runApp() {
   const launchId = getLaunchBookId();
