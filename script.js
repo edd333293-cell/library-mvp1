@@ -10,6 +10,63 @@ function findBookById(id) {
 return books.find(book => book.id === id);
 }
 
+//1-1. сделаем одну универсальную функцию, которая:
+//Берёт start_param из Telegram.WebApp.initDataUnsafe
+//Если нет — берёт tgWebAppStartParam
+//Если нет — берёт ?bookId=
+//Корректно обрабатывает "0"
+//Поддерживает формат book_4
+//Всегда возвращает number или null
+
+function getLaunchBookId() {
+  // 1️⃣ Попытка получить из Telegram initDataUnsafe
+  try {
+    if (window.Telegram && Telegram.WebApp) {
+      const unsafe = Telegram.WebApp.initDataUnsafe || {};
+      if (typeof unsafe.start_param === 'string') {
+        const parsed = parseBookId(unsafe.start_param);
+        if (parsed !== null) return parsed;
+      }
+    }
+  } catch (e) {
+    console.log('[LaunchID] Telegram parse error:', e);
+  }
+
+  // 2️⃣ Попытка получить из tgWebAppStartParam
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.has('tgWebAppStartParam')) {
+    const parsed = parseBookId(params.get('tgWebAppStartParam'));
+    if (parsed !== null) return parsed;
+  }
+
+  // 3️⃣ Фолбэк на обычные параметры
+  if (params.has('bookId')) {
+    const parsed = parseBookId(params.get('bookId'));
+    if (parsed !== null) return parsed;
+  }
+
+  return null;
+}
+
+//1-2. Добавили вспомогательную функцию парсинга
+function parseBookId(value) {
+  if (value === null || value === undefined) return null;
+
+  const str = String(value).trim();
+
+  // поддержка формата "book_4"
+  if (str.startsWith('book_')) {
+    const n = Number(str.replace('book_', ''));
+    return Number.isFinite(n) ? n : null;
+  }
+
+  // поддержка просто числа "4"
+  const n = Number(str);
+  return Number.isFinite(n) ? n : null;
+}
+//end 1-1,1-2
+
 //добавление функции startapp
 function getBookIdFromTelegram() {
   try {
@@ -330,24 +387,39 @@ function openReader(book) {
 //при ?bookId=1 открывается книга
 //обернули запуск автооткрытия в runApp() и запускаем его после ready
 
-function runApp() {
-  const bookIdFromTelegram = getBookIdFromTelegram();
-  const bookIdFromUrl = getBookIdFromUrl();
+//function runApp() {
+//  const bookIdFromTelegram = getBookIdFromTelegram();
+//  const bookIdFromUrl = getBookIdFromUrl();
 
-  let bookToOpen = null;
+//  let bookToOpen = null;
 
-  if (bookIdFromTelegram !== null) {
+//  if (bookIdFromTelegram !== null) {
     bookToOpen = findBookById(bookIdFromTelegram);
-  } else if (bookIdFromUrl !== null) {
-    bookToOpen = findBookById(bookIdFromUrl);
+//  } else if (bookIdFromUrl !== null) {
+//    bookToOpen = findBookById(bookIdFromUrl);
+//  }
+
+//  if (bookToOpen) {
+//    openReader(bookToOpen);
+//  } else {
+//    showLibrary();
+//  }
+//}
+//новая runApp
+function runApp() {
+  const launchId = getLaunchBookId();
+
+  if (launchId !== null) {
+    const book = findBookById(launchId);
+    if (book) {
+      openReader(book);
+      return;
+    }
   }
 
-  if (bookToOpen) {
-    openReader(bookToOpen);
-  } else {
-    showLibrary();
-  }
+  showLibrary();
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
   if (window.Telegram && Telegram.WebApp) {
