@@ -394,7 +394,7 @@ function openReader(book) {
 //  let bookToOpen = null;
 
 //  if (bookIdFromTelegram !== null) {
-    bookToOpen = findBookById(bookIdFromTelegram);
+//    bookToOpen = findBookById(bookIdFromTelegram);
 //  } else if (bookIdFromUrl !== null) {
 //    bookToOpen = findBookById(bookIdFromUrl);
 //  }
