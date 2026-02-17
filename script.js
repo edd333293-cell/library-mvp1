@@ -114,10 +114,7 @@ const books = [
 }
 ];
 
-// Временная отладка: посмотреть Telegram user_id в мини-приложении
-if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
-  console.log('TG USER:', Telegram.WebApp.initDataUnsafe.user);
-}
+
 
 //добавили переменную ADMIN_ID и функцию isAdmin
 const ADMIN_ID = 6283474141; // сюда вставь свой реальный Telegram user_id
@@ -339,7 +336,7 @@ function runApp() {
 
   let bookToOpen = null;
 
-  if (bookIdFromTelegram) {
+  if (bookIdFromTelegram !== null) {
     bookToOpen = findBookById(bookIdFromTelegram);
   } else if (bookIdFromUrl) {
     bookToOpen = findBookById(bookIdFromUrl);
@@ -359,3 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
   runApp();
 });
 
+// Временная отладка: посмотреть Telegram user_id в мини-приложении
+if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
+  console.log('TG USER:', Telegram.WebApp.initDataUnsafe.user);
+}
