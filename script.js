@@ -111,7 +111,7 @@ function parseBookId(value) {
 
 
 
-const books = [
+let books = [
   {
     id: 1,
     title: 'Произведение 1',
