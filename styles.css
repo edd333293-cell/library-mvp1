@@ -79,6 +79,12 @@ button:active {
   color: #555;
 }
 
+.book-year {
+  font-size: 13px;
+  color: #777777;
+  margin: 2px 0;
+}
+
 .book-description {
   font-size: 14px;
   margin: 8px 0;

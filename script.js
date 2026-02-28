@@ -155,6 +155,7 @@ function createBookCard(book) {
     <div class="book-info">
       <h3 class="book-title">${book.title}</h3>
       <p class="book-author">Автор: ${book.author}</p>
+      <p class="book-year">${book.year} г.</p>
       <p class="book-description">${book.description}</p>
       <button class="book-read" type="button">Читать</button>
     </div>
@@ -362,6 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initEvents();
 
   loadBooks().then(() => {
+    books.sort((a, b) => a.year - b.year);  // сортировка по году
     renderLibrary();
     runApp();
   });
