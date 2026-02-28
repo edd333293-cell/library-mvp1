@@ -1,12 +1,46 @@
+/* ================= БАЗА ================= */
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 16px;
+  background-color: #f8f8f8;
 }
 
 header {
   margin-bottom: 20px;
 }
+
+h1, h2, h3 {
+  margin-top: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+
+/* ================= КНОПКИ (ЕДИНЫЙ СТИЛЬ) ================= */
+
+button {
+  display: inline-block;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #2b7cff;
+  color: #ffffff;
+  transition: background 0.2s ease;
+  width: 100%;                 /* 👈 единая ширина по умолчанию */
+}
+
+button:hover {
+  background-color: #1f63cc;
+}
+
+
+/* ================= БИБЛИОТЕКА ================= */
 
 .book-item {
   display: flex;
@@ -14,19 +48,24 @@ header {
   border: 1px solid #ddd;
   padding: 12px;
   margin-bottom: 16px;
+  background: #ffffff;
+  border-radius: 8px;
 }
 
 .book-cover {
   width: 120px;
   height: auto;
+  border-radius: 4px;
 }
 
 .book-info {
   flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .book-title {
-  margin: 0 0 6px;
+  margin-bottom: 6px;
 }
 
 .book-author {
@@ -40,41 +79,35 @@ header {
 }
 
 .book-read {
-  padding: 8px 12px;
+  margin-top: auto;
 }
 
-.hidden {
-  display: none;
-}
+
+/* ================= ЧИТАЛКА ================= */
 
 #reader {
   margin-top: 16px;
 }
 
-/* Кнопки в читалке на одной линии */
 .reader-toolbar {
   display: flex;
-  justify-content: space-between;
-  align-items: center;      /* выравниваем кнопки по вертикали */
+  gap: 8px;
   margin-bottom: 12px;
 }
 
-#back-to-library,
-#admin-open {
-  margin: 0;                /* убираем разницу по вертикали */
-  padding: 8px 12px;        /* одинаковый паддинг для обеих кнопок */
+/* 👇 делим кнопки поровну */
+.reader-toolbar button {
+  width: 50%;
 }
 
 #reader-content p {
   margin-bottom: 12px;
   font-size: 16px;
+  line-height: 1.5;
 }
 
-#reader-title {
-  margin-top: 0;
-}
 
-/* отдельные стили для админки */
+/* ================= АДМИНКА ================= */
 
 #admin {
   margin-top: 16px;
@@ -87,14 +120,23 @@ header {
 #admin-form {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 #admin-form input,
 #admin-form textarea {
-  padding: 6px;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
 }
 
 #admin-preview-content p {
   margin-bottom: 8px;
+}
+
+#admin-preview-block,
+#admin-output-block {
+  margin-top: 16px;
 }
