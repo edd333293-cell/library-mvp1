@@ -112,6 +112,27 @@ function parseBookId(value) {
 
 
 let books = [];
+//Ввести инициализацию текущего состояния
+//Смысл: 
+//-currentBookId = 0 — мы не находимся в контексте конкретной книги, «создания новой»; 
+//- currentBookId > 0 — открыта конкретная книга.
+
+let currentBookId = 0;
+let currentBook = null;
+
+//Шаблон нулевой книги (ZERO_BOOK_TEMPLATE)
+const ZERO_BOOK_TEMPLATE id: 0,
+author: 'А.П. Чехов',
+= {
+title: 'Название произведения',
+description: 'Краткое описание произведения (1–3 строки).',
+content: [
+'Первый абзац текста произведения.',
+'Второй абзац текста произведения.',
+'Третий абзац текста произведения.'
+]
+};
+
 //функция загрузки книг через fetch
 function loadBooks() {
   return fetch('data/books.json')
