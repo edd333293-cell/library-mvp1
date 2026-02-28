@@ -26,17 +26,23 @@ button {
   display: inline-block;
   padding: 10px 12px;
   font-size: 14px;
-  border: none;
   border-radius: 6px;
   cursor: pointer;
-  background-color: #2b7cff;
-  color: #ffffff;
-  transition: background 0.2s ease;
-  width: 100%;                 /* 👈 единая ширина по умолчанию */
+  width: 100%;
+
+  background-color: #e5e5e5;   /* мягкий серый */
+  color: #333333;
+  border: 1px solid #d0d0d0;
+
+  transition: background 0.15s ease, transform 0.05s ease;
 }
 
 button:hover {
-  background-color: #1f63cc;
+  background-color: #dcdcdc;   /* чуть темнее при наведении */
+}
+
+button:active {
+  transform: scale(0.98);      /* лёгкий тактильный эффект */
 }
 
 
