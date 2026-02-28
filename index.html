@@ -1,80 +1,78 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MVP-1 — Библиотека</title>
-<!-- добавлен файл текстовых стилей styles.css -->
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Библиотека Чехова · MVP-1</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-<header>
-  <h1>Библиотека</h1>
-  <p>Коллекция произведений</p>
-</header>
-<main>
-  <!-- библиотека, карточки книг -->
-  <section id="library">
-    <h2>Список книг</h2>
-    <div class="book-list">
-    </div>
-  </section>
-  <!-- читалка -->
-  <section id="reader" class="hidden">
-    <div class="reader-toolbar">
-      <button id="back-to-library" type="button">← Назад к списку книг</button>
-      <button id="admin-open" class="hidden" type="button">Админ</button>
-    </div>
+  <header>
+    <h1>Библиотека</h1>
+    <p>Коллекция произведений</p>
+  </header>
 
-    <h2 id="reader-title">Заголовок книги</h2>
-    <div id="reader-content"></div>
-  </section>
-  <!-- админ библиотеки -->
-  <section id="admin" class="hidden">
-    <button id="back-from-admin" type="button">← Назад</button>
-    <h2>Админка</h2>
-    <p>Здесь будет загрузка и проверка текстов произведений.</p>
-    
-    <!--Добавить форму в секцию #admin-->
-    <div id="admin-form">
-      <label>Название</label>
-      <input type="text" id="admin-title" />
+  <main>
+    <!-- Секция: библиотека, список книг -->
+    <section id="library">
+      <h2>Список книг</h2>
+      <div class="book-list">
+        <!-- Карточки книг генерируются JavaScript -->
+      </div>
+    </section>
 
-      <label>Краткое описание</label>
-      <textarea id="admin-description"></textarea>
+    <!-- Секция: читалка -->
+    <section id="reader" class="hidden">
+      <div class="reader-toolbar">
+        <button id="back-to-library" type="button">← Назад к списку книг</button>
+        <button id="admin-open" class="hidden" type="button">Админ</button>
+      </div>
 
-      <label>Полный текст произведения</label>
-      <textarea id="admin-text" rows="10"></textarea>
+      <h2 id="reader-title">Заголовок книги</h2>
+      <div id="reader-content"></div>
+    </section>
 
-      <button id="admin-preview" type="button">Предпросмотр</button>
-      <button id="admin-generate" type="button">Сгенерировать объект</button>
-    </div>
+    <!-- Секция: админка библиотеки -->
+    <section id="admin" class="hidden">
+      <button id="back-from-admin" type="button">← Назад к книге</button>
 
-    <div id="admin-preview-block" class="hidden">
-      <h3>Предпросмотр</h3>
-      <div id="admin-preview-content"></div>
-    </div>
+      <h2>Админка</h2>
+      <p>Здесь будет загрузка и проверка текстов произведений.</p>
 
-    <div id="admin-output-block" class="hidden">
-      <h3>Сгенерированный объект</h3>
-      <textarea id="admin-output" rows="8"></textarea>
-    </div>
-    <!--end Добавить форму в секцию #admin-->
-    
-  </section>
-</main>
+      <div id="admin-form">
+        <label for="admin-title">Название</label>
+        <input type="text" id="admin-title">
 
-<footer>
-  <p>MVP-1 · День 17</p>
-</footer>
+        <label for="admin-description">Краткое описание</label>
+        <textarea id="admin-description"></textarea>
 
-<!-- подключили JavaScript  -->
-<!--Исправление №1 (обязательное): подключили telegram-web-app.js-->
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script src="./debug-panel.js"></script>
-<script src="./script.js"></script>
+        <label for="admin-text">Полный текст произведения</label>
+        <textarea id="admin-text" rows="10"></textarea>
 
+        <button id="admin-preview" type="button">Предпросмотр</button>
+        <button id="admin-generate" type="button">Сгенерировать объект</button>
+      </div>
 
+      <div id="admin-preview-block" class="hidden">
+        <h3>Предпросмотр</h3>
+        <div id="admin-preview-content"></div>
+      </div>
+
+      <div id="admin-output-block" class="hidden">
+        <h3>Сгенерированный объект</h3>
+        <textarea id="admin-output" rows="8"></textarea>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>MVP-1 · День 17</p>
+  </footer>
+
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <!-- Основная логика приложения -->
+  <script src="./script.js"></script>
 </body>
 </html>
