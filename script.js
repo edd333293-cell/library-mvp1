@@ -363,22 +363,45 @@ backButton.addEventListener('click', () => {
 });
 
 // открывает экран читалки для выбранной книги
+//function openReader(book) {
+//  readerTitle.textContent = book.title;
+  
+//  readerContent.innerHTML = '';
+  
+//  if (Array.isArray(book.fullText)) {
+//    book.fullText.forEach(paragraphText => {
+//      const p = document.createElement('p');
+//      p.textContent = paragraphText;
+//      readerContent.appendChild(p);
+//    });
+//  } else {
+//    const p = document.createElement('p');
+//    p.textContent = book.description;
+//    readerContent.appendChild(p);
+//  }
+//  showReader();
+//}
+//новая
 function openReader(book) {
+  currentBook = book;
+  currentBookId = book.id;
+
   readerTitle.textContent = book.title;
-  
+
   readerContent.innerHTML = '';
-  
-  if (Array.isArray(book.fullText)) {
-    book.fullText.forEach(paragraphText => {
-      const p = document.createElement('p');
-      p.textContent = paragraphText;
-      readerContent.appendChild(p);
-    });
-  } else {
+
+  const paragraphs = Array.isArray(book.content)
+    ? book.content
+    : Array.isArray(book.fullText)
+      ? book.fullText
+      : [];
+
+  paragraphs.forEach(paragraphText => {
     const p = document.createElement('p');
-    p.textContent = book.description;
+    p.textContent = paragraphText;
     readerContent.appendChild(p);
-  }
+  });
+
   showReader();
 }
 
