@@ -1,69 +1,87 @@
 body {
-font-family: Arial, sans-serif;
-margin: 0;
-padding: 16px;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 16px;
 }
+
 header {
-margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .book-item {
-display: flex;
-gap: 12px;
-border: 1px solid #ddd;
-padding: 12px;
-margin-bottom: 16px;
+  display: flex;
+  gap: 12px;
+  border: 1px solid #ddd;
+  padding: 12px;
+  margin-bottom: 16px;
 }
+
 .book-cover {
-width: 120px;
-height: auto;
+  width: 120px;
+  height: auto;
 }
+
 .book-info {
-flex: 1;
+  flex: 1;
 }
+
 .book-title {
-margin: 0 0 6px;
+  margin: 0 0 6px;
 }
+
 .book-author {
-font-size: 14px;
-color: #555;
+  font-size: 14px;
+  color: #555;
 }
+
 .book-description {
-font-size: 14px;
-margin: 8px 0;
+  font-size: 14px;
+  margin: 8px 0;
 }
+
 .book-read {
-padding: 8px 12px;
+  padding: 8px 12px;
 }
 
 .hidden {
-display: none;
+  display: none;
 }
+
 #reader {
-margin-top: 16px;
+  margin-top: 16px;
 }
-#back-to-library {
-margin-bottom: 12px;
+
+/* Кнопки в читалке на одной линии */
+.reader-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;      /* выравниваем кнопки по вертикали */
+  margin-bottom: 12px;
+}
+
+#back-to-library,
+#admin-open {
+  margin: 0;                /* убираем разницу по вертикали */
+  padding: 8px 12px;        /* одинаковый паддинг для обеих кнопок */
 }
 
 #reader-content p {
-margin-bottom: 12px;
-font-size: 16px;
-}
-#reader-title {
-margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 16px;
 }
 
-#admin-open {
-margin-top: 10px;
-padding: 8px 12px;
+#reader-title {
+  margin-top: 0;
 }
+
+/* отдельные стили для админки */
 
 #admin {
-margin-top: 16px;
+  margin-top: 16px;
 }
+
 #back-from-admin {
-margin-bottom: 12px;
+  margin-bottom: 12px;
 }
 
 #admin-form {
@@ -79,10 +97,4 @@ margin-bottom: 12px;
 
 #admin-preview-content p {
   margin-bottom: 8px;
-}
-
-.reader-toolbar {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 12px;
 }
