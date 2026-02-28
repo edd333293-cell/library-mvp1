@@ -80,3 +80,9 @@ margin-bottom: 12px;
 #admin-preview-content p {
   margin-bottom: 8px;
 }
+
+.reader-toolbar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}

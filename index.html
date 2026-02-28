@@ -12,7 +12,6 @@
 <header>
   <h1>Библиотека</h1>
   <p>Коллекция произведений</p>
-  <button id="admin-open" class="hidden" type="button">Админ</button>
 </header>
 <main>
   <!-- библиотека, карточки книг -->
@@ -23,10 +22,13 @@
   </section>
   <!-- читалка -->
   <section id="reader" class="hidden">
-    <button id="back-to-library" type="button">← Назад к списку книг</button>
-    <h2 id="reader-title">Заголовок книги</h2>
-    <div id="reader-content">
+    <div class="reader-toolbar">
+      <button id="back-to-library" type="button">← Назад к списку книг</button>
+      <button id="admin-open" class="hidden" type="button">Админ</button>
     </div>
+
+    <h2 id="reader-title">Заголовок книги</h2>
+    <div id="reader-content"></div>
   </section>
   <!-- админ библиотеки -->
   <section id="admin" class="hidden">
@@ -64,7 +66,7 @@
 </main>
 
 <footer>
-  <p>MVP-1 · День 15</p>
+  <p>MVP-1 · День 17</p>
 </footer>
 
 <!-- подключили JavaScript  -->
