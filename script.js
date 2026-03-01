@@ -255,7 +255,7 @@ function generateNextId() {
 }
 
 function handleAdminPreview() {
-  const text = dom.adminText.value;
+  const text = dom.adminFulltext.value;
   const paragraphs = splitTextIntoParagraphs(text);
 
   dom.adminPreviewContent.innerHTML = '';
