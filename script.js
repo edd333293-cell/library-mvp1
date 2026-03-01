@@ -81,9 +81,9 @@ const dom = {
   adminPreviewButton: document.querySelector('#admin-preview'),
   adminPreviewBlock: document.querySelector('#admin-preview-block'),
   adminPreviewContent: document.querySelector('#admin-preview-content'),
-  adminGenerateButton: document.querySelector('#admin-generate'),
-  adminOutputBlock: document.querySelector('#admin-output-block'),
-  adminOutput: document.querySelector('#admin-output')
+  //добавили кнопки перезаписать и сохранить новую
+  adminSaveUpdateButton: document.querySelector('#admin-save-update'),
+  adminSaveNewButton: document.querySelector('#admin-save-new')
 };
 
 const sections = {
@@ -231,7 +231,14 @@ function openReader(bookId) {
   showReader();
 }
 
+// обновили openAdmin, чтобы он работал только с текущей книгой
 function openAdmin() {
+  if (!appState.currentBook) {
+    // На всякий случай защита: без открытой книги админка не имеет смысла
+    return;
+  }
+
+  fillAdminFormFromCurrentBook();
   showAdmin();
 }
 
@@ -257,26 +264,79 @@ function handleAdminPreview() {
 
   dom.adminPreviewBlock.classList.remove('hidden');
 }
+//здесь был handleAdminGenerate
+//
+//добавили функцию заполнения полей формы Админки из текущей книги
+function fillAdminFormFromCurrentBook() {
+  const book = appState.currentBook;
+  if (!book) {
+    return;
+  }
 
-function handleAdminGenerate() {
-  const id = generateNextId();
+  dom.adminTitle.value = book.title || '';
+  dom.adminDescription.value = book.description || '';
+
+  const paragraphs = Array.isArray(book.fullText) ? book.fullText : [];
+  dom.adminText.value = paragraphs.join('\n\n');
+}
+//добавили «Перезаписать текущую книгу»
+function handleAdminSaveUpdate() {
+  const book = appState.currentBook;
+  if (!book) {
+    return;
+  }
+
   const title = dom.adminTitle.value.trim();
   const description = dom.adminDescription.value.trim();
   const paragraphs = splitTextIntoParagraphs(dom.adminText.value);
 
-  const bookObject = {
-    id,
-    title,
-    author: 'А.П. Чехов',
-    description,
-    cover: 'img/chekhov-default-cover.jpg',
+  if (!title || paragraphs.length === 0) {
+    alert('Нужно указать название и текст произведения.');
+    return;
+  }
+
+  book.title = title;
+  book.description = description;
+  book.fullText = paragraphs;
+
+  renderLibrary();
+  openReader(book.id);
+}
+
+//добавили «Создать новую книгу»
+function handleAdminSaveNew() {
+  const baseBook = appState.currentBook;
+  // даже если currentBook по какой-то причине null, всё равно можно создать новую из формы
+
+  const title = dom.adminTitle.value.trim();
+  const description = dom.adminDescription.value.trim();
+  const paragraphs = splitTextIntoParagraphs(dom.adminText.value);
+
+  if (!title || paragraphs.length === 0) {
+    alert('Нужно указать название и текст произведения.');
+    return;
+  }
+
+  const newId = generateNextId();
+
+  const newBook = {
+    id: newId,
+    title: title,
+    author: baseBook && baseBook.author ? baseBook.author : 'А.П. Чехов',
+    year: baseBook && baseBook.year ? baseBook.year : new Date().getFullYear(),
+    description: description,
+    cover: baseBook && baseBook.cover ? baseBook.cover : 'img/chekhov-default-cover.jpg',
     fullText: paragraphs
   };
 
-  dom.adminOutput.value = JSON.stringify(bookObject, null, 2);
-  dom.adminOutputBlock.classList.remove('hidden');
-}
+  books.push(newBook);
 
+  appState.currentBookId = newBook.id;
+  appState.currentBook = newBook;
+
+  renderLibrary();
+  openReader(newBook.id);
+}
 
 // =============== 11. ЗАГРУЗКА КНИГ ===============
 
@@ -343,8 +403,12 @@ function initEvents() {
     dom.adminPreviewButton.addEventListener('click', handleAdminPreview);
   }
 
-  if (dom.adminGenerateButton) {
-    dom.adminGenerateButton.addEventListener('click', handleAdminGenerate);
+  if (dom.adminSaveUpdateButton) {
+    dom.adminSaveUpdateButton.addEventListener('click', handleAdminSaveUpdate);
+  }
+
+  if (dom.adminSaveNewButton) {
+    dom.adminSaveNewButton.addEventListener('click', handleAdminSaveNew);
   }
 }
 
