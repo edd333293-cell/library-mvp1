@@ -77,13 +77,17 @@ const dom = {
   backFromAdminButton: document.querySelector('#back-from-admin'),
   adminTitle: document.querySelector('#admin-title'),
   adminDescription: document.querySelector('#admin-description'),
-  adminText: document.querySelector('#admin-text'),
+  adminFulltext: document.querySelector('#admin-fulltext'),
+  adminYear: document.querySelector('#admin-year'),
   adminPreviewButton: document.querySelector('#admin-preview'),
   adminPreviewBlock: document.querySelector('#admin-preview-block'),
   adminPreviewContent: document.querySelector('#admin-preview-content'),
   //добавили кнопки перезаписать и сохранить новую
   adminSaveUpdateButton: document.querySelector('#admin-save-update'),
-  adminSaveNewButton: document.querySelector('#admin-save-new')
+  adminSaveNewButton: document.querySelector('#admin-save-new'),
+  //добавили 
+  adminExportBooksButton: document.querySelector('#admin-export-books'),
+  adminBooksJson: document.querySelector('#admin-books-json'),
 };
 
 const sections = {
@@ -267,28 +271,29 @@ function handleAdminPreview() {
 //здесь был handleAdminGenerate
 //
 //добавили функцию заполнения полей формы Админки из текущей книги
+// обновили fillAdminFormFromCurrentBook
 function fillAdminFormFromCurrentBook() {
   const book = appState.currentBook;
-  if (!book) {
-    return;
-  }
+  if (!book) return;
 
   dom.adminTitle.value = book.title || '';
   dom.adminDescription.value = book.description || '';
+  dom.adminYear.value = book.year || '';
 
   const paragraphs = Array.isArray(book.fullText) ? book.fullText : [];
-  dom.adminText.value = paragraphs.join('\n\n');
+  dom.adminFulltext.value = paragraphs.join('\n\n');
 }
+
 //добавили «Перезаписать текущую книгу»
+// обновили handleAdminSaveUpdate
 function handleAdminSaveUpdate() {
   const book = appState.currentBook;
-  if (!book) {
-    return;
-  }
+  if (!book) return;
 
   const title = dom.adminTitle.value.trim();
   const description = dom.adminDescription.value.trim();
-  const paragraphs = splitTextIntoParagraphs(dom.adminText.value);
+  const paragraphs = splitTextIntoParagraphs(dom.adminFulltext.value);
+  const yearValue = Number(dom.adminYear.value) || '';
 
   if (!title || paragraphs.length === 0) {
     alert('Нужно указать название и текст произведения.');
@@ -297,6 +302,7 @@ function handleAdminSaveUpdate() {
 
   book.title = title;
   book.description = description;
+  book.year = yearValue;
   book.fullText = paragraphs;
 
   renderLibrary();
@@ -304,13 +310,17 @@ function handleAdminSaveUpdate() {
 }
 
 //добавили «Создать новую книгу»
+// обновили handleAdminSaveNew
 function handleAdminSaveNew() {
   const baseBook = appState.currentBook;
   // даже если currentBook по какой-то причине null, всё равно можно создать новую из формы
 
   const title = dom.adminTitle.value.trim();
   const description = dom.adminDescription.value.trim();
-  const paragraphs = splitTextIntoParagraphs(dom.adminText.value);
+  const paragraphs = splitTextIntoParagraphs(dom.adminFulltext.value);
+  const yearValue = Number(dom.adminYear.value) || new Date().getFullYear();
+
+
 
   if (!title || paragraphs.length === 0) {
     alert('Нужно указать название и текст произведения.');
@@ -322,10 +332,10 @@ function handleAdminSaveNew() {
   const newBook = {
     id: newId,
     title: title,
-    author: baseBook && baseBook.author ? baseBook.author : 'А.П. Чехов',
-    year: baseBook && baseBook.year ? baseBook.year : new Date().getFullYear(),
+    author: baseBook?.author || 'А.П. Чехов',
+    year: yearValue,
     description: description,
-    cover: baseBook && baseBook.cover ? baseBook.cover : 'img/chekhov-default-cover.jpg',
+    cover: baseBook?.cover || 'img/chekhov-default-cover.jpg',
     fullText: paragraphs
   };
 
@@ -336,6 +346,17 @@ function handleAdminSaveNew() {
 
   renderLibrary();
   openReader(newBook.id);
+}
+
+//добавили логику Экспорта
+function handleAdminExportBooks() {
+  try {
+    const json = JSON.stringify(books, null, 2);
+    dom.adminBooksJson.value = json;
+  } catch (e) {
+    console.error('Ошибка при генерации JSON библиотеки', e);
+    alert('Ошибка при генерации JSON библиотеки.');
+  }
 }
 
 // =============== 11. ЗАГРУЗКА КНИГ ===============
@@ -410,6 +431,11 @@ function initEvents() {
   if (dom.adminSaveNewButton) {
     dom.adminSaveNewButton.addEventListener('click', handleAdminSaveNew);
   }
+  
+  if (dom.adminExportBooksButton) {
+  dom.adminExportBooksButton.addEventListener('click', handleAdminExportBooks);
+  }
+  
 }
 
 

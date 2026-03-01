@@ -44,11 +44,14 @@
         <label for="admin-title">Название</label>
         <input type="text" id="admin-title">
 
+        <label for="admin-year">Год публикации</label>
+        <input type="number" id="admin-year" min="1800" max="2100">
+
         <label for="admin-description">Краткое описание</label>
         <textarea id="admin-description"></textarea>
 
-        <label for="admin-text">Полный текст произведения</label>
-        <textarea id="admin-text" rows="10"></textarea>
+        <label for="admin-fulltext">Полный текст произведения</label>
+        <textarea id="admin-fulltext" rows="10"></textarea>
 
         <button id="admin-preview" type="button">Предпросмотр</button>
         <!--добавили кнопки в админку-->
@@ -60,12 +63,18 @@
         <h3>Предпросмотр</h3>
         <div id="admin-preview-content"></div>
       </div>
+      <!--Добавляем кнопку экспорта всей библиотеки-->
+      <div id="admin-export-block">
+        <h3>Экспорт библиотеки (books.json)</h3>
+        <button id="admin-export-books" type="button">Скопировать JSON библиотеки</button>
+        <textarea id="admin-books-json" rows="12"></textarea>
+      </div>
 
     </section>
   </main>
 
   <footer>
-    <p>MVP-1 · День 17</p>
+    <p>MVP-1 · День 18</p>
   </footer>
 
   <!-- Telegram WebApp SDK -->
