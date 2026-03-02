@@ -158,7 +158,7 @@ function createBookCard(book) {
     <img class="book-cover" src="${book.cover}" alt="Обложка книги">
     <div class="book-info">
       <h3 class="book-title">${book.title}</h3>
-      <p class="book-author">Автор: ${book.author}</p>
+      <p class="book-author">${book.author}</p>
       <p class="book-year">${book.year} г.</p>
       <p class="book-description">${book.description}</p>
       <button class="book-read" type="button">Читать</button>
@@ -196,6 +196,14 @@ function renderReader(book) {
   dom.readerTitle.textContent = book.title;
   dom.readerContent.innerHTML = '';
 
+  // Блок с автором и годом под заголовком
+  const meta = document.createElement('p');
+  meta.className = 'reader-meta';
+  const yearText = typeof book.year === 'number' ? `${book.year} г.` : '';
+  meta.textContent = `${book.author || ''}${book.author && yearText ? ' · ' : ''}${yearText}`;
+  dom.readerContent.appendChild(meta);
+
+  // Основной текст
   const paragraphs = Array.isArray(book.fullText) ? book.fullText : [];
 
   paragraphs.forEach(paragraphText => {
@@ -204,7 +212,6 @@ function renderReader(book) {
     dom.readerContent.appendChild(p);
   });
 }
-
 
 // =============== 9. ВЫСОКОУРОВНЕВЫЕ ДЕЙСТВИЯ ===============
 

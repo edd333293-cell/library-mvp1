@@ -112,12 +112,42 @@ button:active {
   width: 50%;
 }
 
-#reader-content p {
-  margin-bottom: 12px;
-  font-size: 16px;
-  line-height: 1.5;
+/* Читалка */
+#reader {
+  padding: 0 12px 24px;
 }
 
+/* Заголовок читалки */
+#reader-title {
+  margin-top: 8px;
+  margin-bottom: 4px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* Автор + год в читалке */
+.reader-meta {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: #666666;
+}
+
+/* Абзацы текста */
+#reader-content p {
+  margin: 0 0 12px;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+#back-to-library {
+  margin: 0 12px 12px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: none;
+  background: #f0f0f0;
+  font-size: 14px;
+  text-align: left;
+}
 
 /* ================= АДМИНКА ================= */
 
@@ -152,3 +182,87 @@ button:active {
 #admin-output-block {
   margin-top: 16px;
 }
+
+/* Шапка приложения: не дублируем название бота */
+header {
+  padding: 12px 16px 8px;
+  background: #f5f5f5;
+}
+
+header h1 {
+  /* Заголовок остаётся в разметке для доступности, но не показывается */
+  display: none;
+}
+
+header p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* Список книг: вертикальная колонка карточек */
+.book-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 12px 16px;
+}
+
+/* Карточка книги */
+.book-card {
+  display: flex;
+  gap: 12px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Обложка: фиксированный размер, без вытягивания */
+.book-cover {
+  width: 88px;           /* на телефоне выглядит аккуратно */
+  aspect-ratio: 2 / 3;   /* классическое соотношение книги */
+  object-fit: cover;     /* обрезать лишнее, но не тянуть */
+  border-radius: 8px;
+  flex-shrink: 0;        /* не давать картинке сжиматься */
+}
+
+/* Блок с текстом справа от обложки */
+.book-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Название книги */
+.book-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Автор и год — второстепенные строки */
+.book-author,
+.book-year {
+  margin: 0;
+  font-size: 14px;
+  color: #666666;
+}
+
+/* Описание */
+.book-description {
+  margin: 4px 0 8px;
+  font-size: 14px;
+  color: #444444;
+}
+
+/* Кнопка "Читать" */
+.book-read {
+  align-self: flex-start;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  background: #e0e0e0;
+  font-size: 14px;
+}
+
