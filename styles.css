@@ -145,7 +145,7 @@ button:active {
   background-color: #e8e8e8;
   border-radius: 8px;
   padding: 4px;
-/*  box-shadow: 0 0 0 2px #d0d0d0;/*главное не переборщить*/
+  box-shadow: 0 0 0 2px #d0d0d0;/*главное не переборщить*/
 }
 
 /* ================= ЧИТАЛКА ================= */
