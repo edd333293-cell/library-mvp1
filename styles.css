@@ -159,7 +159,6 @@ button:active {
 
 #reader {
   padding: 0 18px 28px;
-  background-color: #f3efe6; /* если выбрали бумажный фон */
 }
 
 /* Заголовок произведения */
@@ -237,12 +236,6 @@ button:active {
   line-height: 1.4;
 }
 
-/* Скрывать header вне режима библиотеки */
-body.reader-active header,
-body.admin-active header {
-  display: none;
-}
-
 /* Футер показываем только в библиотеке */
 body.library-active footer {
   display: block;
@@ -252,4 +245,9 @@ body.library-active footer {
 body.reader-active footer,
 body.admin-active footer {
   display: none !important;
+}
+
+/* В читалке фон всего экрана книжный */
+body.reader-active {
+  background-color: #f3efe6;
 }
