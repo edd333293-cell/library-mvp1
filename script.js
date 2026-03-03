@@ -4,15 +4,12 @@ window.addEventListener('error', (e) => {
 });
 
 
-// =============== 1. ПОМОЩНИК: ID КНИГИ ИЗ URL (ЕДИНСТВЕННЫЙ ВАРИАНТ) ===============
-// Единственный официальный вариант входа в книгу:
-//   tgWebAppStartParam=book_4   → Telegram даёт так при startapp=book_4
+// =============== 1. ПОМОЩНИК: ID КНИГИ ИЗ URL (tgWebAppStartParam) ===============
 function getLaunchBookId() {
   const params = new URLSearchParams(window.location.search);
   if (!params.has('tgWebAppStartParam')) return null;
 
   const raw = params.get('tgWebAppStartParam') || '';
-
   if (!raw.startsWith('book_')) return null;
 
   const num = Number(raw.slice('book_'.length));
@@ -64,9 +61,6 @@ const dom = {
   readerSection: document.querySelector('#reader'),
   adminSection: document.querySelector('#admin'),
 
-  // библиотека
-  bookList: document.querySelector('.book-list'),
-
   // читалка
   readerTitle: document.querySelector('#reader-title'),
   readerContent: document.querySelector('#reader-content'),
@@ -82,12 +76,10 @@ const dom = {
   adminPreviewButton: document.querySelector('#admin-preview'),
   adminPreviewBlock: document.querySelector('#admin-preview-block'),
   adminPreviewContent: document.querySelector('#admin-preview-content'),
-  //добавили кнопки перезаписать и сохранить новую
   adminSaveUpdateButton: document.querySelector('#admin-save-update'),
   adminSaveNewButton: document.querySelector('#admin-save-new'),
-  //добавили 
   adminExportBooksButton: document.querySelector('#admin-export-books'),
-  adminBooksJson: document.querySelector('#admin-books-json'),
+  adminBooksJson: document.querySelector('#admin-books-json')
 };
 
 const sections = {
@@ -148,43 +140,9 @@ function showAdmin() {
 }
 
 
-// =============== 7. РЕНДЕР БИБЛИОТЕКИ ===============
+// =============== 7. ГОРИЗОНТАЛЬНЫЕ СПИСКИ И КОМПАКТ-КАРТОЧКИ ===============
 
-function createBookCard(book) {
-  const bookItem = document.createElement('div');
-  bookItem.className = 'book-item';
-
-  bookItem.innerHTML = `
-    <img class="book-cover" src="${book.cover}" alt="Обложка книги">
-    <div class="book-info">
-      <h3 class="book-title">${book.title}</h3>
-      <p class="book-author">${book.author}</p>
-      <p class="book-year">${book.year} г.</p>
-      <p class="book-description">${book.description}</p>
-      <button class="book-read" type="button">Читать</button>
-    </div>
-  `;
-
-  const readButton = bookItem.querySelector('.book-read');
-  readButton.addEventListener('click', () => {
-    openReader(book.id);
-  });
-
-  return bookItem;
-}
-
-function renderLibrary() {
-  if (!dom.bookList) return;
-
-  dom.bookList.innerHTML = '';
-  books.forEach(book => {
-    const card = createBookCard(book);
-    dom.bookList.appendChild(card);
-  });
-}
-// компакт-карточки и горизонтальные списки. рендер рекомендовано. рендер полный список
-
-// компактная-карточка
+// Компактная карточка для горизонтальных списков
 function createCompactBookCard(book) {
   const card = document.createElement('div');
   card.className = 'book-card-compact';
@@ -200,13 +158,15 @@ function createCompactBookCard(book) {
     <p class="book-meta">${book.author || ''}${yearText ? ', ' + yearText : ''}</p>
   `;
 
-  card.addEventListener('click', () => openBook(book.id));
+  card.addEventListener('click', () => {
+    if (!book || book.id == null) return;
+    openReader(book.id);
+  });
 
   return card;
 }
 
-//рендер рекомендовано
-
+// "Рекомендовано" (collections: ["recommended"])
 function renderRecommended() {
   const container = document.getElementById('row-recommended');
   if (!container) return;
@@ -223,8 +183,7 @@ function renderRecommended() {
   });
 }
 
-//рендер Все произведения + сортировка
-
+// "Все произведения" (сортировка по yearwriting)
 function renderAllBooksRow() {
   const container = document.getElementById('row-all');
   if (!container) return;
@@ -241,7 +200,7 @@ function renderAllBooksRow() {
 }
 
 
-// =============== 8. РЕНДЕР ЧИТАЛКИ (ТОЛЬКО fullText) ===============
+// =============== 8. РЕНДЕР ЧИТАЛКИ (fullText) ===============
 
 function renderReader(book) {
   if (!book) {
@@ -253,10 +212,10 @@ function renderReader(book) {
   dom.readerTitle.textContent = book.title;
   dom.readerContent.innerHTML = '';
 
-  // Блок с автором и годом под заголовком
+  // Автор + год под заголовком
   const meta = document.createElement('p');
   meta.className = 'reader-meta';
-  const yearText = typeof book.year === 'number' ? `${book.year} г.` : '';
+  const yearText = typeof book.yearwriting === 'number' ? `${book.yearwriting} г.` : '';
   meta.textContent = `${book.author || ''}${book.author && yearText ? ' · ' : ''}${yearText}`;
   dom.readerContent.appendChild(meta);
 
@@ -269,6 +228,7 @@ function renderReader(book) {
     dom.readerContent.appendChild(p);
   });
 }
+
 
 // =============== 9. ВЫСОКОУРОВНЕВЫЕ ДЕЙСТВИЯ ===============
 
@@ -299,22 +259,13 @@ function openReader(bookId) {
   showReader();
 }
 
-// обновили openAdmin, чтобы он работал только с текущей книгой
-//сделали мягче //...
 function openAdmin() {
-  //if (!appState.currentBook) {
-  //  // На всякий случай защита: без открытой книги админка не имеет смысла
-  //  return;
-  //}
-
-  //Пытаемся заполнить форму из текущей книги (если есть)
   fillAdminFormFromCurrentBook();
-  // В любом случае показываем экран админки
   showAdmin();
 }
 
 
-// =============== 10. ЛОГИКА АДМИНКИ (ГЕНЕРИРУЕТ ТОЛЬКО fullText) ===============
+// =============== 10. ЛОГИКА АДМИНКИ ===============
 
 function generateNextId() {
   const ids = books.map(b => Number(b.id)).filter(n => Number.isFinite(n));
@@ -335,24 +286,21 @@ function handleAdminPreview() {
 
   dom.adminPreviewBlock.classList.remove('hidden');
 }
-//здесь был handleAdminGenerate
-//
-//добавили функцию заполнения полей формы Админки из текущей книги
-// обновили fillAdminFormFromCurrentBook
+
+// Заполнение формы из текущей книги
 function fillAdminFormFromCurrentBook() {
   const book = appState.currentBook;
   if (!book) return;
 
   dom.adminTitle.value = book.title || '';
   dom.adminDescription.value = book.description || '';
-  dom.adminYear.value = book.year || '';
+  dom.adminYear.value = book.yearwriting || '';
 
   const paragraphs = Array.isArray(book.fullText) ? book.fullText : [];
   dom.adminFulltext.value = paragraphs.join('\n\n');
 }
 
-//добавили «Перезаписать текущую книгу»
-// обновили handleAdminSaveUpdate
+// Перезаписать текущую книгу
 function handleAdminSaveUpdate() {
   const book = appState.currentBook;
   if (!book) return;
@@ -369,25 +317,22 @@ function handleAdminSaveUpdate() {
 
   book.title = title;
   book.description = description;
-  book.year = yearValue;
+  book.yearwriting = yearValue;
   book.fullText = paragraphs;
 
-  renderLibrary();
+  renderRecommended();
+  renderAllBooksRow();
   openReader(book.id);
 }
 
-//добавили «Создать новую книгу»
-// обновили handleAdminSaveNew
+// Создать новую книгу
 function handleAdminSaveNew() {
   const baseBook = appState.currentBook;
-  // даже если currentBook по какой-то причине null, всё равно можно создать новую из формы
 
   const title = dom.adminTitle.value.trim();
   const description = dom.adminDescription.value.trim();
   const paragraphs = splitTextIntoParagraphs(dom.adminFulltext.value);
   const yearValue = Number(dom.adminYear.value) || new Date().getFullYear();
-
-
 
   if (!title || paragraphs.length === 0) {
     alert('Нужно указать название и текст произведения.');
@@ -400,9 +345,10 @@ function handleAdminSaveNew() {
     id: newId,
     title: title,
     author: baseBook?.author || 'А.П. Чехов',
-    year: yearValue,
+    yearwriting: yearValue,
     description: description,
     cover: baseBook?.cover || 'img/chekhov-default-cover.jpg',
+    collections: [],
     fullText: paragraphs
   };
 
@@ -411,11 +357,12 @@ function handleAdminSaveNew() {
   appState.currentBookId = newBook.id;
   appState.currentBook = newBook;
 
-  renderLibrary();
+  renderRecommended();
+  renderAllBooksRow();
   openReader(newBook.id);
 }
 
-//добавили логику Экспорта
+// Экспорт всей библиотеки
 function handleAdminExportBooks() {
   try {
     const json = JSON.stringify(books, null, 2);
@@ -425,6 +372,7 @@ function handleAdminExportBooks() {
     alert('Ошибка при генерации JSON библиотеки.');
   }
 }
+
 
 // =============== 11. ЗАГРУЗКА КНИГ ===============
 
@@ -447,12 +395,9 @@ function loadBooks() {
       books = [];
     });
 }
-// после загрузки книг
-renderRecommended();
-renderAllBooksRow();
 
 
-// =============== 12. ЗАПУСК ПРИЛОЖЕНИЯ (ПОСЛЕ ЗАГРУЗКИ КНИГ) ===============
+// =============== 12. ЗАПУСК ПРИЛОЖЕНИЯ ПОСЛЕ ЗАГРУЗКИ КНИГ ===============
 
 function runApp() {
   const launchId = getLaunchBookId();
@@ -501,11 +446,10 @@ function initEvents() {
   if (dom.adminSaveNewButton) {
     dom.adminSaveNewButton.addEventListener('click', handleAdminSaveNew);
   }
-  
+
   if (dom.adminExportBooksButton) {
-  dom.adminExportBooksButton.addEventListener('click', handleAdminExportBooks);
+    dom.adminExportBooksButton.addEventListener('click', handleAdminExportBooks);
   }
-  
 }
 
 
@@ -523,8 +467,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initEvents();
 
   loadBooks().then(() => {
-    books.sort((a, b) => a.year - b.year);  // сортировка по году
-    renderLibrary();
+    // после загрузки книг рендерим оба списка
+    renderRecommended();
+    renderAllBooksRow();
     runApp();
   });
 });

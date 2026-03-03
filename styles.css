@@ -77,18 +77,7 @@ button:active {
 }
 
 
-/* ================= БИБЛИОТЕКА: СПИСОК КНИГ ================= */
-
-/* Контейнер списка */
-.book-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 0 16px 20px;
-}
-
-/* компакт-карточка и горизонтальные списки */
-/* ===== Горизонтальные списки ===== */
+/* ================= ГОРИЗОНТАЛЬНЫЕ СПИСКИ В БИБЛИОТЕКЕ ================= */
 
 .section-row {
   padding: 8px 12px 16px;
@@ -111,10 +100,11 @@ button:active {
   height: 4px;
 }
 
-/* ===== Компактная карточка ===== */
+
+/* ===== Компактная карточка (обложка 88×120, название, автор+год) ===== */
 
 .book-card-compact {
-  flex: 0 0 88px; /* ширина карточки */
+  flex: 0 0 88px;
   display: flex;
   flex-direction: column;
   cursor: pointer;
@@ -169,7 +159,7 @@ button:active {
   width: auto;
 }
 
-/* Панель инструментов читалки (если используется) */
+/* Панель инструментов читалки */
 .reader-toolbar {
   display: flex;
   gap: 8px;
@@ -242,4 +232,3 @@ button:active {
   font-size: 14px;
   line-height: 1.4;
 }
-
