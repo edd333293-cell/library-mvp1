@@ -243,8 +243,13 @@ body.admin-active header {
   display: none;
 }
 
-/* Скрывать футер вне библиотеки */
+/* Футер показываем только в библиотеке */
+body.library-active footer {
+  display: block;
+}
+
+/* В читалке и админке футера НЕТ вообще */
 body.reader-active footer,
 body.admin-active footer {
-  display: none;
+  display: none !important;
 }
