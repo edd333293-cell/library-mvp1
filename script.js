@@ -182,6 +182,63 @@ function renderLibrary() {
     dom.bookList.appendChild(card);
   });
 }
+// компакт-карточки и горизонтальные списки. рендер рекомендовано. рендер полный список
+
+// компактная-карточка
+function createCompactBookCard(book) {
+  const card = document.createElement('div');
+  card.className = 'book-card-compact';
+
+  const yearText =
+    typeof book.yearwriting === 'number'
+      ? `${book.yearwriting} г.`
+      : '';
+
+  card.innerHTML = `
+    <img class="book-cover" src="${book.cover}" alt="">
+    <h3 class="book-title">${book.title}</h3>
+    <p class="book-meta">${book.author || ''}${yearText ? ', ' + yearText : ''}</p>
+  `;
+
+  card.addEventListener('click', () => openBook(book.id));
+
+  return card;
+}
+
+//рендер рекомендовано
+
+function renderRecommended() {
+  const container = document.getElementById('row-recommended');
+  if (!container) return;
+
+  container.innerHTML = '';
+
+  const filtered = books.filter(book =>
+    Array.isArray(book.collections) &&
+    book.collections.includes('recommended')
+  );
+
+  filtered.forEach(book => {
+    container.appendChild(createCompactBookCard(book));
+  });
+}
+
+//рендер Все произведения + сортировка
+
+function renderAllBooksRow() {
+  const container = document.getElementById('row-all');
+  if (!container) return;
+
+  container.innerHTML = '';
+
+  const sorted = [...books].sort(
+    (a, b) => (a.yearwriting || 0) - (b.yearwriting || 0)
+  );
+
+  sorted.forEach(book => {
+    container.appendChild(createCompactBookCard(book));
+  });
+}
 
 
 // =============== 8. РЕНДЕР ЧИТАЛКИ (ТОЛЬКО fullText) ===============
@@ -390,6 +447,9 @@ function loadBooks() {
       books = [];
     });
 }
+// после загрузки книг
+renderRecommended();
+renderAllBooksRow();
 
 
 // =============== 12. ЗАПУСК ПРИЛОЖЕНИЯ (ПОСЛЕ ЗАГРУЗКИ КНИГ) ===============
