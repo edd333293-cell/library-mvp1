@@ -236,18 +236,22 @@ button:active {
   line-height: 1.4;
 }
 
-/* Футер показываем только в библиотеке */
-body.library-active footer {
-  display: block;
-}
-
-/* В читалке и админке футера НЕТ вообще */
-body.reader-active footer,
-body.admin-active footer {
-  display: none !important;
-}
 
 /* В читалке фон всего экрана книжный */
 body.reader-active {
   background-color: #f3efe6;
+}
+
+/* Шапка и футер видны только в библиотеке */
+body.library-active header,
+body.library-active footer {
+  display: block;
+}
+
+/* В читалке и админке шапки и футера нет вообще */
+body.reader-active header,
+body.reader-active footer,
+body.admin-active header,
+body.admin-active footer {
+  display: none !important;
 }
