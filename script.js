@@ -513,10 +513,10 @@ document.addEventListener('DOMContentLoaded', () => {
     Telegram.WebApp.ready();
 
     // Цвет фона мини-приложения
-    Telegram.WebApp.setBackgroundColor('#f5f5f5');
+    Telegram.WebApp.setBackgroundColor('#f3efe6');
 
     // Цвет верхней панели Telegram (где название бота)
-    Telegram.WebApp.setHeaderColor('#f5f5f5');
+    Telegram.WebApp.setHeaderColor('#f3efe6');
   }
 
   if (isAdmin() && dom.adminOpenButton) {
