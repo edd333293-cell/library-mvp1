@@ -91,7 +91,7 @@ button:active {
 
 .book-row {
   display: flex;
-  gap: 12px;
+  gap: 12px; /*было 12*/
   overflow-x: auto;
   padding-bottom: 6px;
 }
@@ -101,28 +101,35 @@ button:active {
 }
 
 
-/* ===== Компактная карточка (обложка 88×120, название, автор+год) ===== */
+/* ===== Компактная карточка (обложка 88×120 !было, название, автор+год) ===== */
 
 .book-card-compact {
-  flex: 0 0 88px;
+  flex: 0 0 116px;
   display: flex;
   flex-direction: column;
   cursor: pointer;
+
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  padding: 6px;
+  border: 1px solid var(--card-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .book-card-compact .book-cover {
-  width: 88px;
-  height: 120px;
+  width: 116px;
+  height: 160px;
   object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 4px;
+  border-radius: 10px;
+  margin-bottom: 6px;
 }
 
 .book-card-compact .book-title {
-  font-size: 13px;
+  font-size: 15px;      /* было 13 */
   font-weight: 600;
-  line-height: 1.2;
-  margin: 0 0 2px;
+  line-height: 1.25;
+  margin: 0 0 3px;
+  color: var(--text-main);
 
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -131,8 +138,8 @@ button:active {
 }
 
 .book-card-compact .book-meta {
-  font-size: 12px;
-  color: #666666;
+  font-size: 13px;      /* было 12 */
+  color: var(--text-muted);
   line-height: 1.2;
 }
 
