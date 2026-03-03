@@ -235,3 +235,9 @@ body.reader-active header,
 body.admin-active header {
   display: none;
 }
+
+/* Скрывать футер вне библиотеки */
+body.reader-active footer,
+body.admin-active footer {
+  display: none;
+}
