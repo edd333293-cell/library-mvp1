@@ -151,53 +151,43 @@ button:active {
 /* ================= ЧИТАЛКА ================= */
 
 #reader {
-  padding: 0 16px 24px;
-}
-
-/* Кнопка "Назад к списку книг" */
-#back-to-library {
-  margin: 0 0 12px;
-  padding: 6px 10px;
-  border-radius: 8px;
-  border: none;
-  background: #f0f0f0;
-  font-size: 14px;
-  text-align: left;
-  width: auto;
-}
-
-/* Панель инструментов читалки */
-.reader-toolbar {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.reader-toolbar button {
-  width: 50%;
+  padding: 0 18px 28px;
+  background-color: #f3efe6; /* если выбрали бумажный фон */
 }
 
 /* Заголовок произведения */
 #reader-title {
-  margin-top: 8px;
-  margin-bottom: 4px;
-  font-size: 20px;
+  margin-top: 12px;
+  margin-bottom: 6px;
+
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
   font-weight: 600;
+  line-height: 1.2;
 }
 
-/* Автор + год под заголовком */
+/* Автор + год */
 .reader-meta {
-  margin: 0 0 12px;
-  font-size: 14px;
+  margin: 0 0 16px;
+  font-size: 15px;
   color: #666666;
 }
 
-/* Абзацы текста */
+/* Основной текст */
 #reader-content p {
-  margin: 0 0 12px;
-  line-height: 1.6;
-  font-size: 16px;
+  margin: 0 0 14px;
+
+  font-size: 18px;      /* было 16 */
+  line-height: 1.75;    /* было 1.6 */
+
+  max-width: 38em;      /* ограничиваем длину строки */
 }
+
+#reader-content {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
 
 
 /* ================= АДМИНКА ================= */
