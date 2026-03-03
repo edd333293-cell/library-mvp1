@@ -114,6 +114,7 @@ function splitTextIntoParagraphs(input) {
 
 // =============== 6. НАВИГАЦИЯ (ЕДИНЫЙ ЦЕНТР) ===============
 
+// header показываем только на основном экране библиотеки
 function showSection(sectionId) {
   Object.entries(sections).forEach(([id, el]) => {
     if (!el) return;
@@ -123,6 +124,20 @@ function showSection(sectionId) {
       el.classList.add('hidden');
     }
   });
+
+  document.body.classList.remove('library-active', 'reader-active', 'admin-active');
+
+  if (sectionId === 'library') {
+    document.body.classList.add('library-active');
+  }
+
+  if (sectionId === 'reader') {
+    document.body.classList.add('reader-active');
+  }
+
+  if (sectionId === 'admin') {
+    document.body.classList.add('admin-active');
+  }
 
   appState.currentView = sectionId;
 }
@@ -143,9 +158,13 @@ function showAdmin() {
 // =============== 7. ГОРИЗОНТАЛЬНЫЕ СПИСКИ И КОМПАКТ-КАРТОЧКИ ===============
 
 // Компактная карточка для горизонтальных списков
+// с запоминанием последней открытой книги
 function createCompactBookCard(book) {
   const card = document.createElement('div');
   card.className = 'book-card-compact';
+
+  // запоминаем id книги на DOM-элементе
+  card.dataset.bookId = book.id;
 
   const yearText =
     typeof book.yearwriting === 'number'
@@ -199,6 +218,39 @@ function renderAllBooksRow() {
   });
 }
 
+//добавили подсветку/прокрутку карточки последней открытой книги
+function highlightLastReadInAllRow() {
+  const lastId = appState.currentBookId;
+  if (lastId == null) return;
+
+  const container = document.getElementById('row-all');
+  if (!container) return;
+
+  const cards = Array.from(container.querySelectorAll('.book-card-compact'));
+
+  // снимаем подсветку со всех карточек
+  cards.forEach(card => {
+    card.classList.remove('book-card-compact--current');
+  });
+
+  // ищем карточку по data-book-id
+  const target = cards.find(card => Number(card.dataset.bookId) === Number(lastId));
+  if (!target) return;
+
+  target.classList.add('book-card-compact--current');
+
+  // прокручиваем так, чтобы карточка была видна
+  try {
+    target.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'center'
+    });
+  } catch (e) {
+    // на всякий случай fallback без smooth
+    target.scrollIntoView();
+  }
+}
 
 // =============== 8. РЕНДЕР ЧИТАЛКИ (fullText) ===============
 
@@ -420,6 +472,7 @@ function initEvents() {
   if (dom.backToLibraryButton) {
     dom.backToLibraryButton.addEventListener('click', () => {
       openLibrary();
+      highlightLastReadInAllRow(); //подсветили/прокрутили карточку последней открытой книги
     });
   }
 

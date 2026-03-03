@@ -140,6 +140,13 @@ button:active {
   transform: scale(0.97);
 }
 
+/* Текущее (последнее читанное) произведение в списке "Все произведения" */
+.book-card-compact--current {
+  background-color: #e8e8e8;
+  border-radius: 8px;
+  padding: 4px;
+/*  box-shadow: 0 0 0 2px #d0d0d0;/*главное не переборщить*/
+}
 
 /* ================= ЧИТАЛКА ================= */
 
@@ -231,4 +238,10 @@ button:active {
   margin-bottom: 8px;
   font-size: 14px;
   line-height: 1.4;
+}
+
+/* Скрывать header вне режима библиотеки */
+body.reader-active header,
+body.admin-active header {
+  display: none;
 }
