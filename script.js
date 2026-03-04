@@ -513,7 +513,7 @@ document.addEventListener('DOMContentLoaded', () => {
     Telegram.WebApp.ready();
     
     // раскрываем мини-приложение максимально
-    Telegram.WebApp.expand();
+    //Telegram.WebApp.expand();
 
     // Цвет фона мини-приложения
     Telegram.WebApp.setBackgroundColor('#f5f5f5');
