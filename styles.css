@@ -213,10 +213,6 @@ button:active {
   margin-bottom: 12px;
 }
 
-/* SAFE-AREA СДВИГ ВНИЗ (читалка) */
-body.reader-active .reader-toolbar {
-  padding-top: calc(max(env(safe-area-inset-top, 0px), 10px) + 16px);
-}
 
 /* Кнопки в toolbar */
 .reader-toolbar button {
@@ -258,10 +254,6 @@ body.reader-active .reader-toolbar {
   background-color: transparent; /* фон берём от body.admin-active */
 }
 
-/* SAFE-AREA СДВИГ ВНИЗ (админка) */
-body.admin-active #admin {
-  padding-top: calc(max(env(safe-area-inset-top, 0px), 10px) + 16px);
-}
 
 /* Кнопка "Назад" в админке */
 #back-from-admin {
@@ -307,4 +299,10 @@ body.admin-active #admin {
 #admin-books-json {
   margin-top: 8px;
   width: 100%;
+}
+
+/* Safe-area: сдвиг вниз, чтобы контент не залезал под системные значки */
+body.reader-active #reader,
+body.admin-active #admin {
+  padding-top: calc(max(env(safe-area-inset-top, 0px), 10px) + 12px) !important;
 }

@@ -298,7 +298,7 @@ function openReader(bookId) {
   renderReader(book);
 
   // expand ТОЛЬКО в читалке
-  tgExpand();
+ // tgExpand();
 
   showReader();
 }
@@ -307,7 +307,7 @@ function openAdmin() {
   fillAdminFormFromCurrentBook();
 
   // expand ТОЛЬКО в админке
-  tgExpand();
+ // tgExpand();
 
   showAdmin();
 }
@@ -504,16 +504,16 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.Telegram && Telegram.WebApp) {
     Telegram.WebApp.ready();
 
-    // +20-30% нативности (жесты прокрутки не конфликтуют с Telegram)
-    Telegram.WebApp.disableVerticalSwipes();
+    // Расширяем WebApp максимально (стабильно работает именно на старте)
+    Telegram.WebApp.expand();
 
-    // На старте НЕ expand — библиотека остаётся в обычном виде
-    // Telegram.WebApp.expand();
+    // Чуть “нативнее” — убирает конфликт свайпов Telegram и страницы
+    if (typeof Telegram.WebApp.disableVerticalSwipes === 'function') {
+      Telegram.WebApp.disableVerticalSwipes();
+    }
 
-    // Цвет фона мини-приложения
+    // Цвета (можешь оставить свои)
     Telegram.WebApp.setBackgroundColor('#f5f5f5');
-
-    // Цвет верхней панели Telegram (где название бота)
     Telegram.WebApp.setHeaderColor('#f5f5f5');
   }
 
