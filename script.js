@@ -506,6 +506,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Расширяем WebApp максимально (стабильно работает именно на старте)
     Telegram.WebApp.expand();
+    
+    // делаем системные значки (статус-бар) читаемыми на светлом фоне
+    if (typeof Telegram.WebApp.setColorScheme === 'function') {
+      Telegram.WebApp.setColorScheme('light');
+    }
 
     // Чуть “нативнее” — убирает конфликт свайпов Telegram и страницы
     if (typeof Telegram.WebApp.disableVerticalSwipes === 'function') {
@@ -514,7 +519,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Цвета (можешь оставить свои)
     Telegram.WebApp.setBackgroundColor('#f5f5f5');
-    Telegram.WebApp.setHeaderColor('#f5f5f5');
+    Telegram.WebApp.setHeaderColor('bg_color');
   }
 
   if (isAdmin() && dom.adminOpenButton) {

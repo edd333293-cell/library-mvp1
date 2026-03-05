@@ -306,3 +306,26 @@ body.reader-active #reader,
 body.admin-active #admin {
   padding-top: calc(max(env(safe-area-inset-top, 0px), 10px) + 12px) !important;
 }
+
+/* ================= PATCH: SAFE TOP OFFSET (TG CLOSE BUTTON) ================= */
+/* Telegram в expanded рисует кнопку "Закрыть" поверх WebApp.
+   Добавляем дополнительный верхний отступ, чтобы элементы не перекрывались. */
+
+:root {
+  --tg-top-controls-offset: 44px; /* зона кнопки "Закрыть" (Android Telegram) */
+}
+
+/* Библиотека: header уходит ниже телеграмовской верхней зоны */
+body.library-active header {
+  padding-top: calc(12px + max(env(safe-area-inset-top, 0px), 10px) + var(--tg-top-controls-offset)) !important;
+}
+
+/* Читалка: панель кнопок ("Назад", "Админ") уходит ниже */
+body.reader-active .reader-toolbar {
+  padding-top: calc(max(env(safe-area-inset-top, 0px), 10px) + var(--tg-top-controls-offset)) !important;
+}
+
+/* Админка: весь экран админки уходит ниже */
+body.admin-active #admin {
+  padding-top: calc(max(env(safe-area-inset-top, 0px), 10px) + var(--tg-top-controls-offset)) !important;
+}
