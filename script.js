@@ -52,13 +52,6 @@ function isAdmin() {
   return uid !== null && uid === ADMIN_ID;
 }
 
-// Expand только в режимах чтения/админки
-function tgExpand() {
-  if (window.Telegram && Telegram.WebApp) {
-    Telegram.WebApp.expand();
-  }
-}
-
 
 // =============== 4. DOM-ССЫЛКИ ===============
 
@@ -121,6 +114,7 @@ function splitTextIntoParagraphs(input) {
 
 // =============== 6. НАВИГАЦИЯ (ЕДИНЫЙ ЦЕНТР) ===============
 
+// header показываем только на основном экране библиотеки
 function showSection(sectionId) {
   Object.entries(sections).forEach(([id, el]) => {
     if (!el) return;
@@ -133,9 +127,17 @@ function showSection(sectionId) {
 
   document.body.classList.remove('library-active', 'reader-active', 'admin-active');
 
-  if (sectionId === 'library') document.body.classList.add('library-active');
-  if (sectionId === 'reader') document.body.classList.add('reader-active');
-  if (sectionId === 'admin') document.body.classList.add('admin-active');
+  if (sectionId === 'library') {
+    document.body.classList.add('library-active');
+  }
+
+  if (sectionId === 'reader') {
+    document.body.classList.add('reader-active');
+  }
+
+  if (sectionId === 'admin') {
+    document.body.classList.add('admin-active');
+  }
 
   appState.currentView = sectionId;
 }
@@ -155,6 +157,8 @@ function showAdmin() {
 
 // =============== 7. ГОРИЗОНТАЛЬНЫЕ СПИСКИ И КОМПАКТ-КАРТОЧКИ ===============
 
+// Компактная карточка для горизонтальных списков
+// с запоминанием последней открытой книги
 function createCompactBookCard(book) {
   const card = document.createElement('div');
   card.className = 'book-card-compact';
@@ -181,6 +185,7 @@ function createCompactBookCard(book) {
   return card;
 }
 
+// "Рекомендовано" (collections: ["recommended"])
 function renderRecommended() {
   const container = document.getElementById('row-recommended');
   if (!container) return;
@@ -197,6 +202,7 @@ function renderRecommended() {
   });
 }
 
+// "Все произведения" (сортировка по yearwriting)
 function renderAllBooksRow() {
   const container = document.getElementById('row-all');
   if (!container) return;
@@ -212,7 +218,7 @@ function renderAllBooksRow() {
   });
 }
 
-// подсветка/прокрутка карточки последней открытой книги (в "Все произведения")
+//добавили подсветку/прокрутку карточки последней открытой книги
 function highlightLastReadInAllRow() {
   const lastId = appState.currentBookId;
   if (lastId == null) return;
@@ -222,15 +228,18 @@ function highlightLastReadInAllRow() {
 
   const cards = Array.from(container.querySelectorAll('.book-card-compact'));
 
+  // снимаем подсветку со всех карточек
   cards.forEach(card => {
     card.classList.remove('book-card-compact--current');
   });
 
+  // ищем карточку по data-book-id
   const target = cards.find(card => Number(card.dataset.bookId) === Number(lastId));
   if (!target) return;
 
   target.classList.add('book-card-compact--current');
 
+  // прокручиваем так, чтобы карточка была видна
   try {
     target.scrollIntoView({
       behavior: 'smooth',
@@ -238,10 +247,10 @@ function highlightLastReadInAllRow() {
       inline: 'center'
     });
   } catch (e) {
+    // на всякий случай fallback без smooth
     target.scrollIntoView();
   }
 }
-
 
 // =============== 8. РЕНДЕР ЧИТАЛКИ (fullText) ===============
 
@@ -255,13 +264,16 @@ function renderReader(book) {
   dom.readerTitle.textContent = book.title;
   dom.readerContent.innerHTML = '';
 
+  // Автор + год под заголовком
   const meta = document.createElement('p');
   meta.className = 'reader-meta';
   const yearText = typeof book.yearwriting === 'number' ? `${book.yearwriting} г.` : '';
   meta.textContent = `${book.author || ''}${book.author && yearText ? ' · ' : ''}${yearText}`;
   dom.readerContent.appendChild(meta);
 
+  // Основной текст
   const paragraphs = Array.isArray(book.fullText) ? book.fullText : [];
+
   paragraphs.forEach(paragraphText => {
     const p = document.createElement('p');
     p.textContent = paragraphText;
@@ -296,19 +308,11 @@ function openReader(bookId) {
   appState.currentBook = book;
 
   renderReader(book);
-
-  // expand ТОЛЬКО в читалке
- // tgExpand();
-
   showReader();
 }
 
 function openAdmin() {
   fillAdminFormFromCurrentBook();
-
-  // expand ТОЛЬКО в админке
- // tgExpand();
-
   showAdmin();
 }
 
@@ -335,6 +339,7 @@ function handleAdminPreview() {
   dom.adminPreviewBlock.classList.remove('hidden');
 }
 
+// Заполнение формы из текущей книги
 function fillAdminFormFromCurrentBook() {
   const book = appState.currentBook;
   if (!book) return;
@@ -347,6 +352,7 @@ function fillAdminFormFromCurrentBook() {
   dom.adminFulltext.value = paragraphs.join('\n\n');
 }
 
+// Перезаписать текущую книгу
 function handleAdminSaveUpdate() {
   const book = appState.currentBook;
   if (!book) return;
@@ -371,6 +377,7 @@ function handleAdminSaveUpdate() {
   openReader(book.id);
 }
 
+// Создать новую книгу
 function handleAdminSaveNew() {
   const baseBook = appState.currentBook;
 
@@ -407,6 +414,7 @@ function handleAdminSaveNew() {
   openReader(newBook.id);
 }
 
+// Экспорт всей библиотеки
 function handleAdminExportBooks() {
   try {
     const json = JSON.stringify(books, null, 2);
@@ -464,7 +472,7 @@ function initEvents() {
   if (dom.backToLibraryButton) {
     dom.backToLibraryButton.addEventListener('click', () => {
       openLibrary();
-      highlightLastReadInAllRow();
+      highlightLastReadInAllRow(); //подсветили/прокрутили карточку последней открытой книги
     });
   }
 
@@ -503,23 +511,15 @@ function initEvents() {
 document.addEventListener('DOMContentLoaded', () => {
   if (window.Telegram && Telegram.WebApp) {
     Telegram.WebApp.ready();
-
-    // Расширяем WebApp максимально (стабильно работает именно на старте)
-    Telegram.WebApp.expand();
     
-    // делаем системные значки (статус-бар) читаемыми на светлом фоне
-    if (typeof Telegram.WebApp.setColorScheme === 'function') {
-      Telegram.WebApp.setColorScheme('light');
-    }
+    // раскрываем мини-приложение максимально
+   Telegram.WebApp.expand();
 
-    // Чуть “нативнее” — убирает конфликт свайпов Telegram и страницы
-    if (typeof Telegram.WebApp.disableVerticalSwipes === 'function') {
-      Telegram.WebApp.disableVerticalSwipes();
-    }
-
-    // Цвета (можешь оставить свои)
+    // Цвет фона мини-приложения
     Telegram.WebApp.setBackgroundColor('#f5f5f5');
-    Telegram.WebApp.setHeaderColor('bg_color');
+
+    // Цвет верхней панели Telegram (где название бота)
+    Telegram.WebApp.setHeaderColor('#f5f5f5');
   }
 
   if (isAdmin() && dom.adminOpenButton) {
@@ -529,6 +529,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initEvents();
 
   loadBooks().then(() => {
+    // после загрузки книг рендерим оба списка
     renderRecommended();
     renderAllBooksRow();
     runApp();
