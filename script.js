@@ -230,18 +230,24 @@ function renderReader(book) {
   dom.readerTitle.textContent = book.title;
   dom.readerContent.innerHTML = '';
 
+  const yearText = typeof book.yearwriting === 'number' ? `${book.yearwriting} г.` : '';
+
   const meta = document.createElement('p');
   meta.className = 'reader-meta';
-  const yearText = typeof book.yearwriting === 'number' ? `${book.yearwriting} г.` : '';
   meta.textContent = `${book.author || ''}${book.author && yearText ? ' · ' : ''}${yearText}`;
-  dom.readerContent.appendChild(meta);
+
+  const textWrap = document.createElement('div');
+  textWrap.className = 'reader-text-page';
 
   const paragraphs = Array.isArray(book.fullText) ? book.fullText : [];
   paragraphs.forEach(paragraphText => {
     const p = document.createElement('p');
     p.textContent = paragraphText;
-    dom.readerContent.appendChild(p);
+    textWrap.appendChild(p);
   });
+
+  dom.readerContent.appendChild(meta);
+  dom.readerContent.appendChild(textWrap);
 }
 
 

@@ -1,7 +1,4 @@
-/* ================= ФОНТ ДЛЯ ЗАГОЛОВКА В ЧИТАЛКЕ ================= */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap');
-
-/* ================= БАЗА ================= */
 
 *,
 *::before,
@@ -18,7 +15,7 @@
   --card-highlight: #e8e8e8;
 
   --text-main: #222222;
-  --text-muted: #666666;
+  --text-muted: #7f7a73;
 
   --btn-bg: #e5e5e5;
   --btn-border: #d0d0d0;
@@ -58,7 +55,7 @@ body.admin-active {
   background-color: var(--bg-library);
 }
 
-/* ================= ШАПКА (HTML header) ================= */
+/* ================= ШАПКА ================= */
 
 header {
   padding: 12px 16px 8px;
@@ -100,11 +97,9 @@ button {
   font-size: 14px;
   border-radius: 10px;
   cursor: pointer;
-
   background-color: var(--btn-bg);
   color: #333333;
   border: 1px solid var(--btn-border);
-
   transition: background 0.15s ease, transform 0.05s ease;
 }
 
@@ -148,14 +143,13 @@ button:active {
   height: 4px;
 }
 
-/* ================= КОМПАКТ-КАРТОЧКИ ================= */
+/* ================= КАРТОЧКИ ================= */
 
 .book-card-compact {
   flex: 0 0 116px;
   display: flex;
   flex-direction: column;
   cursor: pointer;
-
   background-color: var(--card-bg);
   border-radius: 12px;
   padding: 6px;
@@ -177,7 +171,6 @@ button:active {
   font-weight: 700;
   line-height: 1.25;
   color: var(--text-main);
-
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -211,19 +204,15 @@ button:active {
   position: sticky;
   top: 0;
   z-index: 30;
-
   display: flex;
   gap: 8px;
-
-  margin-bottom: 10px;
-  padding-top: 2px;
-
+  margin-bottom: 8px;
+  padding-top: 0;
   transition: transform 0.22s ease, opacity 0.22s ease;
 }
 
-/* В режиме expand без fullscreen почти не нужен верхний отступ */
 body.reader-active .reader-toolbar {
-  padding-top: 2px !important;
+  padding-top: 0 !important;
 }
 
 /* Скрытое состояние панели */
@@ -240,27 +229,22 @@ body.reader-active .reader-toolbar {
 /* Ограничиваем ширину контента и центрируем */
 .reader-toolbar,
 #reader-title,
-.reader-meta,
 #reader-content {
   max-width: var(--reader-max-width);
   margin-left: auto;
   margin-right: auto;
 }
 
-/* Заголовок произведения */
+/* Заголовок */
 #reader-title {
-  margin-top: 6px;
+  margin-top: 2px;
   margin-bottom: 4px;
-
   font-family: 'Cormorant Garamond', serif;
   font-size: 40px;
   font-weight: 600;
-
   line-height: 1.05;
   letter-spacing: 0.4px;
-
   color: #1c1916;
-
   text-align: left;
 }
 
@@ -268,74 +252,66 @@ body.reader-active .reader-toolbar {
 #reader-title::after {
   content: "";
   display: block;
-
-  width: 36px;
+  width: 180px; /*было 36*/
   height: 2px;
-
   margin-top: 10px;
-
-  background: rgba(0,0,0,0.15);
+  background: rgba(0, 0, 0, 0.15);
 }
 
-/* Автор + год */
-.reader-meta {
-  margin-bottom: 18px;
-
-  font-size: 15px;
-  color: ##c6c6c5;
-  letter-spacing: 0.2px;
-}
-
-/* Контейнер текста */
+/* Контейнер читалки */
 #reader-content {
-  max-width: 680px;
+  max-width: 720px;
   margin-left: auto;
   margin-right: auto;
+}
 
-  padding: 6px 18px;
+/* Автор и год — отдельно, без фона страницы */
+.reader-meta {
+  margin: 0 0 14px;
+  padding: 0;
+  font-size: 15px;
+  color: #8a857d;
+  letter-spacing: 0.2px;
+  background: transparent;
+}
 
+/* Основной текст — отдельная книжная страница */
+.reader-text-page {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 10px 18px 8px;
   background: #f7f3ea;
-
-  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  
-  transition: background 0.3s ease;
-  
+  font-kerning: normal;
   scroll-behavior: smooth;
   overscroll-behavior-y: contain;
-  
-}
-
-/* Абзацы — максимум книжности */
-#reader-content p {
-  
-  text-indent: 0.6em;
-
-  margin: 0 0 1.25em;
-
-  font-size: 18px;
-  line-height: 1.72;
-  letter-spacing: 0.01em;
-  color: #2a2723;
-  
-  hanging-punctuation: first;
-}
-
-/* Более книжное поведение длинных строк */
-#reader-content {
+  transition: background 0.3s ease;
+  /* Более книжное поведение длинных строк */
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
 }
 
+/* Абзацы — максимум книжности */
+.reader-text-page p {
+  margin: 0 0 1.25em;
+  text-indent: 0.6em;
+  font-size: 18px;
+  line-height: 1.72;
+  letter-spacing: 0.01em;
+  color: #2a2723;
+  hanging-punctuation: first;
+}
+
+
 /* Если в тексте будут цитаты/тире, ритм станет мягче */
-#reader-content p:first-letter {
+.reader-text-page p:first-letter {
   font-feature-settings: "liga" 1, "kern" 1;
 }
 
-/* ================= ПРОГРЕСС-БАР КАК В TELEGRAPH ================= */
+/* ================= ПРОГРЕСС-БАР ================= */
 
 .top-progress {
   position: fixed;
@@ -361,9 +337,8 @@ body.reader-active .reader-toolbar {
   background-color: transparent;
 }
 
-/* В режиме expand без fullscreen лишний верхний отступ не нужен */
 body.admin-active #admin {
-  padding-top: 2px !important;
+  padding-top: 0 !important;
 }
 
 #back-from-admin {
@@ -408,14 +383,12 @@ body.admin-active #admin {
   width: 100%;
 }
 
-/* ================= МЕЛКАЯ ПОЛИРОВКА ================= */
+/* ================= ПОЛИРОВКА ================= */
 
-/* Библиотека: обычная верхняя шапка, без лишних отступов */
 body.library-active header {
   padding-top: 12px;
 }
 
-/* Немного спокойствия для карточек на широком экране */
 @media (min-width: 720px) {
   .section-row {
     padding-left: 20px;
