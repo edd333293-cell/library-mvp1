@@ -269,6 +269,76 @@ function renderReader(book) {
   });
 }
 
+//логика скрытия панели и прогресс-бара
+
+let readerLastScrollY = 0;
+let readerToolbarTicking = false;
+
+function getReaderToolbar() {
+  return document.querySelector('.reader-toolbar');
+}
+
+function updateTopProgress() {
+  const wrap = document.getElementById('top-progress');
+  const bar = document.getElementById('top-progress-bar');
+  if (!wrap || !bar) return;
+
+  if (appState.currentView !== 'reader') {
+    wrap.classList.add('hidden');
+    bar.style.width = '0%';
+    return;
+  }
+
+  wrap.classList.remove('hidden');
+
+  const doc = document.documentElement;
+  const scrollTop = doc.scrollTop || window.scrollY || 0;
+  const maxScroll = Math.max(1, doc.scrollHeight - doc.clientHeight);
+  const progress = Math.max(0, Math.min(1, scrollTop / maxScroll));
+
+  bar.style.width = `${progress * 100}%`;
+}
+
+function updateReaderToolbarVisibility() {
+  const toolbar = getReaderToolbar();
+  if (!toolbar) return;
+
+  if (appState.currentView !== 'reader') {
+    toolbar.classList.remove('reader-toolbar--hidden');
+    return;
+  }
+
+  const currentY = window.scrollY || document.documentElement.scrollTop || 0;
+
+  if (currentY < 20) {
+    toolbar.classList.remove('reader-toolbar--hidden');
+    readerLastScrollY = currentY;
+    updateTopProgress();
+    return;
+  }
+
+  if (currentY > readerLastScrollY + 8) {
+    toolbar.classList.add('reader-toolbar--hidden');
+  }
+
+  if (currentY < readerLastScrollY - 8) {
+    toolbar.classList.remove('reader-toolbar--hidden');
+  }
+
+  readerLastScrollY = currentY;
+  updateTopProgress();
+}
+
+function handleReaderScroll() {
+  if (!readerToolbarTicking) {
+    window.requestAnimationFrame(() => {
+      updateReaderToolbarVisibility();
+      readerToolbarTicking = false;
+    });
+    readerToolbarTicking = true;
+  }
+}
+
 //тул бар
 let readerLastScrollY = 0;
 let readerToolbarTicking = false;
@@ -351,14 +421,21 @@ function openReader(bookId) {
  // tgExpand();
 
   showReader();
-  
   //
   const toolbar = getReaderToolbar();
-    if (toolbar) {
-      toolbar.classList.remove('reader-toolbar--hidden');
-    }
+  if (toolbar) {
+    toolbar.classList.remove('reader-toolbar--hidden');
+  }
+  readerLastScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+  updateTopProgress();
+  
+  //
+  //const toolbar = getReaderToolbar();
+   // if (toolbar) {
+   //   toolbar.classList.remove('reader-toolbar--hidden');
+  //  }
     
-    readerLastScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+   // readerLastScrollY = window.scrollY || document.documentElement.scrollTop || 0;
   
 }
 
@@ -564,9 +641,9 @@ document.addEventListener('DOMContentLoaded', () => {
     Telegram.WebApp.ready();
 
     // пытаемся открыть настоящий fullscreen (если клиент поддерживает)
-   // if (typeof Telegram.WebApp.requestFullscreen === 'function') {
-  //    Telegram.WebApp.requestFullscreen();
-//    }
+    //if (typeof Telegram.WebApp.requestFullscreen === 'function') {
+   //   Telegram.WebApp.requestFullscreen();
+   // }
     // Расширяем WebApp максимально (стабильно работает именно на старте)
     Telegram.WebApp.expand();
     
@@ -590,6 +667,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   initEvents();
+  
+  //
+  window.addEventListener('scroll', handleReaderScroll, { passive: true });
+  window.addEventListener('resize', updateTopProgress, { passive: true });
 
   loadBooks().then(() => {
     renderRecommended();
@@ -598,4 +679,3 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-window.addEventListener('scroll', handleReaderScroll, { passive: true });

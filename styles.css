@@ -360,3 +360,53 @@ body.admin-active #admin {
 #reader-title {
   scroll-margin-top: 80px;
 }
+
+/* ================= TELEGRAPH MODE ================= */
+
+/* Тонкая полоска прогресса сверху */
+.top-progress {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.top-progress__bar {
+  height: 100%;
+  width: 0%;
+  background: rgba(60, 60, 60, 0.8);
+  transition: width 0.08s linear;
+}
+
+/* Панель читалки — липкая и умеет исчезать */
+.reader-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+/* Скрытое состояние панели */
+.reader-toolbar.reader-toolbar--hidden {
+  transform: translateY(-120%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* В читалке панель чуть ниже верхней зоны Telegram */
+body.reader-active .reader-toolbar {
+  padding-top: 8px !important;
+}
+
+/* В админке тоже даём верхний отступ */
+body.admin-active #admin {
+  padding-top: 8px !important;
+}
