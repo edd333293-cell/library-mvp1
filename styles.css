@@ -292,8 +292,17 @@ body.reader-active .reader-toolbar {
   margin-left: auto;
   margin-right: auto;
 
+  padding: 6px 18px;
+
+  background: #f7f3ea;
+
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  
+  transition: background 0.3s ease;
+  
 }
 
 /* Абзацы — максимум книжности */
@@ -306,7 +315,9 @@ body.reader-active .reader-toolbar {
   font-size: 18px;
   line-height: 1.72;
   letter-spacing: 0.01em;
-  color: #2a2723;;
+  color: #2a2723;
+  
+  hanging-punctuation: first;
 }
 
 /* Более книжное поведение длинных строк */
