@@ -249,17 +249,32 @@ body.reader-active .reader-toolbar {
 
 /* Заголовок произведения */
 #reader-title {
-  margin-top: 2px;
-  margin-bottom: 6px;
+  margin-top: 6px;
+  margin-bottom: 4px;
 
   font-family: 'Cormorant Garamond', serif;
   font-size: 40px;
   font-weight: 600;
-  line-height: 1.08;
-  letter-spacing: 0.2px;
-  color: #1f1b17;
 
-  scroll-margin-top: 72px;
+  line-height: 1.05;
+  letter-spacing: 0.4px;
+
+  color: #1c1916;
+
+  text-align: left;
+}
+
+/*линия после ЗАГОЛОВКА*/
+#reader-title::after {
+  content: "";
+  display: block;
+
+  width: 36px;
+  height: 2px;
+
+  margin-top: 10px;
+
+  background: rgba(0,0,0,0.15);
 }
 
 /* Автор + год */
@@ -267,7 +282,7 @@ body.reader-active .reader-toolbar {
   margin-bottom: 18px;
 
   font-size: 15px;
-  color: #8a857d;
+  color: ##c6c6c5;
   letter-spacing: 0.2px;
 }
 
@@ -291,7 +306,7 @@ body.reader-active .reader-toolbar {
   font-size: 18px;
   line-height: 1.72;
   letter-spacing: 0.01em;
-  color: #24211d;
+  color: #2a2723;;
 }
 
 /* Более книжное поведение длинных строк */
