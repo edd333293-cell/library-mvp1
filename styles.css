@@ -315,19 +315,19 @@ body.admin-active #admin {
   --tg-top-controls-offset: 44px; /* зона кнопки "Закрыть" (Android Telegram) */
 }
 
-/* Библиотека: header уходит ниже телеграмовской верхней зоны */
+/* Библиотека: header без отступа от телеграмовской верхней зоны */
 body.library-active header {
-  padding-top: calc(12px + max(env(safe-area-inset-top, 0px), 10px) + var(--tg-top-controls-offset)) !important;
+  padding-top: 12px;
 }
 
-/* Читалка: панель кнопок ("Назад", "Админ") уходит ниже */
+/* Читалка: панель кнопок ("Назад", "Админ") */
 body.reader-active .reader-toolbar {
-  padding-top: calc(max(env(safe-area-inset-top, 0px), 10px) + var(--tg-top-controls-offset)) !important;
+  padding-top: 0 !important;
 }
 
-/* Админка: весь экран админки уходит ниже */
+/* Админка: весь экран админки */
 body.admin-active #admin {
-  padding-top: calc(max(env(safe-area-inset-top, 0px), 10px) + var(--tg-top-controls-offset)) !important;
+  padding-top: 0 !important;
 }
 
 /* ===== Telegraph mode: toolbar auto-hide ===== */
