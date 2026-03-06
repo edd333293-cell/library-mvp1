@@ -564,9 +564,9 @@ document.addEventListener('DOMContentLoaded', () => {
     Telegram.WebApp.ready();
 
     // пытаемся открыть настоящий fullscreen (если клиент поддерживает)
-    //if (typeof Telegram.WebApp.requestFullscreen === 'function') {
-      //Telegram.WebApp.requestFullscreen();
-    //}
+    if (typeof Telegram.WebApp.requestFullscreen === 'function') {
+      Telegram.WebApp.requestFullscreen();
+    }
     // Расширяем WebApp максимально (стабильно работает именно на старте)
     Telegram.WebApp.expand();
     
