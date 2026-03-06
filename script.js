@@ -556,8 +556,8 @@ document.addEventListener('DOMContentLoaded', () => {
       Telegram.WebApp.disableVerticalSwipes();
     }
 
-    Telegram.WebApp.setBackgroundColor('#e6dfd2');
-    Telegram.WebApp.setHeaderColor('#e6dfd2');
+    Telegram.WebApp.setBackgroundColor('#f5f5f5');
+    Telegram.WebApp.setHeaderColor('#ebe5da');
   }
 
   if (isAdmin() && dom.adminOpenButton) {
