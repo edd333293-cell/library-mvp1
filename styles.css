@@ -1,5 +1,5 @@
 /* ================= ФОНТ ДЛЯ ЗАГОЛОВКА В ЧИТАЛКЕ ================= */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap');
 
 /* ================= БАЗА ================= */
 
@@ -10,8 +10,8 @@
 }
 
 :root {
-  --bg-library: #f5f5f5;  /* фон библиотеки */
-  --bg-reader: #f3efe6;   /* бумажный фон читалки */
+  --bg-library: #f5f5f5;
+  --bg-reader: #f3efe6;
 
   --card-bg: #ffffff;
   --card-border: #e3e3e3;
@@ -23,6 +23,9 @@
   --btn-bg: #e5e5e5;
   --btn-border: #d0d0d0;
   --btn-bg-active: #dcdcdc;
+
+  --reader-max-width: 720px;
+  --reader-side-padding: 18px;
 }
 
 body {
@@ -34,14 +37,14 @@ body {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 h1, h2, h3 {
   margin-top: 0;
 }
 
-/* ================= РЕЖИМЫ (фон экрана) ================= */
+/* ================= РЕЖИМЫ ================= */
 
 body.library-active {
   background-color: var(--bg-library);
@@ -62,7 +65,6 @@ header {
   background: var(--bg-library);
 }
 
-/* Не дублируем название бота */
 header h1 {
   display: none;
 }
@@ -82,7 +84,6 @@ footer {
   font-size: 14px;
 }
 
-/* header/footer видны только на главном экране */
 body.reader-active header,
 body.reader-active footer,
 body.admin-active header,
@@ -90,15 +91,15 @@ body.admin-active footer {
   display: none !important;
 }
 
-/* ================= КНОПКИ (ЕДИНЫЙ СТИЛЬ) ================= */
+/* ================= КНОПКИ ================= */
 
 button {
   display: inline-block;
+  width: 100%;
   padding: 10px 12px;
   font-size: 14px;
   border-radius: 10px;
   cursor: pointer;
-  width: 100%;
 
   background-color: var(--btn-bg);
   color: #333333;
@@ -123,7 +124,7 @@ button:active {
   padding: 8px 0 24px;
 }
 
-/* ================= БИБЛИОТЕКА: ГОРИЗОНТАЛЬНЫЕ СПИСКИ ================= */
+/* ================= БИБЛИОТЕКА ================= */
 
 .section-row {
   padding: 8px 12px 16px;
@@ -133,6 +134,7 @@ button:active {
   margin: 0 0 10px;
   font-size: 18px;
   font-weight: 700;
+  color: var(--text-main);
 }
 
 .book-row {
@@ -146,8 +148,7 @@ button:active {
   height: 4px;
 }
 
-/* ================= КОМПАКТ-КАРТОЧКА (увеличена ~на 1/3) ================= */
-/* Было 88×120, стало 116×160 */
+/* ================= КОМПАКТ-КАРТОЧКИ ================= */
 
 .book-card-compact {
   flex: 0 0 116px;
@@ -171,10 +172,10 @@ button:active {
 }
 
 .book-card-compact .book-title {
+  margin: 0 0 3px;
   font-size: 15px;
   font-weight: 700;
   line-height: 1.25;
-  margin: 0 0 3px;
   color: var(--text-main);
 
   display: -webkit-box;
@@ -193,7 +194,6 @@ button:active {
   transform: scale(0.97);
 }
 
-/* подсветка последней читанной книги */
 .book-card-compact--current {
   background-color: var(--card-highlight);
   border-color: #cfcfcf;
@@ -202,168 +202,109 @@ button:active {
 /* ================= ЧИТАЛКА ================= */
 
 #reader {
-  padding: 0 18px 28px;
-  background-color: transparent; /* фон берём от body.reader-active */
+  padding: 0 var(--reader-side-padding) 28px;
+  background-color: transparent;
 }
 
-/* Панель кнопок читалки */
-.reader-toolbar {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-
-/* Кнопки в toolbar */
-.reader-toolbar button {
-  width: 50%;
-}
-
-/* Заголовок произведения */
-#reader-title {
-  margin-top: 10px;
-  margin-bottom: 6px;
-
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 28px;
-  font-weight: 600;
-  line-height: 1.15;
-}
-
-/* Автор + год */
-.reader-meta {
-  margin: 0 0 16px;
-  font-size: 16px;
-  color: var(--text-muted);
-}
-
-/* Основной текст */
-#reader-content p {
-  margin: 0 0 14px;
-  font-size: 18px;
-  line-height: 1.75;
-  max-width: 38em;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* ================= АДМИНКА ================= */
-
-#admin {
-  padding: 0 16px 24px;
-  background-color: transparent; /* фон берём от body.admin-active */
-}
-
-
-/* Кнопка "Назад" в админке */
-#back-from-admin {
-  margin-bottom: 12px;
-}
-
-/* Форма админа */
-#admin-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-#admin-form label {
-  font-size: 14px;
-  color: var(--text-main);
-}
-
-#admin-form input,
-#admin-form textarea {
-  padding: 10px;
-  font-size: 14px;
-  border-radius: 10px;
-  border: 1px solid #cccccc;
-  width: 100%;
-  resize: vertical;
-  background: #ffffff;
-}
-
-/* Превью */
-#admin-preview-block,
-#admin-export-block {
-  margin-top: 16px;
-}
-
-#admin-preview-content p {
-  margin: 0 0 10px;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-/* Поле JSON экспорта */
-#admin-books-json {
-  margin-top: 8px;
-  width: 100%;
-}
-
-/* Safe-area: сдвиг вниз, чтобы контент не залезал под системные значки */
-body.reader-active #reader,
-body.admin-active #admin {
-  padding-top: calc(max(env(safe-area-inset-top, 0px), 10px) + 12px) !important;
-}
-
-/* ================= PATCH: SAFE TOP OFFSET (TG CLOSE BUTTON) ================= */
-/* Telegram в expanded рисует кнопку "Закрыть" поверх WebApp.
-   Добавляем дополнительный верхний отступ, чтобы элементы не перекрывались. */
-
-:root {
-  --tg-top-controls-offset: 44px; /* зона кнопки "Закрыть" (Android Telegram) */
-}
-
-/* Библиотека: header без отступа от телеграмовской верхней зоны */
-body.library-active header {
-  padding-top: 12px;
-}
-
-/* Читалка: панель кнопок ("Назад", "Админ") */
-body.reader-active .reader-toolbar {
-  padding-top: 0 !important;
-}
-
-/* Админка: весь экран админки */
-body.admin-active #admin {
-  padding-top: 0 !important;
-}
-
-/* ===== Telegraph mode: toolbar auto-hide ===== */
-
+/* Панель читалки */
 .reader-toolbar {
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 30;
 
   display: flex;
   gap: 8px;
-  margin-bottom: 12px;
+
+  margin-bottom: 10px;
+  padding-top: 2px;
 
   transition: transform 0.22s ease, opacity 0.22s ease;
 }
 
-/* скрытое состояние панели */
+/* В режиме expand без fullscreen почти не нужен верхний отступ */
+body.reader-active .reader-toolbar {
+  padding-top: 2px !important;
+}
+
+/* Скрытое состояние панели */
 .reader-toolbar.reader-toolbar--hidden {
   transform: translateY(-120%);
   opacity: 0;
   pointer-events: none;
 }
 
-/* кнопки в toolbar */
 .reader-toolbar button {
   width: 50%;
 }
 
-/* чтобы заголовок не прилипал слишком близко */
-#reader-title {
-  scroll-margin-top: 80px;
+/* Ограничиваем ширину контента и центрируем */
+.reader-toolbar,
+#reader-title,
+.reader-meta,
+#reader-content {
+  max-width: var(--reader-max-width);
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* ================= TELEGRAPH MODE ================= */
+/* Заголовок произведения */
+#reader-title {
+  margin-top: 2px;
+  margin-bottom: 6px;
 
-/* Тонкая полоска прогресса сверху */
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 31px;
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: 0.1px;
+  color: #1f1b17;
+
+  scroll-margin-top: 72px;
+}
+
+/* Автор + год */
+.reader-meta {
+  margin-bottom: 18px;
+
+  font-size: 16px;
+  color: #6a655e;
+  letter-spacing: 0.1px;
+}
+
+/* Контейнер текста */
+#reader-content {
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Абзацы — максимум книжности */
+#reader-content p {
+  margin: 0 0 1.25em;
+
+  font-size: 18px;
+  line-height: 1.72;
+  letter-spacing: 0.01em;
+  color: #24211d;
+}
+
+/* Более книжное поведение длинных строк */
+#reader-content {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Если в тексте будут цитаты/тире, ритм станет мягче */
+#reader-content p:first-letter {
+  font-feature-settings: "liga" 1, "kern" 1;
+}
+
+/* ================= ПРОГРЕСС-БАР КАК В TELEGRAPH ================= */
+
 .top-progress {
   position: fixed;
   left: 0;
@@ -381,32 +322,76 @@ body.admin-active #admin {
   transition: width 0.08s linear;
 }
 
-/* Панель читалки — липкая и умеет исчезать */
-.reader-toolbar {
-  position: sticky;
-  top: 0;
-  z-index: 30;
+/* ================= АДМИНКА ================= */
 
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-
-  transition: transform 0.22s ease, opacity 0.22s ease;
+#admin {
+  padding: 0 16px 24px;
+  background-color: transparent;
 }
 
-/* Скрытое состояние панели */
-.reader-toolbar.reader-toolbar--hidden {
-  transform: translateY(-120%);
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* В читалке панель чуть ниже верхней зоны Telegram */
-body.reader-active .reader-toolbar {
-  padding-top: 8px !important;
-}
-
-/* В админке тоже даём верхний отступ */
+/* В режиме expand без fullscreen лишний верхний отступ не нужен */
 body.admin-active #admin {
-  padding-top: 8px !important;
+  padding-top: 2px !important;
+}
+
+#back-from-admin {
+  margin-bottom: 12px;
+}
+
+#admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#admin-form label {
+  font-size: 14px;
+  color: var(--text-main);
+}
+
+#admin-form input,
+#admin-form textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid #cccccc;
+  background: #ffffff;
+  resize: vertical;
+}
+
+#admin-preview-block,
+#admin-export-block {
+  margin-top: 16px;
+}
+
+#admin-preview-content p {
+  margin: 0 0 10px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+#admin-books-json {
+  margin-top: 8px;
+  width: 100%;
+}
+
+/* ================= МЕЛКАЯ ПОЛИРОВКА ================= */
+
+/* Библиотека: обычная верхняя шапка, без лишних отступов */
+body.library-active header {
+  padding-top: 12px;
+}
+
+/* Немного спокойствия для карточек на широком экране */
+@media (min-width: 720px) {
+  .section-row {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  #reader {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 }
