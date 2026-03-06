@@ -269,6 +269,56 @@ function renderReader(book) {
   });
 }
 
+//тул бар
+let readerLastScrollY = 0;
+let readerToolbarTicking = false;
+
+function getReaderToolbar() {
+  return document.querySelector('.reader-toolbar');
+}
+
+function updateReaderToolbarVisibility() {
+  const toolbar = getReaderToolbar();
+  if (!toolbar) return;
+
+  if (appState.currentView !== 'reader') {
+    toolbar.classList.remove('reader-toolbar--hidden');
+    return;
+  }
+
+  const currentY = window.scrollY || document.documentElement.scrollTop || 0;
+
+  // в самом верху всегда показываем toolbar
+  if (currentY < 20) {
+    toolbar.classList.remove('reader-toolbar--hidden');
+    readerLastScrollY = currentY;
+    return;
+  }
+
+  // скролл вниз -> скрываем
+  if (currentY > readerLastScrollY + 8) {
+    toolbar.classList.add('reader-toolbar--hidden');
+  }
+
+  // скролл вверх -> показываем
+  if (currentY < readerLastScrollY - 8) {
+    toolbar.classList.remove('reader-toolbar--hidden');
+  }
+
+  readerLastScrollY = currentY;
+}
+
+function handleReaderScroll() {
+  if (!readerToolbarTicking) {
+    window.requestAnimationFrame(() => {
+      updateReaderToolbarVisibility();
+      readerToolbarTicking = false;
+    });
+    readerToolbarTicking = true;
+  }
+}
+
+
 
 // =============== 9. ВЫСОКОУРОВНЕВЫЕ ДЕЙСТВИЯ ===============
 
@@ -301,6 +351,15 @@ function openReader(bookId) {
  // tgExpand();
 
   showReader();
+  
+  //
+  const toolbar = getReaderToolbar();
+    if (toolbar) {
+      toolbar.classList.remove('reader-toolbar--hidden');
+    }
+    
+    readerLastScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+  
 }
 
 function openAdmin() {
@@ -538,3 +597,5 @@ document.addEventListener('DOMContentLoaded', () => {
     runApp();
   });
 });
+
+window.addEventListener('scroll', handleReaderScroll, { passive: true });
