@@ -557,7 +557,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     Telegram.WebApp.setBackgroundColor('#f5f5f5');
-    Telegram.WebApp.setHeaderColor('#ebe5da');
+    Telegram.WebApp.setHeaderColor('#e6dfd2');
   }
 
   if (isAdmin() && dom.adminOpenButton) {
