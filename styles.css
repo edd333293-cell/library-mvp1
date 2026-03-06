@@ -47,46 +47,9 @@ body.library-active {
   background-color: var(--bg-library);
 }
 
-/* ===== Панель Telegram визуально приподнята над читалкой ===== */
-
 body.reader-active {
-  background-color: #f3efe6;
-}
-
-body.reader-active::before {
-  content: "";
-  position: fixed;
-  top: 64px;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  pointer-events: none;
-  z-index: 51;
-  background: rgba(255, 255, 255, 0.45);
-}
-
-body.reader-active::after {
-  content: "";
-  position: fixed;
-  top: 64px;
-  left: 0;
-  width: 100%;
-  height: 16px;
-  pointer-events: none;
-  z-index: 50;
-
-  background: linear-gradient(
-    to bottom,
-    rgba(120, 105, 85, 0.12) 0%,
-    rgba(120, 105, 85, 0.06) 35%,
-    rgba(120, 105, 85, 0.02) 65%,
-    rgba(120, 105, 85, 0.00) 100%
-  );
-}
-
- {
-  position: relative;
-  z-index: 1;
+  background-color: var(--bg-reader);
+  
 }
 
 body.admin-active {
@@ -152,7 +115,7 @@ button:active {
 /* ================= ОСНОВНЫЕ БЛОКИ ================= */
 
 #library,
-,
+#reader,
 #admin {
   padding: 8px 0 24px;
 }
@@ -232,7 +195,7 @@ button:active {
 
 /* ================= ЧИТАЛКА ================= */
 
- {
+#reader {
   padding: 0 var(--reader-side-padding) 28px;
   background-color: transparent;
 }
@@ -266,15 +229,15 @@ body.reader-active .reader-toolbar {
 
 /* Ограничиваем ширину контента и центрируем */
 .reader-toolbar,
--title,
--content {
+#reader-title,
+#reader-content {
   max-width: var(--reader-max-width);
   margin-left: auto;
   margin-right: auto;
 }
 
 /* Заголовок */
--title {
+#reader-title {
   margin-top: 2px;
   margin-bottom: 4px;
   font-family: 'Cormorant Garamond', serif;
@@ -287,7 +250,7 @@ body.reader-active .reader-toolbar {
 }
 
 /*линия после ЗАГОЛОВКА*/
--title::after {
+#reader-title::after {
   content: "";
   display: block;
   width: 180px; /*было 36*/
@@ -297,7 +260,7 @@ body.reader-active .reader-toolbar {
 }
 
 /* Контейнер читалки */
--content {
+#reader-content {
   max-width: 720px;
   margin-left: auto;
   margin-right: auto;
@@ -433,7 +396,7 @@ body.library-active header {
     padding-right: 20px;
   }
 
-   {
+  #reader {
     padding-left: 24px;
     padding-right: 24px;
   }
