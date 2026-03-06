@@ -303,6 +303,9 @@ body.reader-active .reader-toolbar {
   
   transition: background 0.3s ease;
   
+  scroll-behavior: smooth;
+  overscroll-behavior-y: contain;
+  
 }
 
 /* Абзацы — максимум книжности */
