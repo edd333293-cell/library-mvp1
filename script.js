@@ -20,7 +20,6 @@ function getLaunchBookId() {
 
 
 // =============== 2. ДАННЫЕ / СОСТОЯНИЕ ПРИЛОЖЕНИЯ ===============
-
 let books = [];
 
 const appState = {
@@ -29,12 +28,11 @@ const appState = {
   currentBook: null
 };
 
-// ID администратора (твоя учётка в Telegram)
+// ID администратора
 const ADMIN_ID = 6283474141;
 
 
 // =============== 3. TELEGRAM-ПОМОЩНИКИ (АДМИН / USER ID) ===============
-
 function getTelegramUserId() {
   try {
     if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
@@ -52,16 +50,8 @@ function isAdmin() {
   return uid !== null && uid === ADMIN_ID;
 }
 
-// Expand только в режимах чтения/админки
-function tgExpand() {
-  if (window.Telegram && Telegram.WebApp) {
-    Telegram.WebApp.expand();
-  }
-}
-
 
 // =============== 4. DOM-ССЫЛКИ ===============
-
 const dom = {
   // секции
   librarySection: document.querySelector('#library'),
@@ -97,17 +87,11 @@ const sections = {
 
 
 // =============== 5. ТЕКСТОВЫЕ УТИЛИТЫ ===============
-
 function splitTextIntoParagraphs(input) {
   let text = input;
 
-  if (Array.isArray(text)) {
-    text = text.join('');
-  }
-
-  if (typeof text !== 'string') {
-    text = String(text ?? '');
-  }
+  if (Array.isArray(text)) text = text.join('');
+  if (typeof text !== 'string') text = String(text ?? '');
 
   text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim();
   if (!text) return [];
@@ -120,15 +104,11 @@ function splitTextIntoParagraphs(input) {
 
 
 // =============== 6. НАВИГАЦИЯ (ЕДИНЫЙ ЦЕНТР) ===============
-
 function showSection(sectionId) {
   Object.entries(sections).forEach(([id, el]) => {
     if (!el) return;
-    if (id === sectionId) {
-      el.classList.remove('hidden');
-    } else {
-      el.classList.add('hidden');
-    }
+    if (id === sectionId) el.classList.remove('hidden');
+    else el.classList.add('hidden');
   });
 
   document.body.classList.remove('library-active', 'reader-active', 'admin-active');
@@ -154,12 +134,9 @@ function showAdmin() {
 
 
 // =============== 7. ГОРИЗОНТАЛЬНЫЕ СПИСКИ И КОМПАКТ-КАРТОЧКИ ===============
-
 function createCompactBookCard(book) {
   const card = document.createElement('div');
   card.className = 'book-card-compact';
-
-  // запоминаем id книги на DOM-элементе
   card.dataset.bookId = book.id;
 
   const yearText =
@@ -212,7 +189,6 @@ function renderAllBooksRow() {
   });
 }
 
-// подсветка/прокрутка карточки последней открытой книги (в "Все произведения")
 function highlightLastReadInAllRow() {
   const lastId = appState.currentBookId;
   if (lastId == null) return;
@@ -244,7 +220,6 @@ function highlightLastReadInAllRow() {
 
 
 // =============== 8. РЕНДЕР ЧИТАЛКИ (fullText) ===============
-
 function renderReader(book) {
   if (!book) {
     dom.readerTitle.textContent = 'Книга не найдена';
@@ -269,8 +244,8 @@ function renderReader(book) {
   });
 }
 
-//логика скрытия панели и прогресс-бара
 
+// =============== 9. TELEGRAPH MODE: TOOLBAR + PROGRESS ===============
 let readerLastScrollY = 0;
 let readerToolbarTicking = false;
 
@@ -305,6 +280,7 @@ function updateReaderToolbarVisibility() {
 
   if (appState.currentView !== 'reader') {
     toolbar.classList.remove('reader-toolbar--hidden');
+    updateTopProgress();
     return;
   }
 
@@ -339,59 +315,8 @@ function handleReaderScroll() {
   }
 }
 
-//тул бар
-let readerLastScrollY = 0;
-let readerToolbarTicking = false;
 
-function getReaderToolbar() {
-  return document.querySelector('.reader-toolbar');
-}
-
-function updateReaderToolbarVisibility() {
-  const toolbar = getReaderToolbar();
-  if (!toolbar) return;
-
-  if (appState.currentView !== 'reader') {
-    toolbar.classList.remove('reader-toolbar--hidden');
-    return;
-  }
-
-  const currentY = window.scrollY || document.documentElement.scrollTop || 0;
-
-  // в самом верху всегда показываем toolbar
-  if (currentY < 20) {
-    toolbar.classList.remove('reader-toolbar--hidden');
-    readerLastScrollY = currentY;
-    return;
-  }
-
-  // скролл вниз -> скрываем
-  if (currentY > readerLastScrollY + 8) {
-    toolbar.classList.add('reader-toolbar--hidden');
-  }
-
-  // скролл вверх -> показываем
-  if (currentY < readerLastScrollY - 8) {
-    toolbar.classList.remove('reader-toolbar--hidden');
-  }
-
-  readerLastScrollY = currentY;
-}
-
-function handleReaderScroll() {
-  if (!readerToolbarTicking) {
-    window.requestAnimationFrame(() => {
-      updateReaderToolbarVisibility();
-      readerToolbarTicking = false;
-    });
-    readerToolbarTicking = true;
-  }
-}
-
-
-
-// =============== 9. ВЫСОКОУРОВНЕВЫЕ ДЕЙСТВИЯ ===============
-
+// =============== 10. ВЫСОКОУРОВНЕВЫЕ ДЕЙСТВИЯ ===============
 function findBookById(id) {
   const num = Number(id);
   if (!Number.isFinite(num)) return undefined;
@@ -416,41 +341,24 @@ function openReader(bookId) {
   appState.currentBook = book;
 
   renderReader(book);
-
-  // expand ТОЛЬКО в читалке
- // tgExpand();
-
   showReader();
-  //
+
   const toolbar = getReaderToolbar();
   if (toolbar) {
     toolbar.classList.remove('reader-toolbar--hidden');
   }
+
   readerLastScrollY = window.scrollY || document.documentElement.scrollTop || 0;
   updateTopProgress();
-  
-  //
-  //const toolbar = getReaderToolbar();
-   // if (toolbar) {
-   //   toolbar.classList.remove('reader-toolbar--hidden');
-  //  }
-    
-   // readerLastScrollY = window.scrollY || document.documentElement.scrollTop || 0;
-  
 }
 
 function openAdmin() {
   fillAdminFormFromCurrentBook();
-
-  // expand ТОЛЬКО в админке
- // tgExpand();
-
   showAdmin();
 }
 
 
-// =============== 10. ЛОГИКА АДМИНКИ ===============
-
+// =============== 11. ЛОГИКА АДМИНКИ ===============
 function generateNextId() {
   const ids = books.map(b => Number(b.id)).filter(n => Number.isFinite(n));
   return ids.length ? Math.max(...ids) + 1 : 1;
@@ -554,8 +462,7 @@ function handleAdminExportBooks() {
 }
 
 
-// =============== 11. ЗАГРУЗКА КНИГ ===============
-
+// =============== 12. ЗАГРУЗКА КНИГ ===============
 function loadBooks() {
   return fetch('data/books.json')
     .then(response => {
@@ -577,8 +484,7 @@ function loadBooks() {
 }
 
 
-// =============== 12. ЗАПУСК ПРИЛОЖЕНИЯ ПОСЛЕ ЗАГРУЗКИ КНИГ ===============
-
+// =============== 13. ЗАПУСК ПРИЛОЖЕНИЯ ПОСЛЕ ЗАГРУЗКИ КНИГ ===============
 function runApp() {
   const launchId = getLaunchBookId();
 
@@ -594,13 +500,13 @@ function runApp() {
 }
 
 
-// =============== 13. ИНИЦИАЛИЗАЦИЯ СОБЫТИЙ ===============
-
+// =============== 14. ИНИЦИАЛИЗАЦИЯ СОБЫТИЙ ===============
 function initEvents() {
   if (dom.backToLibraryButton) {
     dom.backToLibraryButton.addEventListener('click', () => {
       openLibrary();
       highlightLastReadInAllRow();
+      updateTopProgress();
     });
   }
 
@@ -634,30 +540,16 @@ function initEvents() {
 }
 
 
-// =============== 14. DOMContentLoaded: СТАРТ ПРИЛОЖЕНИЯ ===============
-
+// =============== 15. DOMContentLoaded: СТАРТ ПРИЛОЖЕНИЯ ===============
 document.addEventListener('DOMContentLoaded', () => {
   if (window.Telegram && Telegram.WebApp) {
     Telegram.WebApp.ready();
-
-    // пытаемся открыть настоящий fullscreen (если клиент поддерживает)
-    //if (typeof Telegram.WebApp.requestFullscreen === 'function') {
-   //   Telegram.WebApp.requestFullscreen();
-   // }
-    // Расширяем WebApp максимально (стабильно работает именно на старте)
     Telegram.WebApp.expand();
-    
-    // делаем системные значки (статус-бар) читаемыми на светлом фоне
-    if (typeof Telegram.WebApp.setColorScheme === 'function') {
-      Telegram.WebApp.setColorScheme('light');
-    }
 
-    // Чуть “нативнее” — убирает конфликт свайпов Telegram и страницы
     if (typeof Telegram.WebApp.disableVerticalSwipes === 'function') {
       Telegram.WebApp.disableVerticalSwipes();
     }
 
-    // Цвета (можешь оставить свои)
     Telegram.WebApp.setBackgroundColor('#f5f5f5');
     Telegram.WebApp.setHeaderColor('bg_color');
   }
@@ -667,8 +559,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   initEvents();
-  
-  //
+
   window.addEventListener('scroll', handleReaderScroll, { passive: true });
   window.addEventListener('resize', updateTopProgress, { passive: true });
 
@@ -678,4 +569,3 @@ document.addEventListener('DOMContentLoaded', () => {
     runApp();
   });
 });
-
