@@ -256,7 +256,7 @@ body.reader-active .reader-toolbar {
   font-size: 40px;
   font-weight: 600;
   line-height: 1.08;
-  letter-spacing: 0.1px;
+  letter-spacing: 0.2px;
   color: #1f1b17;
 
   scroll-margin-top: 72px;
@@ -266,9 +266,9 @@ body.reader-active .reader-toolbar {
 .reader-meta {
   margin-bottom: 18px;
 
-  font-size: 16px;
-  color: #6a655e;
-  letter-spacing: 0.1px;
+  font-size: 15px;
+  color: #8a857d;
+  letter-spacing: 0.2px;
 }
 
 /* Контейнер текста */
@@ -283,6 +283,9 @@ body.reader-active .reader-toolbar {
 
 /* Абзацы — максимум книжности */
 #reader-content p {
+  
+  text-indent: 0.6em;
+
   margin: 0 0 1.25em;
 
   font-size: 18px;
