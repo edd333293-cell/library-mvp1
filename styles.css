@@ -329,3 +329,34 @@ body.reader-active .reader-toolbar {
 body.admin-active #admin {
   padding-top: calc(max(env(safe-area-inset-top, 0px), 10px) + var(--tg-top-controls-offset)) !important;
 }
+
+/* ===== Telegraph mode: toolbar auto-hide ===== */
+
+.reader-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+/* скрытое состояние панели */
+.reader-toolbar.reader-toolbar--hidden {
+  transform: translateY(-120%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* кнопки в toolbar */
+.reader-toolbar button {
+  width: 50%;
+}
+
+/* чтобы заголовок не прилипал слишком близко */
+#reader-title {
+  scroll-margin-top: 80px;
+}
