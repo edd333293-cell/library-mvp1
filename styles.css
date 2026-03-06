@@ -49,6 +49,7 @@ body.library-active {
 
 body.reader-active {
   background-color: var(--bg-reader);
+  background: linear-gradient(#e6dfd2, #f3efe6);
 }
 
 body.admin-active {
