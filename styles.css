@@ -205,14 +205,20 @@ button:active {
   position: sticky;
   top: 0;
   z-index: 30;
+
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 12px;
+
+  margin-top: 4px !important;
   margin-bottom: 8px;
-  padding-top: 0;
-  transition: transform 0.22s ease, opacity 0.22s ease;
+  padding-top: 0 !important;
+
+  min-height: 42px;
 }
 
 body.reader-active .reader-toolbar {
+  margin-top: 4px !important;
   padding-top: 0 !important;
 }
 
@@ -461,13 +467,14 @@ body.reader-active::after {
 }
 
 /* Сам "лепесток" */
+/* ===== Лепесток "К полкам" — исправленный ===== */
+
 .reader-back {
   --petal-peek-x: -34px;      /* обычное состояние: левый полукруг скрыт */
-  --petal-hidden-x: -128px;   /* скрытое состояние: виден только край */
+  --petal-hidden-x: -138px;   /* скрытое состояние: виден только край */
   --petal-current-x: var(--petal-peek-x);
 
   position: relative;
-  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -475,14 +482,19 @@ body.reader-active::after {
   width: auto !important;
   min-width: 154px;
   height: 42px;
-  padding: 0 18px 0 18px;
+  padding: 0 18px;
 
-  border: none;
   border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.62);
 
-  background: transparent;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.38) 0%,
+    rgba(255,255,255,0.22) 36%,
+    rgba(255,255,255,0.12) 100%
+  );
+
   color: #5a5146;
-
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.02em;
@@ -490,129 +502,73 @@ body.reader-active::after {
   text-align: center;
   white-space: nowrap;
 
-  transform: translateX(var(--petal-current-x));
-  transform-origin: center center;
-
-  transition:
-    transform 0.88s cubic-bezier(0.22, 1, 0.36, 1),
-    color 0.32s ease,
-    filter 0.32s ease;
-
-  -webkit-tap-highlight-color: transparent;
-  outline: none;
-  user-select: none;
-}
-
-/* Основное тело лепестка */
-.reader-back::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 999px;
-  pointer-events: none;
-
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.38) 0%,
-      rgba(255,255,255,0.20) 34%,
-      rgba(255,255,255,0.10) 100%
-    );
-
-  border: 1px solid rgba(255,255,255,0.62);
-
   box-shadow:
-    0 7px 18px rgba(80, 60, 30, 0.10),
-    0 2px 5px rgba(80, 60, 30, 0.08),
+    0 7px 18px rgba(80,60,30,0.10),
+    0 2px 5px rgba(80,60,30,0.08),
     inset 0 1px 0 rgba(255,255,255,0.60),
     inset 0 -1px 0 rgba(255,255,255,0.10);
 
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 
+  transform: translateX(var(--petal-current-x));
+  transform-origin: center center;
+
   transition:
-    box-shadow 0.34s ease,
-    border-color 0.34s ease,
-    background 0.34s ease,
-    opacity 0.34s ease;
+    transform 0.88s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.32s ease,
+    box-shadow 0.32s ease,
+    background 0.32s ease,
+    border-color 0.32s ease;
+
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  user-select: none;
 }
 
-/* Световой след внутри */
-.reader-back::after {
-  content: "";
-  position: absolute;
-  inset: 1px;
-  border-radius: 999px;
-  pointer-events: none;
-
-  background: linear-gradient(
-    135deg,
-    rgba(255,255,255,0.26) 0%,
-    rgba(255,255,255,0.08) 42%,
-    rgba(255,255,255,0.00) 100%
-  );
-
-  opacity: 0.95;
-  transition:
-    opacity 0.34s ease,
-    box-shadow 0.34s ease,
-    transform 0.34s ease;
-}
-
-/* обычное видимое состояние */
 .reader-back.reader-back--peek {
   --petal-current-x: var(--petal-peek-x);
 }
 
-/* скрытое состояние:
-   почти весь лепесток ушёл за экран, осталась только закруглённая кромка */
 .reader-back.reader-back--hidden {
   --petal-current-x: var(--petal-hidden-x);
 }
 
-/* hover */
 .reader-back:hover {
   color: #433b31;
-}
-
-.reader-back:hover::before {
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.42) 0%,
-      rgba(255,255,255,0.24) 34%,
-      rgba(255,255,255,0.12) 100%
-    );
-
   border-color: rgba(255,255,255,0.72);
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.42) 0%,
+    rgba(255,255,255,0.26) 36%,
+    rgba(255,255,255,0.14) 100%
+  );
 }
 
-/* фокус и системная подсветка убраны */
 .reader-back:focus,
 .reader-back:focus-visible,
 .reader-back:active {
   outline: none;
   -webkit-tap-highlight-color: transparent;
-  box-shadow: none;
+  box-shadow:
+    0 7px 18px rgba(80,60,30,0.10),
+    0 2px 5px rgba(80,60,30,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.60),
+    inset 0 -1px 0 rgba(255,255,255,0.10);
 }
 
-/* нажатие:
-   без изменения размера, без полного выезда на экран */
 .reader-back.reader-back--launching {
   color: #2f4b63;
   --petal-current-x: var(--petal-peek-x);
-}
-
-.reader-back.reader-back--launching::before {
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(232,246,255,0.58) 0%,
-      rgba(223,242,255,0.34) 38%,
-      rgba(215,238,255,0.16) 100%
-    );
 
   border-color: rgba(122,205,255,0.88);
+
+  background: linear-gradient(
+    to bottom,
+    rgba(232,246,255,0.58) 0%,
+    rgba(223,242,255,0.34) 38%,
+    rgba(215,238,255,0.16) 100%
+  );
 
   box-shadow:
     0 0 0 1px rgba(120,200,255,0.28),
@@ -620,13 +576,6 @@ body.reader-active::after {
     0 0 22px rgba(103,192,255,0.18),
     0 8px 22px rgba(80,60,30,0.12),
     inset 0 1px 0 rgba(255,255,255,0.72);
-}
-
-.reader-back.reader-back--launching::after {
-  opacity: 1;
-  box-shadow:
-    inset 0 0 18px rgba(255,255,255,0.20),
-    inset 0 0 14px rgba(120,200,255,0.18);
 }
 
 /* Кнопка админа живёт спокойно рядом */
