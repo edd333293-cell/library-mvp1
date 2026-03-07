@@ -360,10 +360,14 @@ function openReader(bookId) {
   if (toolbar) {
     toolbar.classList.remove('reader-toolbar--hidden');
   }
-  
+  //
   const backButton = document.getElementById('back-to-library');
   if (backButton) {
-    backButton.classList.remove('reader-back--hidden');
+    backButton.classList.remove(
+      'reader-back--hidden',
+      'reader-back--launching',
+      'reader-back--melting'
+    );
   }
 
   readerLastScrollY = window.scrollY || document.documentElement.scrollTop || 0;
@@ -517,14 +521,43 @@ function runApp() {
   openLibrary();
 }
 
+//кнопка с анимацией
 
+function animateBackToLibrary() {
+  const backButton = dom.backToLibraryButton;
+  if (!backButton) {
+    openLibrary();
+    highlightLastReadInAllRow();
+    updateTopProgress();
+    return;
+  }
+
+  // если уже идёт анимация — не дублируем
+  if (backButton.classList.contains('reader-back--launching') ||
+      backButton.classList.contains('reader-back--melting')) {
+    return;
+  }
+
+  backButton.classList.add('reader-back--launching');
+
+  // стадия свечения
+  setTimeout(() => {
+    backButton.classList.add('reader-back--melting');
+  }, 120);
+
+  // переход после короткой визуальной паузы
+  setTimeout(() => {
+    backButton.classList.remove('reader-back--launching', 'reader-back--melting');
+    openLibrary();
+    highlightLastReadInAllRow();
+    updateTopProgress();
+  }, 300);
+}
 // =============== 14. ИНИЦИАЛИЗАЦИЯ СОБЫТИЙ ===============
 function initEvents() {
   if (dom.backToLibraryButton) {
     dom.backToLibraryButton.addEventListener('click', () => {
-      openLibrary();
-      highlightLastReadInAllRow();
-      updateTopProgress();
+      animateBackToLibrary();
     });
   }
 

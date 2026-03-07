@@ -441,69 +441,139 @@ body.reader-active::after {
 /* ===== Волшебная кнопка возврата ===== */
 
 .reader-back {
+  position: relative;
+  overflow: hidden;
+
   width: auto !important;
-  min-width: 132px;
+  min-width: 138px;
+  padding: 10px 18px;
 
-  padding: 10px 16px;
-  border-radius: 14px;
+  border-radius: 999px; /* форма как в Telegram */
+  border: 1px solid rgba(255, 255, 255, 0.52);
 
-  border: 1px solid rgba(255, 255, 255, 0.34);
-  background: rgba(255, 255, 255, 0.22);
-
+  background: rgba(255, 255, 255, 0.28);
   color: #5a5146;
+
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.02em;
   text-align: center;
 
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 
   box-shadow:
-    0 4px 14px rgba(60, 40, 20, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    0 6px 18px rgba(80, 60, 30, 0.10),
+    0 2px 5px rgba(80, 60, 30, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.60),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.12);
 
   transition:
-    transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.28s ease,
+    transform 0.20s ease,
+    opacity 0.22s ease,
     box-shadow 0.22s ease,
     background 0.22s ease,
     border-color 0.22s ease,
-    color 0.22s ease;
+    color 0.22s ease,
+    filter 0.22s ease;
 }
 
-/* более лёгкий вид, без тяжёлой серой кнопки */
+/* светлая стеклянная полоска сверху */
+.reader-back::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 999px;
+  pointer-events: none;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.32) 0%,
+    rgba(255, 255, 255, 0.12) 38%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+
+  opacity: 0.95;
+}
+
+/* мягкая внутренняя дымка */
+.reader-back::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  pointer-events: none;
+
+  box-shadow:
+    inset 0 0 22px rgba(255, 255, 255, 0.10),
+    inset 0 0 8px rgba(120, 200, 255, 0.00);
+
+  transition: box-shadow 0.22s ease, opacity 0.22s ease, transform 0.22s ease;
+}
+
+/* спокойный hover */
 .reader-back:hover {
-  background: rgba(255, 255, 255, 0.28);
-  border-color: rgba(255, 255, 255, 0.44);
+  background: rgba(255, 255, 255, 0.34);
+  border-color: rgba(255, 255, 255, 0.64);
   color: #433b31;
 }
 
-/* таинственное электрическое голубое свечение */
-.reader-back:active {
-  transform: scale(0.97);
-  background: rgba(235, 247, 255, 0.42);
-  border-color: rgba(137, 206, 255, 0.72);
-  box-shadow:
-    0 0 0 1px rgba(120, 200, 255, 0.28),
-    0 0 10px rgba(103, 192, 255, 0.35),
-    0 0 22px rgba(103, 192, 255, 0.22),
-    inset 0 0 14px rgba(255, 255, 255, 0.42);
-  color: #2f4b63;
-}
-
-/* состояние "чеширского исчезновения" */
+/* скрытие при скролле: не просто уход, а лёгкое растекание */
 .reader-back.reader-back--hidden {
-  transform: translateX(-140%) scale(0.92);
+  transform: translateX(-125%) scale(0.94);
   opacity: 0;
+  filter: blur(1.5px);
   pointer-events: none;
 }
 
-/* чтобы кнопка выглядела не как часть формы */
-.reader-toolbar {
-  align-items: center;
+/* первая стадия: электрическое свечение */
+.reader-back.reader-back--launching {
+  background: rgba(232, 246, 255, 0.52);
+  border-color: rgba(122, 205, 255, 0.92);
+  color: #2f4b63;
+
+  box-shadow:
+    0 0 0 1px rgba(120, 200, 255, 0.34),
+    0 0 10px rgba(103, 192, 255, 0.42),
+    0 0 22px rgba(103, 192, 255, 0.28),
+    0 8px 22px rgba(80, 60, 30, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72);
+
+  transform: scale(0.985);
 }
 
-#admin-open {
-  flex: 1 1 auto;
+.reader-back.reader-back--launching::after {
+  box-shadow:
+    inset 0 0 18px rgba(255, 255, 255, 0.30),
+    inset 0 0 14px rgba(120, 200, 255, 0.22);
+}
+
+/* вторая стадия: растекание и распад */
+.reader-back.reader-back--melting {
+  transform: translateX(-28px) scale(0.93) skewX(-8deg);
+  opacity: 0;
+  filter: blur(2.6px);
+
+  background: rgba(225, 244, 255, 0.36);
+  border-color: rgba(122, 205, 255, 0.30);
+
+  box-shadow:
+    0 0 18px rgba(103, 192, 255, 0.18),
+    0 0 34px rgba(103, 192, 255, 0.12),
+    0 8px 20px rgba(80, 60, 30, 0.08);
+}
+
+.reader-back.reader-back--melting::before {
+  transform: scaleX(1.08);
+  opacity: 0.55;
+}
+
+.reader-back.reader-back--melting::after {
+  opacity: 0.0;
+  transform: scaleX(1.14);
+}
+
+/* toolbar чуть спокойнее */
+.reader-toolbar {
+  align-items: center;
 }
