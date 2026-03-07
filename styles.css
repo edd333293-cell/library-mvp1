@@ -582,3 +582,11 @@ body.reader-active::after {
 #admin-open {
   flex: 1 1 auto;
 }
+
+/* Для лепестка не даём общему button:active ломать translateX */
+.reader-back:active,
+.reader-back.reader-back--launching,
+.reader-back.reader-back--peek:active,
+.reader-back.reader-back--hidden:active {
+  transform: translateX(var(--petal-current-x)) !important;
+}
