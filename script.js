@@ -289,29 +289,32 @@ function updateReaderToolbarVisibility() {
   if (appState.currentView !== 'reader') {
     toolbar.classList.remove('reader-toolbar--hidden');
     backButton.classList.remove('reader-back--hidden');
+    backButton.classList.add('reader-back--peek');
     updateTopProgress();
     return;
   }
 
   const currentY = window.scrollY || document.documentElement.scrollTop || 0;
 
-  // В самом верху всё видно
   if (currentY < 20) {
     toolbar.classList.remove('reader-toolbar--hidden');
     backButton.classList.remove('reader-back--hidden');
+    backButton.classList.add('reader-back--peek');
     readerLastScrollY = currentY;
     updateTopProgress();
     return;
   }
 
-  // Скролл вниз — прячем только кнопку "назад"
+  // вниз — прячем не полностью
   if (currentY > readerLastScrollY + 8) {
     backButton.classList.add('reader-back--hidden');
+    backButton.classList.remove('reader-back--peek');
   }
 
-  // Скролл вверх — возвращаем кнопку
+  // вверх — показываем, но оставляем лёгкий выход из-за края
   if (currentY < readerLastScrollY - 8) {
     backButton.classList.remove('reader-back--hidden');
+    backButton.classList.add('reader-back--peek');
   }
 
   readerLastScrollY = currentY;
@@ -365,9 +368,9 @@ function openReader(bookId) {
   if (backButton) {
     backButton.classList.remove(
       'reader-back--hidden',
-      'reader-back--launching',
-      'reader-back--melting'
+      'reader-back--launching'
     );
+    backButton.classList.add('reader-back--peek');
   }
 
   readerLastScrollY = window.scrollY || document.documentElement.scrollTop || 0;
@@ -525,6 +528,7 @@ function runApp() {
 
 function animateBackToLibrary() {
   const backButton = dom.backToLibraryButton;
+
   if (!backButton) {
     openLibrary();
     highlightLastReadInAllRow();
@@ -532,26 +536,18 @@ function animateBackToLibrary() {
     return;
   }
 
-  // если уже идёт анимация — не дублируем
-  if (backButton.classList.contains('reader-back--launching') ||
-      backButton.classList.contains('reader-back--melting')) {
+  if (backButton.classList.contains('reader-back--launching')) {
     return;
   }
 
   backButton.classList.add('reader-back--launching');
 
-  // стадия свечения
   setTimeout(() => {
-    backButton.classList.add('reader-back--melting');
-  }, 120);
-
-  // переход после короткой визуальной паузы
-  setTimeout(() => {
-    backButton.classList.remove('reader-back--launching', 'reader-back--melting');
+    backButton.classList.remove('reader-back--launching');
     openLibrary();
     highlightLastReadInAllRow();
     updateTopProgress();
-  }, 300);
+  }, 420);
 }
 // =============== 14. ИНИЦИАЛИЗАЦИЯ СОБЫТИЙ ===============
 function initEvents() {

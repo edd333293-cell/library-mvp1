@@ -440,18 +440,20 @@ body.reader-active::after {
 
 /* ===== Волшебная кнопка возврата ===== */
 
+/* ===== Волшебная кнопка возврата v2 ===== */
+
 .reader-back {
   position: relative;
   overflow: hidden;
 
   width: auto !important;
-  min-width: 138px;
-  padding: 10px 18px;
+  min-width: 144px;
+  padding: 11px 18px 11px 18px;
 
-  border-radius: 999px; /* форма как в Telegram */
-  border: 1px solid rgba(255, 255, 255, 0.52);
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.58);
 
-  background: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.30);
   color: #5a5146;
 
   font-size: 14px;
@@ -463,22 +465,25 @@ body.reader-active::after {
   -webkit-backdrop-filter: blur(12px);
 
   box-shadow:
-    0 6px 18px rgba(80, 60, 30, 0.10),
+    0 7px 18px rgba(80, 60, 30, 0.10),
     0 2px 5px rgba(80, 60, 30, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.60),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.12);
+    inset 0 1px 0 rgba(255, 255, 255, 0.62),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.10);
 
   transition:
-    transform 0.20s ease,
-    opacity 0.22s ease,
-    box-shadow 0.22s ease,
-    background 0.22s ease,
-    border-color 0.22s ease,
-    color 0.22s ease,
-    filter 0.22s ease;
+    transform 0.62s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.42s ease,
+    box-shadow 0.30s ease,
+    background 0.30s ease,
+    border-color 0.30s ease,
+    color 0.30s ease,
+    filter 0.42s ease;
+
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  user-select: none;
 }
 
-/* светлая стеклянная полоска сверху */
 .reader-back::before {
   content: "";
   position: absolute;
@@ -488,15 +493,12 @@ body.reader-active::after {
 
   background: linear-gradient(
     to bottom,
-    rgba(255, 255, 255, 0.32) 0%,
-    rgba(255, 255, 255, 0.12) 38%,
-    rgba(255, 255, 255, 0.03) 100%
+    rgba(255, 255, 255, 0.34) 0%,
+    rgba(255, 255, 255, 0.14) 38%,
+    rgba(255, 255, 255, 0.04) 100%
   );
-
-  opacity: 0.95;
 }
 
-/* мягкая внутренняя дымка */
 .reader-back::after {
   content: "";
   position: absolute;
@@ -505,75 +507,82 @@ body.reader-active::after {
   pointer-events: none;
 
   box-shadow:
-    inset 0 0 22px rgba(255, 255, 255, 0.10),
+    inset 0 0 18px rgba(255, 255, 255, 0.10),
     inset 0 0 8px rgba(120, 200, 255, 0.00);
 
-  transition: box-shadow 0.22s ease, opacity 0.22s ease, transform 0.22s ease;
+  transition: box-shadow 0.30s ease, opacity 0.30s ease;
 }
 
-/* спокойный hover */
 .reader-back:hover {
-  background: rgba(255, 255, 255, 0.34);
-  border-color: rgba(255, 255, 255, 0.64);
+  background: rgba(255, 255, 255, 0.35);
+  border-color: rgba(255, 255, 255, 0.68);
   color: #433b31;
 }
 
-/* скрытие при скролле: не просто уход, а лёгкое растекание */
-.reader-back.reader-back--hidden {
-  transform: translateX(-125%) scale(0.94);
-  opacity: 0;
-  filter: blur(1.5px);
-  pointer-events: none;
+.reader-back:focus,
+.reader-back:focus-visible {
+  outline: none;
+  box-shadow:
+    0 7px 18px rgba(80, 60, 30, 0.10),
+    0 2px 5px rgba(80, 60, 30, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.62),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.10);
 }
 
-/* первая стадия: электрическое свечение */
+/* Скрытое состояние:
+   кнопка уходит влево не полностью, оставляя на экране закруглённый край */
+.reader-back.reader-back--hidden {
+  transform: translateX(-118px);
+  opacity: 0.98;
+  filter: none;
+  pointer-events: auto;
+}
+
+/* Плавный выезд из-за края тоже не полностью */
+.reader-back.reader-back--peek {
+  transform: translateX(-18px);
+}
+
+/* Нажатие: длиннее, мягче, без разрушения */
 .reader-back.reader-back--launching {
-  background: rgba(232, 246, 255, 0.52);
-  border-color: rgba(122, 205, 255, 0.92);
+  background: rgba(232, 246, 255, 0.50);
+  border-color: rgba(122, 205, 255, 0.88);
   color: #2f4b63;
 
   box-shadow:
-    0 0 0 1px rgba(120, 200, 255, 0.34),
-    0 0 10px rgba(103, 192, 255, 0.42),
-    0 0 22px rgba(103, 192, 255, 0.28),
+    0 0 0 1px rgba(120, 200, 255, 0.28),
+    0 0 10px rgba(103, 192, 255, 0.36),
+    0 0 22px rgba(103, 192, 255, 0.20),
     0 8px 22px rgba(80, 60, 30, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.72);
 
   transform: scale(0.985);
+  transition:
+    transform 0.40s ease,
+    box-shadow 0.40s ease,
+    background 0.40s ease,
+    border-color 0.40s ease,
+    color 0.40s ease;
 }
 
 .reader-back.reader-back--launching::after {
   box-shadow:
-    inset 0 0 18px rgba(255, 255, 255, 0.30),
-    inset 0 0 14px rgba(120, 200, 255, 0.22);
+    inset 0 0 18px rgba(255, 255, 255, 0.26),
+    inset 0 0 14px rgba(120, 200, 255, 0.18);
 }
 
-/* вторая стадия: растекание и распад */
-.reader-back.reader-back--melting {
-  transform: translateX(-28px) scale(0.93) skewX(-8deg);
-  opacity: 0;
-  filter: blur(2.6px);
-
-  background: rgba(225, 244, 255, 0.36);
-  border-color: rgba(122, 205, 255, 0.30);
-
-  box-shadow:
-    0 0 18px rgba(103, 192, 255, 0.18),
-    0 0 34px rgba(103, 192, 255, 0.12),
-    0 8px 20px rgba(80, 60, 30, 0.08);
-}
-
-.reader-back.reader-back--melting::before {
-  transform: scaleX(1.08);
-  opacity: 0.55;
-}
-
-.reader-back.reader-back--melting::after {
-  opacity: 0.0;
-  transform: scaleX(1.14);
-}
-
-/* toolbar чуть спокойнее */
+/* toolbar ниже от строки бота */
 .reader-toolbar {
   align-items: center;
+  margin-top: 10px;
+  gap: 12px;
+}
+
+body.reader-active .reader-toolbar {
+  padding-top: 0 !important;
+  margin-top: 10px !important;
+}
+
+#admin-open {
+  flex: 1 1 auto;
 }
