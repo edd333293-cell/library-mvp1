@@ -437,3 +437,73 @@ body.reader-active::after {
   z-index: 1;
   padding-top: 0;
 }
+
+/* ===== Волшебная кнопка возврата ===== */
+
+.reader-back {
+  width: auto !important;
+  min-width: 132px;
+
+  padding: 10px 16px;
+  border-radius: 14px;
+
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.22);
+
+  color: #5a5146;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-align: center;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  box-shadow:
+    0 4px 14px rgba(60, 40, 20, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+
+  transition:
+    transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.28s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease,
+    border-color 0.22s ease,
+    color 0.22s ease;
+}
+
+/* более лёгкий вид, без тяжёлой серой кнопки */
+.reader-back:hover {
+  background: rgba(255, 255, 255, 0.28);
+  border-color: rgba(255, 255, 255, 0.44);
+  color: #433b31;
+}
+
+/* таинственное электрическое голубое свечение */
+.reader-back:active {
+  transform: scale(0.97);
+  background: rgba(235, 247, 255, 0.42);
+  border-color: rgba(137, 206, 255, 0.72);
+  box-shadow:
+    0 0 0 1px rgba(120, 200, 255, 0.28),
+    0 0 10px rgba(103, 192, 255, 0.35),
+    0 0 22px rgba(103, 192, 255, 0.22),
+    inset 0 0 14px rgba(255, 255, 255, 0.42);
+  color: #2f4b63;
+}
+
+/* состояние "чеширского исчезновения" */
+.reader-back.reader-back--hidden {
+  transform: translateX(-140%) scale(0.92);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* чтобы кнопка выглядела не как часть формы */
+.reader-toolbar {
+  align-items: center;
+}
+
+#admin-open {
+  flex: 1 1 auto;
+}

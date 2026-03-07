@@ -279,32 +279,39 @@ function updateTopProgress() {
 
   bar.style.width = `${progress * 100}%`;
 }
-
+//
 function updateReaderToolbarVisibility() {
   const toolbar = getReaderToolbar();
-  if (!toolbar) return;
+  const backButton = document.getElementById('back-to-library');
+
+  if (!toolbar || !backButton) return;
 
   if (appState.currentView !== 'reader') {
     toolbar.classList.remove('reader-toolbar--hidden');
+    backButton.classList.remove('reader-back--hidden');
     updateTopProgress();
     return;
   }
 
   const currentY = window.scrollY || document.documentElement.scrollTop || 0;
 
+  // В самом верху всё видно
   if (currentY < 20) {
     toolbar.classList.remove('reader-toolbar--hidden');
+    backButton.classList.remove('reader-back--hidden');
     readerLastScrollY = currentY;
     updateTopProgress();
     return;
   }
 
+  // Скролл вниз — прячем только кнопку "назад"
   if (currentY > readerLastScrollY + 8) {
-    toolbar.classList.add('reader-toolbar--hidden');
+    backButton.classList.add('reader-back--hidden');
   }
 
+  // Скролл вверх — возвращаем кнопку
   if (currentY < readerLastScrollY - 8) {
-    toolbar.classList.remove('reader-toolbar--hidden');
+    backButton.classList.remove('reader-back--hidden');
   }
 
   readerLastScrollY = currentY;
@@ -352,6 +359,11 @@ function openReader(bookId) {
   const toolbar = getReaderToolbar();
   if (toolbar) {
     toolbar.classList.remove('reader-toolbar--hidden');
+  }
+  
+  const backButton = document.getElementById('back-to-library');
+  if (backButton) {
+    backButton.classList.remove('reader-back--hidden');
   }
 
   readerLastScrollY = window.scrollY || document.documentElement.scrollTop || 0;
@@ -556,7 +568,7 @@ document.addEventListener('DOMContentLoaded', () => {
       Telegram.WebApp.disableVerticalSwipes();
     }
 
-    Telegram.WebApp.setBackgroundColor('#f5f5f5');
+    Telegram.WebApp.setBackgroundColor('#f3efe6');
     Telegram.WebApp.setHeaderColor('#e6dfd2');
   }
 
