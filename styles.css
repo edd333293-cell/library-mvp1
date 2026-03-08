@@ -451,11 +451,7 @@ body.reader-active::after {
   border-right: 1px solid rgba(255, 255, 255, 0.62);
   border-bottom: 1px solid rgba(255, 255, 255, 0.62);
 
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.38) 0%,
-    rgba(255, 255, 255, 0.22) 36%,
-    rgba(255, 255, 255, 0.12) 100%
+  background: #e6dfd2;
   );
 
   color: #5a5146;
@@ -508,7 +504,7 @@ body.reader-active::after {
 
 .reader-back--pressed {
   background-image: none !important;
-  background-color: rgba(118, 98, 74, 0.45) !important;
+  background-color: #d6cdbd !important;
 
   border-top-color: rgba(118,98,74,0.55);
   border-right-color: rgba(118,98,74,0.55);
@@ -525,7 +521,7 @@ body.reader-active::after {
 
 .reader-back--glow {
   background-image: none !important;
-  background-color: rgba(118, 98, 74, 0.45) !important;
+  background-color: #d6cdbd !important;
 
   border-top-color: rgba(130,170,160,0.35);
   border-right-color: rgba(130,170,160,0.35);
@@ -584,12 +580,7 @@ body.reader-active::after {
   border-left: 1px solid rgba(255, 255, 255, 0.62);
   border-bottom: 1px solid rgba(255, 255, 255, 0.62);
 
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.38) 0%,
-    rgba(255, 255, 255, 0.22) 36%,
-    rgba(255, 255, 255, 0.12) 100%
-  );
+  background: #e6dfd2;
 
   color: #5a5146;
   font-size: 18px;
