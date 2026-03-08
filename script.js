@@ -550,7 +550,7 @@ function animateBackToLibrary() {
     openLibrary();
     highlightLastReadInAllRow();
     updateTopProgress();
-  }, 420);
+  }, 380);
 }
 
 // =============== 14. ИНИЦИАЛИЗАЦИЯ СОБЫТИЙ ===============
