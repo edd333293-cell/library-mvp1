@@ -495,10 +495,11 @@ body.reader-active::after {
 }
 
 .reader-back--pressed {
-  background: rgba(82, 82, 82, 0.72);
-  border-top-color: rgba(82, 82, 82, 0.88);
-  border-right-color: rgba(82, 82, 82, 0.88);
-  border-bottom-color: rgba(82, 82, 82, 0.88);
+  background-image: none !important;
+  background-color: rgba(82, 82, 82, 0.78) !important;
+  border-top-color: rgba(82, 82, 82, 0.90);
+  border-right-color: rgba(82, 82, 82, 0.90);
+  border-bottom-color: rgba(82, 82, 82, 0.90);
   color: #f3f3f3;
 
   box-shadow:
@@ -510,7 +511,8 @@ body.reader-active::after {
 }
 
 .reader-back--glow {
-  background: rgba(82, 82, 82, 0.72);
+  background-image: none !important;
+  background-color: rgba(82, 82, 82, 0.78) !important;
   border-top-color: rgba(88, 122, 122, 0.42);
   border-right-color: rgba(88, 122, 122, 0.42);
   border-bottom-color: rgba(88, 122, 122, 0.42);
@@ -528,6 +530,13 @@ body.reader-active::after {
 
 .reader-back:hover {
   color: #433b31;
+}
+
+.reader-back--pressed:hover,
+.reader-back--glow:hover {
+  background-image: none !important;
+  background-color: rgba(82, 82, 82, 0.78) !important;
+  color: inherit;
 }
 
 .reader-back:focus,
