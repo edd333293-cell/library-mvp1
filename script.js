@@ -540,14 +540,17 @@ function animateBackToLibrary() {
     return;
   }
 
-  backButton.classList.add('reader-back--launching');
+  /* небольшая пауза для серого нажатия */
+  setTimeout(() => {
+    backButton.classList.add('reader-back--launching');
+  }, 120);
 
   setTimeout(() => {
     backButton.classList.remove('reader-back--launching');
     openLibrary();
     highlightLastReadInAllRow();
     updateTopProgress();
-  }, 420);
+  }, 560);
 }
 // =============== 14. ИНИЦИАЛИЗАЦИЯ СОБЫТИЙ ===============
 function initEvents() {
