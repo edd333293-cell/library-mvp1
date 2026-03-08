@@ -37,7 +37,9 @@ body {
   display: none !important;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   margin-top: 0;
 }
 
@@ -109,15 +111,6 @@ button:hover {
 
 button:active {
   transform: scale(0.98);
-}
-
-.reader-back:active,
-.reader-admin-petal:active {
-  transform: translateX(var(--petal-current-x, 0px)) !important;
-}
-
-.reader-admin-petal:active {
-  transform: translateX(22px) !important;
 }
 
 /* ================= ОСНОВНЫЕ БЛОКИ ================= */
@@ -206,30 +199,25 @@ button:active {
 #reader {
   position: relative;
   z-index: 1;
-  padding: 56px var(--reader-side-padding) 28px;
+  padding: 70px var(--reader-side-padding) 28px;
   background-color: transparent;
 }
 
-/* Панель читалки */
+/* Слой лепестков */
 .reader-toolbar {
   position: fixed;
-  top: 8px;
-  left: 18px;
-  right: 18px;
-  z-index: 30;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-
+  top: 10px;
+  left: 0;
+  right: 0;
   height: 46px;
-  margin: 0;
-  padding: 0;
+  z-index: 30;
+  pointer-events: none;
+}
 
-  max-width: 720px;
-  margin-left: auto;
-  margin-right: auto;
+/* Кликабельны только сами лепестки */
+.reader-toolbar button {
+  pointer-events: auto;
+  width: auto;
 }
 
 /* Если вдруг захочешь снова скрывать всю панель */
@@ -239,12 +227,7 @@ button:active {
   pointer-events: none;
 }
 
-.reader-toolbar button {
-  width: 50%;
-}
-
 /* Ограничиваем ширину контента и центрируем */
-.reader-toolbar,
 #reader-title,
 #reader-content {
   max-width: var(--reader-max-width);
@@ -445,24 +428,28 @@ body.reader-active::after {
   );
 }
 
-/* ================= ЛЕПЕСТОК "К КНИГАМ" ================= */
+/* ================= ЛЕВЫЙ ЛЕПЕСТОК "К КНИГАМ" ================= */
 
 .reader-back {
-  --petal-peek-x: -42px;      /* левый полукруг всегда скрыт */
-  --petal-hidden-x: -182px;   /* почти весь лепесток ушёл, виден только край */
-  --petal-current-x: var(--petal-peek-x);
+  --petal-x: 0px;
 
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  min-width: 158px;
+  min-width: 168px;
   height: 42px;
-  padding: 0 18px;
+  padding: 0 18px 0 20px;
 
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.62);
+  border-radius: 0 999px 999px 0;
+  border-left: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.62);
+  border-right: 1px solid rgba(255, 255, 255, 0.62);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.62);
 
   background: linear-gradient(
     to bottom,
@@ -486,9 +473,9 @@ body.reader-active::after {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 
-  transform: translateX(var(--petal-current-x));
+  transform: translateX(var(--petal-x));
   transition:
-    transform 1.05s cubic-bezier(.22, 1, .36, 1),
+    transform 1.02s cubic-bezier(.22, 1, .36, 1),
     background 0.18s ease,
     box-shadow 0.18s ease,
     border-color 0.18s ease,
@@ -500,35 +487,34 @@ body.reader-active::after {
 }
 
 .reader-back--peek {
-  --petal-current-x: var(--petal-peek-x);
+  --petal-x: 0px;
 }
 
 .reader-back--hidden {
-  --petal-current-x: var(--petal-hidden-x);
-}
-
-.reader-back:hover {
-  color: #433b31;
-  border-color: rgba(255, 255, 255, 0.72);
+  --petal-x: calc(-100% + 18px);
 }
 
 .reader-back--pressed {
-  background: rgba(92, 92, 92, 0.55);
-  border-color: rgba(78, 78, 78, 0.72);
-  color: #f0f0f0;
+  background: rgba(92, 92, 92, 0.62);
+  border-top-color: rgba(78, 78, 78, 0.82);
+  border-right-color: rgba(78, 78, 78, 0.82);
+  border-bottom-color: rgba(78, 78, 78, 0.82);
+  color: #f2f2f2;
 
   box-shadow:
     inset 0 2px 8px rgba(0, 0, 0, 0.34),
     inset 0 -1px 2px rgba(255, 255, 255, 0.06),
     0 3px 10px rgba(0, 0, 0, 0.08);
 
-  transform: translateX(var(--petal-current-x)) !important;
+  transform: translateX(var(--petal-x)) !important;
 }
 
 .reader-back--glow {
-  background: rgba(92, 92, 92, 0.55);
-  border-color: rgba(122, 205, 255, 0.95);
-  color: #eaf7ff;
+  background: rgba(92, 92, 92, 0.62);
+  border-top-color: rgba(122, 205, 255, 0.96);
+  border-right-color: rgba(122, 205, 255, 0.96);
+  border-bottom-color: rgba(122, 205, 255, 0.96);
+  color: #eef8ff;
 
   box-shadow:
     inset 0 2px 8px rgba(0, 0, 0, 0.34),
@@ -538,7 +524,11 @@ body.reader-active::after {
     0 0 22px rgba(103, 192, 255, 0.20),
     0 8px 22px rgba(80, 60, 30, 0.10);
 
-  transform: translateX(var(--petal-current-x)) !important;
+  transform: translateX(var(--petal-x)) !important;
+}
+
+.reader-back:hover {
+  color: #433b31;
 }
 
 .reader-back:focus,
@@ -546,24 +536,30 @@ body.reader-active::after {
 .reader-back:active {
   outline: none;
   -webkit-tap-highlight-color: transparent;
-  transform: translateX(var(--petal-current-x)) !important;
+  transform: translateX(var(--petal-x)) !important;
 }
 
-/* ================= МАЛЕНЬКИЙ СТАТИЧНЫЙ ЛЕПЕСТОК АДМИНКИ ================= */
+/* ================= ПРАВЫЙ ЛЕПЕСТОК АДМИНКИ ================= */
 
 .reader-admin-petal {
-  position: relative;
+  position: absolute;
+  top: 0;
+  right: 0;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  width: 54px !important;
-  min-width: 54px;
+  width: 58px;
+  min-width: 58px;
   height: 42px;
-  padding: 0 14px 0 10px;
+  padding: 0 10px 0 12px;
 
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.62);
+  border-radius: 999px 0 0 999px;
+  border-right: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.62);
+  border-left: 1px solid rgba(255, 255, 255, 0.62);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.62);
 
   background: linear-gradient(
     to bottom,
@@ -584,13 +580,6 @@ body.reader-active::after {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 
-  transform: translateX(22px); /* правый лепесток частично уходит за край */
-  transition:
-    background 0.18s ease,
-    box-shadow 0.18s ease,
-    border-color 0.18s ease,
-    color 0.18s ease;
-
   -webkit-tap-highlight-color: transparent;
   outline: none;
   user-select: none;
@@ -598,13 +587,22 @@ body.reader-active::after {
 
 .reader-admin-petal:hover {
   color: #433b31;
-  border-color: rgba(255, 255, 255, 0.72);
 }
 
-.reader-admin-petal:active,
 .reader-admin-petal:focus,
-.reader-admin-petal:focus-visible {
+.reader-admin-petal:focus-visible,
+.reader-admin-petal:active {
   outline: none;
   -webkit-tap-highlight-color: transparent;
-  transform: translateX(22px) !important;
+  transform: none !important;
+}
+
+/* ================= ФИКС ДЛЯ ОБЩЕГО button:active ================= */
+
+.reader-back:active {
+  transform: translateX(var(--petal-x)) !important;
+}
+
+.reader-admin-petal:active {
+  transform: none !important;
 }

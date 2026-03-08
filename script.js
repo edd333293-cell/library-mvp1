@@ -281,13 +281,10 @@ function updateTopProgress() {
 }
 //
 function updateReaderToolbarVisibility() {
-  const toolbar = getReaderToolbar();
   const backButton = document.getElementById('back-to-library');
-
-  if (!toolbar || !backButton) return;
+  if (!backButton) return;
 
   if (appState.currentView !== 'reader') {
-    toolbar.classList.remove('reader-toolbar--hidden');
     backButton.classList.remove('reader-back--hidden');
     backButton.classList.add('reader-back--peek');
     updateTopProgress();
@@ -297,7 +294,6 @@ function updateReaderToolbarVisibility() {
   const currentY = window.scrollY || document.documentElement.scrollTop || 0;
 
   if (currentY < 20) {
-    toolbar.classList.remove('reader-toolbar--hidden');
     backButton.classList.remove('reader-back--hidden');
     backButton.classList.add('reader-back--peek');
     readerLastScrollY = currentY;
@@ -305,13 +301,11 @@ function updateReaderToolbarVisibility() {
     return;
   }
 
-  // вниз — прячем не полностью
   if (currentY > readerLastScrollY + 8) {
     backButton.classList.add('reader-back--hidden');
     backButton.classList.remove('reader-back--peek');
   }
 
-  // вверх — показываем, но оставляем лёгкий выход из-за края
   if (currentY < readerLastScrollY - 8) {
     backButton.classList.remove('reader-back--hidden');
     backButton.classList.add('reader-back--peek');
@@ -371,7 +365,6 @@ function openReader(bookId) {
       'reader-back--glow',
       'reader-back--pressed'
     );
-    
     backButton.classList.add('reader-back--peek');
   }
 
