@@ -368,7 +368,8 @@ function openReader(bookId) {
   if (backButton) {
     backButton.classList.remove(
       'reader-back--hidden',
-      'reader-back--launching'
+      'reader-back--launching',
+      'reader-back--pressed'
     );
     backButton.classList.add('reader-back--peek');
   }
@@ -540,10 +541,8 @@ function animateBackToLibrary() {
     return;
   }
 
-  /* небольшая пауза для серого нажатия */
-  setTimeout(() => {
-    backButton.classList.add('reader-back--launching');
-  }, 120);
+  backButton.classList.remove('reader-back--pressed');
+  backButton.classList.add('reader-back--launching');
 
   setTimeout(() => {
     backButton.classList.remove('reader-back--launching');
@@ -552,11 +551,44 @@ function animateBackToLibrary() {
     updateTopProgress();
   }, 560);
 }
+
 // =============== 14. ИНИЦИАЛИЗАЦИЯ СОБЫТИЙ ===============
 function initEvents() {
   if (dom.backToLibraryButton) {
-    dom.backToLibraryButton.addEventListener('click', () => {
+    let backPressed = false;
+
+    dom.backToLibraryButton.addEventListener('pointerdown', (event) => {
+      event.preventDefault();
+      backPressed = true;
+      dom.backToLibraryButton.classList.add('reader-back--pressed');
+    });
+
+    dom.backToLibraryButton.addEventListener('pointerup', (event) => {
+      event.preventDefault();
+      if (!backPressed) return;
+
+      backPressed = false;
+      dom.backToLibraryButton.classList.remove('reader-back--pressed');
       animateBackToLibrary();
+    });
+
+    dom.backToLibraryButton.addEventListener('pointercancel', () => {
+      backPressed = false;
+      dom.backToLibraryButton.classList.remove('reader-back--pressed');
+    });
+
+    dom.backToLibraryButton.addEventListener('pointerleave', () => {
+      if (!backPressed) return;
+      dom.backToLibraryButton.classList.remove('reader-back--pressed');
+    });
+
+    dom.backToLibraryButton.addEventListener('pointerenter', () => {
+      if (!backPressed) return;
+      dom.backToLibraryButton.classList.add('reader-back--pressed');
+    });
+
+    dom.backToLibraryButton.addEventListener('contextmenu', (event) => {
+      event.preventDefault();
     });
   }
 
