@@ -111,6 +111,15 @@ button:active {
   transform: scale(0.98);
 }
 
+.reader-back:active,
+.reader-petal:active {
+  transform: translateX(var(--petal-current-x, 0px)) !important;
+}
+
+.reader-petal:active {
+  transform: none !important;
+}
+
 /* ================= ОСНОВНЫЕ БЛОКИ ================= */
 
 #library,
@@ -204,7 +213,7 @@ button:active {
 /* Панель читалки */
 .reader-toolbar {
   position: sticky;
-  top: 0;
+  top: 4px;
   z-index: 30;
 
   display: flex;
@@ -216,11 +225,6 @@ button:active {
   padding-top: 0 !important;
 
   min-height: 46px;
-}
-
-body.reader-active .reader-toolbar {
-  margin-top: 4px !important;
-  padding-top: 0 !important;
 }
 
 /* Если вдруг захочешь снова скрывать всю панель */
@@ -436,11 +440,11 @@ body.reader-active::after {
   );
 }
 
-/* ================= ЛЕПЕСТОК "К ПОЛКАМ" ================= */
+/* ================= ЛЕПЕСТОК "К КНИГАМ" ================= */
 
 .reader-back {
   --petal-peek-x: -34px;
-  --petal-hidden-x: -138px;
+  --petal-hidden-x: -144px;
   --petal-current-x: var(--petal-peek-x);
 
   position: relative;
@@ -448,7 +452,7 @@ body.reader-active::after {
   align-items: center;
   justify-content: center;
 
-  min-width: 154px;
+  min-width: 158px;
   height: 42px;
   padding: 0 18px;
 
@@ -480,11 +484,11 @@ body.reader-active::after {
   transform: translateX(var(--petal-current-x));
 
   transition:
-    transform 0.9s cubic-bezier(.22, 1, .36, 1),
-    background 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.25s ease,
-    color 0.25s ease;
+    transform 0.95s cubic-bezier(.22, 1, .36, 1),
+    background 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease,
+    color 0.22s ease;
 
   -webkit-tap-highlight-color: transparent;
   outline: none;
@@ -510,6 +514,7 @@ body.reader-active::after {
   );
 }
 
+/* удержание */
 .reader-back--pressed {
   background: rgba(90, 90, 90, 0.35);
   border-color: rgba(70, 70, 70, 0.45);
@@ -525,17 +530,21 @@ body.reader-active::after {
     translateY(1px) !important;
 }
 
-.reader-back--launching {
-  color: #dfefff;
+/* отпускание: серый остаётся, сверху только голубое свечение */
+.reader-back--glow {
   background: rgba(90, 90, 90, 0.38);
   border-color: rgba(122, 205, 255, 0.88);
+  color: #dfefff;
 
   box-shadow:
     inset 0 2px 8px rgba(0, 0, 0, 0.28),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.08),
     0 0 0 1px rgba(120, 200, 255, 0.28),
     0 0 10px rgba(103, 192, 255, 0.34),
     0 0 22px rgba(103, 192, 255, 0.18),
     0 8px 22px rgba(80, 60, 30, 0.12);
+
+  transform: translateX(var(--petal-current-x)) !important;
 }
 
 .reader-back:focus,
@@ -546,13 +555,61 @@ body.reader-active::after {
 }
 
 .reader-back:active,
-.reader-back--launching,
 .reader-back--peek:active,
-.reader-back--hidden:active {
+.reader-back--hidden:active,
+.reader-back--pressed,
+.reader-back--glow {
   transform: translateX(var(--petal-current-x)) !important;
 }
 
-/* Кнопка админа рядом */
-#admin-open {
-  flex: 1 1 auto;
+/* ================= МАЛЕНЬКИЙ СТАТИЧНЫЙ ЛЕПЕСТОК АДМИНКИ ================= */
+
+.reader-petal {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px !important;
+  min-width: 42px;
+  height: 42px;
+  padding: 0;
+
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.62);
+
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.38) 0%,
+    rgba(255, 255, 255, 0.22) 36%,
+    rgba(255, 255, 255, 0.12) 100%
+  );
+
+  color: #5a5146;
+  font-size: 18px;
+  line-height: 1;
+
+  box-shadow:
+    0 7px 18px rgba(80, 60, 30, 0.10),
+    0 2px 5px rgba(80, 60, 30, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.60);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+.reader-petal:hover {
+  color: #433b31;
+  border-color: rgba(255, 255, 255, 0.72);
+}
+
+.reader-petal:active,
+.reader-petal:focus,
+.reader-petal:focus-visible {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transform: none !important;
 }

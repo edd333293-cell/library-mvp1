@@ -368,9 +368,10 @@ function openReader(bookId) {
   if (backButton) {
     backButton.classList.remove(
       'reader-back--hidden',
-      'reader-back--launching',
+      'reader-back--glow',
       'reader-back--pressed'
     );
+    
     backButton.classList.add('reader-back--peek');
   }
 
@@ -537,19 +538,19 @@ function animateBackToLibrary() {
     return;
   }
 
-  if (backButton.classList.contains('reader-back--launching')) {
+  if (backButton.classList.contains('reader-back--glow')) {
     return;
   }
 
   backButton.classList.remove('reader-back--pressed');
-  backButton.classList.add('reader-back--launching');
+  backButton.classList.add('reader-back--glow');
 
   setTimeout(() => {
-    backButton.classList.remove('reader-back--launching');
+    backButton.classList.remove('reader-back--glow');
     openLibrary();
     highlightLastReadInAllRow();
     updateTopProgress();
-  }, 560);
+  }, 420);
 }
 
 // =============== 14. ИНИЦИАЛИЗАЦИЯ СОБЫТИЙ ===============
