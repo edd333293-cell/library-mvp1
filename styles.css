@@ -494,6 +494,18 @@ body.reader-active::after {
   --petal-x: calc(-100% + 18px);
 }
 
+.reader-back--peek,
+.reader-back--hidden {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.38) 0%,
+    rgba(255, 255, 255, 0.22) 36%,
+    rgba(255, 255, 255, 0.12) 100%
+  ) !important;
+  background-color: transparent !important;
+  color: #5a5146 !important;
+}
+
 .reader-back--pressed {
   background-image: none !important;
   background-color: rgba(92, 92, 92, 0.55) !important;
@@ -510,6 +522,7 @@ body.reader-active::after {
 
   transform: translateX(var(--petal-x)) !important;
 }
+
 .reader-back--glow {
   background-image: none !important;
   background-color: rgba(92, 92, 92, 0.55) !important;
@@ -529,16 +542,17 @@ body.reader-active::after {
   transform: translateX(var(--petal-x)) !important;
 }
 
-.reader-back:hover {
-  color: #433b31;
+@media (hover: hover) and (pointer: fine) {
+  .reader-back:hover {
+    color: #433b31;
+  }
+
+  .reader-admin-petal:hover {
+    color: #433b31;
+  }
 }
 
-.reader-back--pressed:hover,
-.reader-back--glow:hover {
-  background-image: none !important;
-  background-color: rgba(82, 82, 82, 0.78) !important;
-  color: inherit;
-}
+
 
 .reader-back:focus,
 .reader-back:focus-visible,
