@@ -210,11 +210,11 @@ button:active {
   align-items: center;
   gap: 12px;
 
-  margin-top: 4px !important;
+  margin-top: 0 !important;
   margin-bottom: 8px;
   padding-top: 0 !important;
 
-  min-height: 42px;
+  min-height: 46px;
 }
 
 body.reader-active .reader-toolbar {
@@ -441,7 +441,7 @@ body.reader-active::after {
 #reader {
   position: relative;
   z-index: 1;
-  padding-top: 0;
+  padding-top: 10px;
 }
 
 /* ===== Волшебная кнопка возврата ===== */
