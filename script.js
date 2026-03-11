@@ -530,12 +530,14 @@ function animateBackToLibrary() {
     return;
   }
 
-  // убираем состояние нажатия и сразу переходим
+  setTimeout(() => {
+  
   backButton.classList.remove('reader-back--pressed');
 
   openLibrary();
   highlightLastReadInAllRow();
   updateTopProgress();
+  }, 220);
 }
 
 // =============== 14. ИНИЦИАЛИЗАЦИЯ СОБЫТИЙ ===============
@@ -554,17 +556,19 @@ function initEvents() {
       if (!backPressed) return;
 
       backPressed = false;
-      dom.backToLibraryButton.classList.remove('reader-back--pressed');
       animateBackToLibrary();
     });
 
     dom.backToLibraryButton.addEventListener('pointercancel', () => {
       backPressed = false;
+      
       dom.backToLibraryButton.classList.remove('reader-back--pressed');
     });
 
     dom.backToLibraryButton.addEventListener('pointerleave', () => {
       if (!backPressed) return;
+      
+      backPressed = false;
       dom.backToLibraryButton.classList.remove('reader-back--pressed');
     });
 
