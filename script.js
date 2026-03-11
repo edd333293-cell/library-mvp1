@@ -362,7 +362,6 @@ function openReader(bookId) {
   if (backButton) {
     backButton.classList.remove(
       'reader-back--hidden',
-      'reader-back--glow',
       'reader-back--pressed'
     );
     backButton.classList.add('reader-back--peek');
@@ -531,19 +530,12 @@ function animateBackToLibrary() {
     return;
   }
 
-  if (backButton.classList.contains('reader-back--glow')) {
-    return;
-  }
-
+  // убираем состояние нажатия и сразу переходим
   backButton.classList.remove('reader-back--pressed');
-  backButton.classList.add('reader-back--glow');
 
-  setTimeout(() => {
-    backButton.classList.remove('reader-back--glow');
-    openLibrary();
-    highlightLastReadInAllRow();
-    updateTopProgress();
-  }, 380);
+  openLibrary();
+  highlightLastReadInAllRow();
+  updateTopProgress();
 }
 
 // =============== 14. ИНИЦИАЛИЗАЦИЯ СОБЫТИЙ ===============

@@ -105,9 +105,9 @@ button {
   transition: background 0.15s ease, transform 0.05s ease;
 }
 
-button:hover {
+/* button:hover {
   background-color: var(--btn-bg-active);
-}
+} */
 
 button:active {
   transform: scale(0.98);
@@ -510,35 +510,20 @@ body.reader-active::after {
   background-image: none !important;
   background-color: #e6dfd2 !important;
 
-  border-top-color: rgba(200,190,175,0.9);
-  border-right-color: rgba(200,190,175,0.9);
-  border-bottom-color: rgba(200,190,175,0.9);
+  border-top-color: rgba(200,190,175,0.90);
+  border-right-color: rgba(200,190,175,0.90);
+  border-bottom-color: rgba(200,190,175,0.90);
 
   color: #4a443b;
 
+  /* тень внутрь + свечение наружу той же геометрии */
   box-shadow:
     inset 0 1px 4px rgba(0,0,0,0.08),
+    0 0 6px rgba(230,200,140,0.20),
+    0 0 12px rgba(230,200,140,0.10),
     0 2px 6px rgba(80,60,30,0.06);
 
-  transform: translateX(var(--petal-x)) !important;
-}
-
-.reader-back--glow {
-  background-image: none !important;
-  background-color: #e6dfd2 !important;
-
-  border-top-color: rgba(230,200,140,0.35);
-  border-right-color: rgba(230,200,140,0.35);
-  border-bottom-color: rgba(230,200,140,0.35);
-
-  color: #4a443b;
-
-  box-shadow:
-  inset 0 1px 4px rgba(0,0,0,0.08),
-  0 0 6px rgba(230,200,140,0.22),
-  0 0 12px rgba(230,200,140,0.12);
-
-  filter: saturate(0.9);
+  filter: saturate(0.9);/*?*/
   transform: translateX(var(--petal-x)) !important;
 }
 
@@ -608,9 +593,9 @@ body.reader-active::after {
   user-select: none;
 }
 
-.reader-admin-petal:hover {
+/* .reader-admin-petal:hover {
   color: #433b31;
-}
+} */
 
 .reader-admin-petal:focus,
 .reader-admin-petal:focus-visible,
