@@ -447,12 +447,12 @@ body.reader-active::after {
 
   border-radius: 0 999px 999px 0;
   border-left: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.62);
-  border-right: 1px solid rgba(255, 255, 255, 0.62);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.62);
+  border-top: 1px solid rgba(255,255,255,0.65);
+  border-right: 1px solid rgba(255,255,255,0.65);
+  border-bottom: 1px solid rgba(200,190,170,0.55);
 
   background-image: none;
-  background-color: rgba(230,223,210,0.70);
+  background-color: rgba(230,223,210,0.55);
 
   color: #5a5146;
   font-size: 14px;
@@ -466,8 +466,8 @@ body.reader-active::after {
     0 2px 5px rgba(80, 60, 30, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.60);
 
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
 
   transform: translateX(var(--petal-x));
   transition:
@@ -493,7 +493,7 @@ body.reader-active::after {
 .reader-back--peek,
 .reader-back--hidden {
   background-image: none !important;
-  background-color: rgba(230,223,210,0.70) !important;
+  background-color: rgba(230,223,210,0.55) !important;
   color: #5a5146 !important;
 }
 
