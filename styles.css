@@ -33,8 +33,8 @@
   
   /*добавили нажатую панель*/
   --tg-panel-pressed: #efe6d4;
-  --tg-panel-pressed-glow: rgba(235,205,130,0.38);
-  --tg-panel-pressed-glow-soft: rgba(235,205,130,0.14);
+  --tg-panel-pressed-glow: rgba(235,205,130,0.35);
+  --tg-panel-pressed-glow-soft: rgba(235,205,130,0.10);
   
   --tg-panel-pressed-text: #4a443b;
 
@@ -542,12 +542,19 @@ body.reader-active::after {
 
   box-shadow:
     var(--tg-panel-shadow),
-    inset 0 1px 0 rgba(255,255,255,0.75),
-    inset 0 -1px 0 var(--tg-panel-line),
-    /inset 0 0 16px rgba(255,245,200,0.22);/* более яркий вариант подсветки*/
+    
+    /* верхняя граница */
+    inset 0 1px 0 rgba(255,255,255,0.88),
+    /* нижняя граница */
+    inset 0 -1px 0 rgba(120,100,60,0.45),
+    /*inset 0 -1px 0 var(--tg-panel-line),*/
+    /*внутренний свет*/
+    inset 0 0 14px rgba(255,245,200,0.22),/* более яркий вариант подсветки*/
     /*inset 0 0 12px rgba(255,255,255,0.18),*/
     0 0 8px var(--tg-panel-pressed-glow),
     0 0 14px var(--tg-panel-pressed-glow-soft);
+    
+  filter: contrast(1.03);
 
   transform: translateX(var(--petal-x)) !important;
 }
