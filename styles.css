@@ -19,7 +19,7 @@
   --tg-text: #3d372f;
   
   --tg-panel-light: rgba(255, 255, 255, 0.38);
-  --tg-panel-line: rgba(0, 0, 0, 0.18);
+  --tg-panel-line: rgba(0, 0, 0, 0.15);
   /* мягкая внешняя тень панели */
   --tg-panel-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
   /* длинная тень под панелью */
@@ -473,10 +473,7 @@ body.reader-active::after {
   color: var(--tg-text);
 
   border: none;
-  border-top: 1px solid var(--tg-panel-light);
-  border-right: 1px solid var(--tg-panel-light);
-  border-bottom: 1px solid var(--tg-panel-line);
-
+  
   box-shadow:
     var(--tg-panel-shadow),
     inset 0 1px 0 var(--tg-panel-light),
