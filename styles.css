@@ -41,13 +41,14 @@
   --tg-panel-pressed-text: #4a443b;
   
   /* внутренний свет */
-  --tg-panel-lamp: radial-gradient(
-    ellipse at 60% 50%,
-    rgba(255,245,200,0.40) 0%,
-    rgba(255,235,170,0.18) 40%,
-    rgba(255,235,170,0.05) 65%,
-    rgba(255,235,170,0) 80%
-  );
+  --tg-panel-lamp:
+  radial-gradient(
+  ellipse at 60% 50%,
+  rgba(255,245,200,0.55) 0%,
+  rgba(255,235,170,0.22) 45%,
+  rgba(255,235,170,0.06) 70%,
+  rgba(255,235,170,0) 85%
+  ); 
   
   /* усиление границ */
   --tg-panel-edge-top: rgba(255,255,255,0.88);
@@ -532,6 +533,11 @@ body.reader-active::after {
   -webkit-tap-highlight-color: transparent;
   outline: none;
   user-select: none;
+  
+  /* задержка при переходе в нажатое состояние */
+  transition:
+  background 90ms ease,
+  box-shadow 90ms ease;
 }
 
 .reader-back--peek {
