@@ -7,6 +7,7 @@
 }
 
 :root {
+  --tg-panel: #e6dfd2; /* цвет берем из определения цвета шапки бота в js*/
   --bg-library: #f5f5f5;
   --bg-reader: #f3efe6;
 
@@ -59,7 +60,7 @@ body.admin-active {
 
 /* ================= ШАПКА ================= */
 
-header {
+header { /* это не панель Телеграм, а внутренний HTML-хедер, который сейчас вообще скрывается */
   padding: 12px 16px 8px;
   background: var(--bg-library);
 }
@@ -104,10 +105,6 @@ button {
   border: 1px solid var(--btn-border);
   transition: background 0.15s ease, transform 0.05s ease;
 }
-
-/* button:hover {
-  background-color: var(--btn-bg-active);
-} */
 
 button:active {
   transform: scale(0.98);
@@ -453,12 +450,12 @@ body.reader-active::after {
   border-bottom: 1px solid rgba(200,190,170,0.20);
 
   background:
-    linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.18),
-      rgba(255,255,255,0.04)
-    ),
-    rgba(230,223,210,0.82);
+  linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.18),
+    rgba(255,255,255,0.05)
+  ),
+  rgba(223,210,191,0.9);
 
   color: #5a5146;
   font-size: 14px;
@@ -468,10 +465,9 @@ body.reader-active::after {
   white-space: nowrap;
 
   box-shadow:
-    0 4px 10px rgba(80,60,30,0.06),
-    0 1px 2px rgba(80,60,30,0.05),
-    inset 0 1px 0 rgba(255,255,255,0.55),
-    inset 0 -1px 0 rgba(0,0,0,0.22);
+  0 3px 8px rgba(80,60,30,0.05),
+  inset 0 1px 0 rgba(255,255,255,0.55),
+  inset 0 -1px 0 rgba(0,0,0,0.28);
 
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -499,15 +495,17 @@ body.reader-active::after {
 
 .reader-back--peek,
 .reader-back--hidden {
-  background:
+
+  background-image:
     linear-gradient(
       to bottom,
       rgba(255,255,255,0.18),
-      rgba(255,255,255,0.04)
-    ),
-    rgba(230,223,210,0.82);
-  
-  color: #5a5146 !important;
+      rgba(255,255,255,0.05)
+    );
+
+  background-color: rgba(223,210,191,0.9);
+
+  color: #5a5146;
 }
 
 .reader-back--pressed {
