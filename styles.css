@@ -501,7 +501,7 @@ body.reader-active::after {
   box-shadow:
     var(--tg-panel-shadow),
     inset 0 1px 0 var(--tg-panel-light),
-    inset 0 -1px 0 var(--tg-panel-line);
+    inset 0 -1.5px 0 var(--tg-panel-line);
     
     background-clip: padding-box;
     
