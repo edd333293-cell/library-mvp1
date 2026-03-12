@@ -7,7 +7,21 @@
 }
 
 :root {
-  --tg-panel: #e6dfd2; /* цвет берем из определения цвета шапки бота в js*/
+  /* токены цветов */
+  /* цвета --tg-panel и -background берем из определения цветов бота в js*/
+  /* Telegram */
+  --tg-panel: #e6dfd2;
+  --tg-background: #f3efe6;
+  /* линии панели */
+  --tg-border-light: rgba(255,255,255,0.52);
+  --tg-border-dark: rgba(0,0,0,0.18);
+  --tg-panel-line: rgba(0,0,0,0.22);
+  /* тени панели */
+  --tg-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  /* текст */
+  --tg-text: #5a5146;
+  /**/
+  
   --bg-library: #f5f5f5;
   --bg-reader: #f3efe6;
 
@@ -62,7 +76,7 @@ body.admin-active {
 
 header { /* это не панель Телеграм, а внутренний HTML-хедер, который сейчас вообще скрывается */
   padding: 12px 16px 8px;
-  background: var(--bg-library);
+  background: var(--tg-panel);/* на всякий случай) */
 }
 
 header h1 {
@@ -445,19 +459,13 @@ body.reader-active::after {
   border-radius: 0 999px 999px 0;
   border-left: none;
 
-  border-top: 1px solid rgba(255,255,255,0.62);
-  border-right: 1px solid rgba(255,255,255,0.62);
-  border-bottom: 1px solid rgba(200,190,170,0.20);
+  border-top: 1px solid var(--tg-border-light);
+  border-right: 1px solid var(--tg-border-light);
+  border-bottom: 1px solid var(--tg-border-dark);
 
-  background:
-  linear-gradient(
-    to bottom,
-    rgba(255,255,255,0.18),
-    rgba(255,255,255,0.05)
-  ),
-  rgba(223,210,191,0.9);
+  background: var(--tg-panel); /* в цвет панели */
 
-  color: #5a5146;
+  color: var(--tg-text);
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.02em;
@@ -465,9 +473,9 @@ body.reader-active::after {
   white-space: nowrap;
 
   box-shadow:
-  0 3px 8px rgba(80,60,30,0.05),
-  inset 0 1px 0 rgba(255,255,255,0.55),
-  inset 0 -1px 0 rgba(0,0,0,0.28);
+    var(--tg-shadow),
+    inset 0 1px 0 rgba(255,255,255,0.38),
+    inset 0 -1px 0 rgba(0,0,0,0.18);
 
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -495,17 +503,8 @@ body.reader-active::after {
 
 .reader-back--peek,
 .reader-back--hidden {
-
-  background-image:
-    linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.18),
-      rgba(255,255,255,0.05)
-    );
-
-  background-color: rgba(223,210,191,0.9);
-
-  color: #5a5146;
+  background: var(--tg-panel);
+  color: var(--tg-text);
 }
 
 .reader-back--pressed {
