@@ -54,7 +54,7 @@
   --tg-panel-edge-top: rgba(255,255,255,0.88);
   --tg-panel-edge-bottom: rgba(120,100,60,0.45);
 
-  
+  --reader-progress: rgba(108, 88, 62, 0.86);
   /**/
   
   --bg-library: #f5f5f5;
@@ -367,7 +367,7 @@ button:active {
 .top-progress__bar {
   height: 100%;
   width: 0%;
-  background: rgba(60, 60, 60, 0.8);
+  background: var(--reader-progress);
   transition: width 0.08s linear;
 }
 
@@ -490,7 +490,7 @@ body.reader-active::after {
   border-radius: 0 999px 999px 0;
   border-left: none;
   /**/
-  position: relative;
+  /* position: relative; */
   /* z-index: 30; */
 
   background: var(--tg-panel);
@@ -535,9 +535,9 @@ body.reader-active::after {
   user-select: none;
   
   /* задержка при переходе в нажатое состояние */
-  transition:
-  background 90ms ease,
-  box-shadow 90ms ease;
+  /*transition:*/
+  /*background 90ms ease,*/
+  /*box-shadow 90ms ease;*/
 }
 
 .reader-back--peek {
