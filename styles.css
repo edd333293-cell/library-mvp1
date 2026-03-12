@@ -32,10 +32,12 @@
   );
   
   /*добавили нажатую панель*/
-  --tg-panel-pressed: #eee6d9;
+  --tg-panel-pressed: #efe6d4;
+  --tg-panel-pressed-glow: rgba(235,205,130,0.38);
+  --tg-panel-pressed-glow-soft: rgba(235,205,130,0.14);
+  
   --tg-panel-pressed-text: #4a443b;
-  --tg-panel-pressed-glow-1: rgba(230, 200, 140, 0.38);
-  --tg-panel-pressed-glow-2: rgba(230, 200, 140, 0.10);
+
   
   /**/
   
@@ -532,17 +534,20 @@ body.reader-active::after {
 }
 
 /**/
+
 .reader-back--pressed {
+
   background: var(--tg-panel-pressed) !important;
   color: var(--tg-panel-pressed-text);
 
   box-shadow:
     var(--tg-panel-shadow),
-    inset 0 1px 0 rgba(255,255,255,0.72),
+    inset 0 1px 0 rgba(255,255,255,0.75),
     inset 0 -1px 0 var(--tg-panel-line),
-    inset 0 0 10px rgba(255,255,255,0.20),
-    0 0 10px var(--tg-panel-pressed-glow-1),
-    0 0 14px var(--tg-panel-pressed-glow-2);
+    /*inset 0 0 16px rgba(255,245,200,0.22);*//* более яркий вариант подсветки*/
+    inset 0 0 12px rgba(255,255,255,0.18),
+    0 0 8px var(--tg-panel-pressed-glow),
+    0 0 14px var(--tg-panel-pressed-glow-soft);
 
   transform: translateX(var(--petal-x)) !important;
 }
