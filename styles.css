@@ -33,22 +33,23 @@
   
   /*добавили нажатую панель*/
   --tg-panel-pressed: #efe6d4;
+  /*--tg-panel-pressed: #efe6d4;*/
 
   /* наружное теплое свечение */
-  --tg-panel-glow-1: rgba(230,200,140,0.35);
-  --tg-panel-glow-2: rgba(230,200,140,0.10);
+  --tg-panel-glow-1: rgba(205,160,70,0.20);
+  --tg-panel-glow-2: rgba(205,160,70,0.06);
   
   --tg-panel-pressed-text: #4a443b;
   
   /* внутренний свет */
   --tg-panel-lamp:
   radial-gradient(
-  ellipse at 60% 50%,
-  rgba(255,245,200,0.55) 0%,
-  rgba(255,235,170,0.22) 45%,
-  rgba(255,235,170,0.06) 70%,
-  rgba(255,235,170,0) 85%
-  ); 
+  ellipse at 60% 52%,
+  rgba(255,240,190,0.42) 0%,
+  rgba(235,200,120,0.22) 38%,
+  rgba(215,170,80,0.10) 65%,
+  rgba(215,170,80,0.00) 90%
+  );
   
   /* усиление границ */
   --tg-panel-edge-top: rgba(255,255,255,0.88);
@@ -575,8 +576,10 @@ body.reader-active::after {
     
     /*inset 0 -1px 0 var(--tg-panel-line),*/
     /*внутренний свет*/
-    inset 0 0 14px rgba(255,245,200,0.18),/* более яркий вариант подсветки*/
+    inset 0 0 14px rgba(255,238,180,0.22),/* лампа накаливания */
+    /*inset 0 0 14px rgba(255,245,200,0.18),/* более яркий вариант подсветки*/
     /*inset 0 0 12px rgba(255,255,255,0.18),*/
+    
     0 0 8px var(--tg-panel-glow-1),
     0 0 14px var(--tg-panel-glow-2);
     
