@@ -279,7 +279,7 @@ function updateTopProgress() {
 
   bar.style.width = `${progress * 100}%`;
 }
-//
+
 function updateReaderToolbarVisibility() {
   const backButton = document.getElementById('back-to-library');
   if (!backButton) return;
@@ -371,117 +371,8 @@ function openReader(bookId) {
   updateTopProgress();
 }
 
-function openAdmin() {
-  fillAdminFormFromCurrentBook();
-  showAdmin();
-}
 
-
-// =============== 11. ЛОГИКА АДМИНКИ ===============
-function generateNextId() {
-  const ids = books.map(b => Number(b.id)).filter(n => Number.isFinite(n));
-  return ids.length ? Math.max(...ids) + 1 : 1;
-}
-
-function handleAdminPreview() {
-  const text = dom.adminFulltext.value;
-  const paragraphs = splitTextIntoParagraphs(text);
-
-  dom.adminPreviewContent.innerHTML = '';
-
-  paragraphs.forEach(p => {
-    const el = document.createElement('p');
-    el.textContent = p;
-    dom.adminPreviewContent.appendChild(el);
-  });
-
-  dom.adminPreviewBlock.classList.remove('hidden');
-}
-
-function fillAdminFormFromCurrentBook() {
-  const book = appState.currentBook;
-  if (!book) return;
-
-  dom.adminTitle.value = book.title || '';
-  dom.adminDescription.value = book.description || '';
-  dom.adminYear.value = book.yearwriting || '';
-
-  const paragraphs = Array.isArray(book.fullText) ? book.fullText : [];
-  dom.adminFulltext.value = paragraphs.join('\n\n');
-}
-
-function handleAdminSaveUpdate() {
-  const book = appState.currentBook;
-  if (!book) return;
-
-  const title = dom.adminTitle.value.trim();
-  const description = dom.adminDescription.value.trim();
-  const paragraphs = splitTextIntoParagraphs(dom.adminFulltext.value);
-  const yearValue = Number(dom.adminYear.value) || '';
-
-  if (!title || paragraphs.length === 0) {
-    alert('Нужно указать название и текст произведения.');
-    return;
-  }
-
-  book.title = title;
-  book.description = description;
-  book.yearwriting = yearValue;
-  book.fullText = paragraphs;
-
-  renderRecommended();
-  renderAllBooksRow();
-  openReader(book.id);
-}
-
-function handleAdminSaveNew() {
-  const baseBook = appState.currentBook;
-
-  const title = dom.adminTitle.value.trim();
-  const description = dom.adminDescription.value.trim();
-  const paragraphs = splitTextIntoParagraphs(dom.adminFulltext.value);
-  const yearValue = Number(dom.adminYear.value) || new Date().getFullYear();
-
-  if (!title || paragraphs.length === 0) {
-    alert('Нужно указать название и текст произведения.');
-    return;
-  }
-
-  const newId = generateNextId();
-
-  const newBook = {
-    id: newId,
-    title: title,
-    author: baseBook?.author || 'А.П. Чехов',
-    yearwriting: yearValue,
-    description: description,
-    cover: baseBook?.cover || 'img/chekhov-default-cover.jpg',
-    collections: [],
-    fullText: paragraphs
-  };
-
-  books.push(newBook);
-
-  appState.currentBookId = newBook.id;
-  appState.currentBook = newBook;
-
-  renderRecommended();
-  renderAllBooksRow();
-  openReader(newBook.id);
-}
-
-function handleAdminExportBooks() {
-  try {
-    const json = JSON.stringify(books, null, 2);
-    dom.adminBooksJson.value = json;
-  } catch (e) {
-    console.error('Ошибка при генерации JSON библиотеки', e);
-    alert('Ошибка при генерации JSON библиотеки.');
-  }
-}
-
-
-// =============== 12. ЗАГРУЗКА КНИГ ===============
+// =============== 11. ЗАГРУЗКА КНИГ ===============
 function loadBooks() {
   return fetch('data/books.json')
     .then(response => {
@@ -503,7 +394,7 @@ function loadBooks() {
 }
 
 
-// =============== 13. ЗАПУСК ПРИЛОЖЕНИЯ ПОСЛЕ ЗАГРУЗКИ КНИГ ===============
+// =============== 12. ЗАПУСК ПРИЛОЖЕНИЯ ПОСЛЕ ЗАГРУЗКИ КНИГ ===============
 function runApp() {
   const launchId = getLaunchBookId();
 
@@ -531,16 +422,17 @@ function animateBackToLibrary() {
   }
 
   setTimeout(() => {
-  
-  backButton.classList.remove('reader-back--pressed');
+    
+    backButton.classList.remove('reader-back--pressed');
 
-  openLibrary();
-  highlightLastReadInAllRow();
-  updateTopProgress();
+    openLibrary();
+    highlightLastReadInAllRow();
+    updateTopProgress();
   }, 220);
 }
 
-// =============== 14. ИНИЦИАЛИЗАЦИЯ СОБЫТИЙ ===============
+
+// =============== 13. ИНИЦИАЛИЗАЦИЯ СОБЫТИЙ ===============
 function initEvents() {
   if (dom.backToLibraryButton) {
     let backPressed = false;
@@ -567,7 +459,7 @@ function initEvents() {
 
     dom.backToLibraryButton.addEventListener('pointerleave', () => {
       if (!backPressed) return;
-      
+
       backPressed = false;
       dom.backToLibraryButton.classList.remove('reader-back--pressed');
     });
@@ -581,38 +473,10 @@ function initEvents() {
       event.preventDefault();
     });
   }
-
-  if (dom.adminOpenButton) {
-    dom.adminOpenButton.addEventListener('click', () => {
-      openAdmin();
-    });
-  }
-
-  if (dom.backFromAdminButton) {
-    dom.backFromAdminButton.addEventListener('click', () => {
-      openReader(appState.currentBookId);
-    });
-  }
-
-  if (dom.adminPreviewButton) {
-    dom.adminPreviewButton.addEventListener('click', handleAdminPreview);
-  }
-
-  if (dom.adminSaveUpdateButton) {
-    dom.adminSaveUpdateButton.addEventListener('click', handleAdminSaveUpdate);
-  }
-
-  if (dom.adminSaveNewButton) {
-    dom.adminSaveNewButton.addEventListener('click', handleAdminSaveNew);
-  }
-
-  if (dom.adminExportBooksButton) {
-    dom.adminExportBooksButton.addEventListener('click', handleAdminExportBooks);
-  }
 }
 
 
-// =============== 15. DOMContentLoaded: СТАРТ ПРИЛОЖЕНИЯ ===============
+// =============== 14. DOMContentLoaded: СТАРТ ПРИЛОЖЕНИЯ ===============
 document.addEventListener('DOMContentLoaded', () => {
   if (window.Telegram && Telegram.WebApp) {
     Telegram.WebApp.ready();
@@ -623,7 +487,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     Telegram.WebApp.setBackgroundColor('#f3efe6');
-    Telegram.WebApp.setHeaderColor('#e6dfd2');
+    Telegram.WebApp.setHeaderColor('#e6dfd2'); // цвет панели бота Телеграм
   }
 
   if (isAdmin() && dom.adminOpenButton) {
@@ -631,6 +495,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   initEvents();
+
+// добавлен блок при отделении админки. Это точка подключения админки. Запускает навешивание admin-событий.
+  if (typeof window.initAdminEvents === 'function') {
+    window.initAdminEvents();
+  }
+//
 
   window.addEventListener('scroll', handleReaderScroll, { passive: true });
   window.addEventListener('resize', updateTopProgress, { passive: true });

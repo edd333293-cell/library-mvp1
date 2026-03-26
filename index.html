@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Библиотека Чехова · MVP-1</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="adm.css"><!-- подключили js админки-->
 </head>
 
 <body>
-  <!--добавить progress bar-->
+  <!--добавили progress bar-->
   <div id="top-progress" class="top-progress hidden" aria-hidden="true">
     <div id="top-progress-bar" class="top-progress__bar"></div>
   </div>
@@ -36,7 +37,6 @@
     <section id="reader" class="hidden">
       <div class="reader-toolbar">
         <button id="back-to-library" class="reader-back reader-back--peek" type="button">← К книгам</button>
-        
         <button id="admin-open" class="reader-admin-petal hidden" type="button" aria-label="Админ">⚙</button>
       </div>
 
@@ -83,12 +83,13 @@
   </main>
 
   <footer>
-    <p>MVP-1 · День 19 (горизонтальные списки)</p>
+    <p>MVP-1 · День 20 (выделение adm.js / adm.css)</p>
   </footer>
 
   <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <!-- Основная логика приложения -->
   <script src="./script.js"></script>
+  <script src="./adm.js"></script><!--выделили логику админки-->
 </body>
 </html>

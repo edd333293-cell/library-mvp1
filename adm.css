@@ -1,0 +1,102 @@
+/* ================= ADM.CSS — СТИЛИ АДМИНКИ ================= */
+
+#admin {
+  padding: 0 16px 24px;
+  background-color: transparent;
+}
+
+body.admin-active #admin {
+  padding-top: 0 !important;
+}
+
+#back-from-admin {
+  margin-bottom: 12px;
+}
+
+#admin h2 {
+  margin-bottom: 8px;
+}
+
+#admin > p {
+  margin: 0 0 14px;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+#admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#admin-form label {
+  font-size: 14px;
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+#admin-form input,
+#admin-form textarea,
+#admin-books-json {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid #cccccc;
+  background: #ffffff;
+  color: var(--text-main);
+  resize: vertical;
+}
+
+#admin-form textarea {
+  min-height: 88px;
+}
+
+#admin-fulltext {
+  min-height: 240px;
+}
+
+#admin-preview,
+#admin-save-update,
+#admin-save-new,
+#admin-export-books {
+  margin-top: 2px;
+}
+
+#admin-preview-block,
+#admin-export-block {
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+#admin-preview-block h3,
+#admin-export-block h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+#admin-preview-content p {
+  margin: 0 0 10px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+#admin-books-json {
+  margin-top: 8px;
+  min-height: 220px;
+  font-family: monospace;
+  line-height: 1.45;
+}
+
+@media (min-width: 720px) {
+  #admin {
+    max-width: 760px;
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
