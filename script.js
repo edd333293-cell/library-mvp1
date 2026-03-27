@@ -4,22 +4,7 @@ window.addEventListener('error', (e) => {
 });
 
 
-// =============== 1. ПОМОЩНИК: ID КНИГИ ИЗ URL (tgWebAppStartParam) ===============
-function getLaunchBookId() {
-  const params = new URLSearchParams(window.location.search);
-  if (!params.has('tgWebAppStartParam')) return null;
-
-  const raw = params.get('tgWebAppStartParam') || '';
-  if (!raw.startsWith('book_')) return null;
-
-  const num = Number(raw.slice('book_'.length));
-  if (!Number.isFinite(num)) return null;
-
-  return num;
-}
-
-
-// =============== 2. ДАННЫЕ / СОСТОЯНИЕ ПРИЛОЖЕНИЯ ===============
+// =============== 1. ДАННЫЕ / СОСТОЯНИЕ ПРИЛОЖЕНИЯ ===============
 let books = [];
 
 const appState = {
@@ -32,7 +17,9 @@ const appState = {
 const ADMIN_ID = 6283474141;
 
 
-// =============== 3. TELEGRAM-ПОМОЩНИКИ (АДМИН / USER ID) ===============
+// =============== 2. TELEGRAM-ПОМОЩНИКИ (АДМИН / USER ID) ===============
+// Эти функции пока остаются здесь, потому что полный платформенный слой
+// будет выделяться на следующем этапе.
 function getTelegramUserId() {
   try {
     if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
@@ -51,7 +38,7 @@ function isAdmin() {
 }
 
 
-// =============== 4. DOM-ССЫЛКИ ===============
+// =============== 3. DOM-ССЫЛКИ ===============
 const dom = {
   // секции
   librarySection: document.querySelector('#library'),
@@ -86,7 +73,7 @@ const sections = {
 };
 
 
-// =============== 5. ТЕКСТОВЫЕ УТИЛИТЫ ===============
+// =============== 4. ТЕКСТОВЫЕ УТИЛИТЫ ===============
 function splitTextIntoParagraphs(input) {
   let text = input;
 
@@ -103,7 +90,7 @@ function splitTextIntoParagraphs(input) {
 }
 
 
-// =============== 6. НАВИГАЦИЯ (ЕДИНЫЙ ЦЕНТР) ===============
+// =============== 5. НАВИГАЦИЯ (ЕДИНЫЙ ЦЕНТР) ===============
 function showSection(sectionId) {
   Object.entries(sections).forEach(([id, el]) => {
     if (!el) return;
@@ -133,7 +120,7 @@ function showAdmin() {
 }
 
 
-// =============== 7. ГОРИЗОНТАЛЬНЫЕ СПИСКИ И КОМПАКТ-КАРТОЧКИ ===============
+// =============== 6. ГОРИЗОНТАЛЬНЫЕ СПИСКИ И КОМПАКТ-КАРТОЧКИ ===============
 function createCompactBookCard(book) {
   const card = document.createElement('div');
   card.className = 'book-card-compact';
@@ -219,7 +206,7 @@ function highlightLastReadInAllRow() {
 }
 
 
-// =============== 8. РЕНДЕР ЧИТАЛКИ (fullText) ===============
+// =============== 7. РЕНДЕР ЧИТАЛКИ (fullText) ===============
 function renderReader(book) {
   if (!book) {
     dom.readerTitle.textContent = 'Книга не найдена';
@@ -251,7 +238,7 @@ function renderReader(book) {
 }
 
 
-// =============== 9. TELEGRAPH MODE: TOOLBAR + PROGRESS ===============
+// =============== 8. TELEGRAPH MODE: TOOLBAR + PROGRESS ===============
 let readerLastScrollY = 0;
 let readerToolbarTicking = false;
 
@@ -326,7 +313,7 @@ function handleReaderScroll() {
 }
 
 
-// =============== 10. ВЫСОКОУРОВНЕВЫЕ ДЕЙСТВИЯ ===============
+// =============== 9. ВЫСОКОУРОВНЕВЫЕ ДЕЙСТВИЯ ===============
 function findBookById(id) {
   const num = Number(id);
   if (!Number.isFinite(num)) return undefined;
@@ -357,7 +344,7 @@ function openReader(bookId) {
   if (toolbar) {
     toolbar.classList.remove('reader-toolbar--hidden');
   }
-  //
+
   const backButton = document.getElementById('back-to-library');
   if (backButton) {
     backButton.classList.remove(
@@ -372,7 +359,7 @@ function openReader(bookId) {
 }
 
 
-// =============== 11. ЗАГРУЗКА КНИГ ===============
+// =============== 10. ЗАГРУЗКА КНИГ ===============
 function loadBooks() {
   return fetch('data/books.json')
     .then(response => {
@@ -394,23 +381,16 @@ function loadBooks() {
 }
 
 
-// =============== 12. ЗАПУСК ПРИЛОЖЕНИЯ ПОСЛЕ ЗАГРУЗКИ КНИГ ===============
+// =============== 11. СТАРТОВАЯ ЛОГИКА ПРИЛОЖЕНИЯ ===============
+// Эта функция не запускает приложение сама.
+// Она только определяет стартовый экран после того,
+// как app.js завершит инициализацию.
 function runApp() {
-  const launchId = getLaunchBookId();
-
-  if (launchId !== null) {
-    const book = findBookById(launchId);
-    if (book) {
-      openReader(book.id);
-      return;
-    }
-  }
-
   openLibrary();
 }
 
-//кнопка с анимацией
 
+// =============== 12. КНОПКА ВОЗВРАТА ИЗ ЧИТАЛКИ ===============
 function animateBackToLibrary() {
   const backButton = dom.backToLibraryButton;
 
@@ -422,7 +402,6 @@ function animateBackToLibrary() {
   }
 
   setTimeout(() => {
-    
     backButton.classList.remove('reader-back--pressed');
 
     openLibrary();
@@ -432,7 +411,9 @@ function animateBackToLibrary() {
 }
 
 
-// =============== 13. ИНИЦИАЛИЗАЦИЯ СОБЫТИЙ ===============
+// =============== 13. ИНИЦИАЛИЗАЦИЯ ПОЛЬЗОВАТЕЛЬСКИХ СОБЫТИЙ ===============
+// Важно: функция только навешивает события.
+// Реальный вызов производится из app.js.
 function initEvents() {
   if (dom.backToLibraryButton) {
     let backPressed = false;
@@ -453,7 +434,6 @@ function initEvents() {
 
     dom.backToLibraryButton.addEventListener('pointercancel', () => {
       backPressed = false;
-      
       dom.backToLibraryButton.classList.remove('reader-back--pressed');
     });
 
@@ -474,40 +454,3 @@ function initEvents() {
     });
   }
 }
-
-
-// =============== 14. DOMContentLoaded: СТАРТ ПРИЛОЖЕНИЯ ===============
-document.addEventListener('DOMContentLoaded', () => {
-  if (window.Telegram && Telegram.WebApp) {
-    Telegram.WebApp.ready();
-    Telegram.WebApp.expand();
-
-    if (typeof Telegram.WebApp.disableVerticalSwipes === 'function') {
-      Telegram.WebApp.disableVerticalSwipes();
-    }
-
-    Telegram.WebApp.setBackgroundColor('#f3efe6');
-    Telegram.WebApp.setHeaderColor('#e6dfd2'); // цвет панели бота Телеграм
-  }
-
-  if (isAdmin() && dom.adminOpenButton) {
-    dom.adminOpenButton.classList.remove('hidden');
-  }
-
-  initEvents();
-
-// добавлен блок при отделении админки. Это точка подключения админки. Запускает навешивание admin-событий.
-  if (typeof window.initAdminEvents === 'function') {
-    window.initAdminEvents();
-  }
-//
-
-  window.addEventListener('scroll', handleReaderScroll, { passive: true });
-  window.addEventListener('resize', updateTopProgress, { passive: true });
-
-  loadBooks().then(() => {
-    renderRecommended();
-    renderAllBooksRow();
-    runApp();
-  });
-});
