@@ -7,7 +7,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Инициализация Telegram WebApp на текущем этапе MVP-1.
   // Telegram-специфичные вызовы пока еще остаются здесь.
-  // На Дне 22 они будут вынесены в telegram-platform.js.
+  // На следующем этапе они будут вынесены в отдельный платформенный слой.
   if (window.Telegram && Telegram.WebApp) {
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
