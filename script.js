@@ -4,25 +4,7 @@ window.addEventListener('error', (e) => {
 });
 
 
-// =============== 1. ЧТЕНИЕ СТАРТОВОГО ПАРАМЕТРА КНИГИ ===============
-// На текущем этапе поддерживается только один формат запуска:
-// book_<id>
-// Другие форматы и альтернативные интерпретации не допускаются.
-function getLaunchBookId() {
-  const params = new URLSearchParams(window.location.search);
-  if (!params.has('tgWebAppStartParam')) return null;
-
-  const raw = params.get('tgWebAppStartParam') || '';
-  if (!raw.startsWith('book_')) return null;
-
-  const num = Number(raw.slice('book_'.length));
-  if (!Number.isFinite(num)) return null;
-
-  return num;
-}
-
-
-// =============== 2. ДАННЫЕ / СОСТОЯНИЕ ПРИЛОЖЕНИЯ ===============
+// =============== 1. ДАННЫЕ / СОСТОЯНИЕ ПРИЛОЖЕНИЯ ===============
 let books = [];
 
 const appState = {
@@ -31,32 +13,12 @@ const appState = {
   currentBook: null
 };
 
-// ID администратора
+// ID администратора проекта.
+// Само сравнение с Telegram user id теперь выполняется в платформенном слое.
 const ADMIN_ID = 6283474141;
 
 
-// =============== 3. TELEGRAM-ПОМОЩНИКИ (АДМИН / USER ID) ===============
-// Эти функции пока остаются здесь, потому что полный платформенный слой
-// будет выделяться на следующем этапе.
-function getTelegramUserId() {
-  try {
-    if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
-      const user = Telegram.WebApp.initDataUnsafe.user;
-      return user && user.id ? Number(user.id) : null;
-    }
-  } catch (e) {
-    console.log('[TG USER ERROR]', e);
-  }
-  return null;
-}
-
-function isAdmin() {
-  const uid = getTelegramUserId();
-  return uid !== null && uid === ADMIN_ID;
-}
-
-
-// =============== 4. DOM-ССЫЛКИ ===============
+// =============== 2. DOM-ССЫЛКИ ===============
 const dom = {
   // секции
   librarySection: document.querySelector('#library'),
@@ -91,7 +53,7 @@ const sections = {
 };
 
 
-// =============== 5. ТЕКСТОВЫЕ УТИЛИТЫ ===============
+// =============== 3. ТЕКСТОВЫЕ УТИЛИТЫ ===============
 function splitTextIntoParagraphs(input) {
   let text = input;
 
@@ -108,7 +70,7 @@ function splitTextIntoParagraphs(input) {
 }
 
 
-// =============== 6. НАВИГАЦИЯ (ЕДИНЫЙ ЦЕНТР) ===============
+// =============== 4. НАВИГАЦИЯ (ЕДИНЫЙ ЦЕНТР) ===============
 function showSection(sectionId) {
   Object.entries(sections).forEach(([id, el]) => {
     if (!el) return;
@@ -138,7 +100,7 @@ function showAdmin() {
 }
 
 
-// =============== 7. ГОРИЗОНТАЛЬНЫЕ СПИСКИ И КОМПАКТ-КАРТОЧКИ ===============
+// =============== 5. ГОРИЗОНТАЛЬНЫЕ СПИСКИ И КОМПАКТ-КАРТОЧКИ ===============
 function createCompactBookCard(book) {
   const card = document.createElement('div');
   card.className = 'book-card-compact';
@@ -224,7 +186,7 @@ function highlightLastReadInAllRow() {
 }
 
 
-// =============== 8. РЕНДЕР ЧИТАЛКИ (fullText) ===============
+// =============== 6. РЕНДЕР ЧИТАЛКИ (fullText) ===============
 function renderReader(book) {
   if (!book) {
     dom.readerTitle.textContent = 'Книга не найдена';
@@ -256,7 +218,7 @@ function renderReader(book) {
 }
 
 
-// =============== 9. TELEGRAPH MODE: TOOLBAR + PROGRESS ===============
+// =============== 7. TELEGRAPH MODE: TOOLBAR + PROGRESS ===============
 let readerLastScrollY = 0;
 let readerToolbarTicking = false;
 
@@ -331,7 +293,7 @@ function handleReaderScroll() {
 }
 
 
-// =============== 10. ВЫСОКОУРОВНЕВЫЕ ДЕЙСТВИЯ ===============
+// =============== 8. ВЫСОКОУРОВНЕВЫЕ ДЕЙСТВИЯ ===============
 function findBookById(id) {
   const num = Number(id);
   if (!Number.isFinite(num)) return undefined;
@@ -377,7 +339,7 @@ function openReader(bookId) {
 }
 
 
-// =============== 11. ЗАГРУЗКА КНИГ ===============
+// =============== 9. ЗАГРУЗКА КНИГ ===============
 function loadBooks() {
   return fetch('data/books.json')
     .then(response => {
@@ -399,13 +361,10 @@ function loadBooks() {
 }
 
 
-// =============== 12. СТАРТОВАЯ ЛОГИКА ПРИЛОЖЕНИЯ ===============
+// =============== 10. СТАРТОВАЯ ЛОГИКА ПРИЛОЖЕНИЯ ===============
 // Эта функция не запускает приложение сама.
-// Она определяет стартовый экран после того,
-// как app.js завершит инициализацию.
-function runApp() {
-  const launchBookId = getLaunchBookId();
-
+// Она принимает уже готовый стартовый id книги из платформенного слоя.
+function runApp(launchBookId = null) {
   if (launchBookId !== null) {
     const book = findBookById(launchBookId);
     if (book) {
@@ -418,7 +377,7 @@ function runApp() {
 }
 
 
-// =============== 13. КНОПКА ВОЗВРАТА ИЗ ЧИТАЛКИ ===============
+// =============== 11. КНОПКА ВОЗВРАТА ИЗ ЧИТАЛКИ ===============
 function animateBackToLibrary() {
   const backButton = dom.backToLibraryButton;
 
@@ -439,9 +398,7 @@ function animateBackToLibrary() {
 }
 
 
-// =============== 14. ИНИЦИАЛИЗАЦИЯ ПОЛЬЗОВАТЕЛЬСКИХ СОБЫТИЙ ===============
-// Важно: функция только навешивает события.
-// Реальный вызов производится из app.js.
+// =============== 12. ИНИЦИАЛИЗАЦИЯ ПОЛЬЗОВАТЕЛЬСКИХ СОБЫТИЙ ===============
 function initEvents() {
   if (dom.backToLibraryButton) {
     let backPressed = false;
