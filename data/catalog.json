@@ -78,5 +78,15 @@
     "cover": "img/chinovnik.jpg",
     "collections": [],
     "file": "data/books/7.json"
+  },
+  {
+    "id": 8,
+    "title": "Беседа пьяного с трезвым чёртом",
+    "author": "А.П. Чехов",
+    "yearwriting": 1886,
+    "description": "",
+    "cover": "img/chinovnik.jpg",
+    "collections": [],
+    "file": "data/books/8.json"
   }
 ]
