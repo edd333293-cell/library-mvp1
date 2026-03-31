@@ -103,7 +103,14 @@ function handleAdminSaveUpdate() {
 
   renderRecommended();
   renderAllBooksRow();
-  openReader(updatedBook.id);
+
+  // После перезаписи остаемся в админке.
+  // В reader не переходим, потому что файл книги на диске
+  // еще не обновлен автоматически.
+  fillAdminFormFromCurrentBook();
+  showAdmin();
+
+  alert('Текущая книга обновлена в рабочем состоянии админки. Скопируйте экспорт и обновите файл книги.');
 }
 
 function handleAdminSaveNew() {
@@ -127,7 +134,13 @@ function handleAdminSaveNew() {
 
   renderRecommended();
   renderAllBooksRow();
-  openReader(newBook.id);
+
+  // После создания остаемся в админке,
+  // чтобы можно было сразу проверить поля и скопировать экспорт.
+  fillAdminFormFromCurrentBook();
+  showAdmin();
+
+  alert('Новая книга добавлена в рабочее состояние админки. Скопируйте экспорт и создайте файл новой книги.');
 }
 
 function handleAdminExportBooks() {
