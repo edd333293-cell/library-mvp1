@@ -1,0 +1,82 @@
+[
+  {
+    "id": 4,
+    "title": "Смерть чиновника",
+    "author": "А.П. Чехов",
+    "yearwriting": 1883,
+    "description": "Юмористический рассказ (1883) о трагикомической силе страха перед начальством.",
+    "cover": "img/chinovnik.jpg",
+    "collections": [
+      "recommended"
+    ],
+    "file": "data/books/4.json"
+  },
+  {
+    "id": 5,
+    "title": "Прощение",
+    "author": "А.П. Чехов",
+    "yearwriting": 1884,
+    "description": "Юмористический рассказ (1884), опубликованный в журнале «Осколки».",
+    "cover": "img/proshenie.jpg",
+    "collections": [
+      "recommended"
+    ],
+    "file": "data/books/5.json"
+  },
+  {
+    "id": 2,
+    "title": "Студент",
+    "author": "А.П. Чехов",
+    "yearwriting": 1894,
+    "description": "Рассказ (1894) о студенте духовной академии, пережившем внезапное чувство исторической связи времён.",
+    "cover": "img/student.jpg",
+    "collections": [
+      "recommended"
+    ],
+    "file": "data/books/2.json"
+  },
+  {
+    "id": 1,
+    "title": "Ионыч",
+    "author": "А.П. Чехов",
+    "yearwriting": 1898,
+    "description": "Повесть (1898) о постепенной духовной деградации земского врача Дмитрия Старцева.",
+    "cover": "img/ionych.jpg",
+    "collections": [
+      "recommended"
+    ],
+    "file": "data/books/1.json"
+  },
+  {
+    "id": 3,
+    "title": "Человек в футляре",
+    "author": "А.П. Чехов",
+    "yearwriting": 1898,
+    "description": "Рассказ (1898) о страхе перед жизнью и человеке, прячущемся в собственных ограничениях.",
+    "cover": "img/futlyar.jpg",
+    "collections": [
+      "recommended"
+    ],
+    "file": "data/books/3.json"
+  },
+  {
+    "id": 6,
+    "title": "Новая 6",
+    "author": "А.П. Чехов",
+    "yearwriting": 1889,
+    "description": "Юмористический рассказ 6",
+    "cover": "img/chinovnik.jpg",
+    "collections": [],
+    "file": "data/books/6.json"
+  },
+  {
+    "id": 7,
+    "title": "Певчие",
+    "author": "А.П. Чехов",
+    "yearwriting": 1884,
+    "description": "",
+    "cover": "img/chinovnik.jpg",
+    "collections": [],
+    "file": "data/books/7.json"
+  }
+]
