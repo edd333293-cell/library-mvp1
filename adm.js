@@ -145,15 +145,19 @@ function handleAdminSaveNew() {
 
 function handleAdminExportBooks() {
   try {
-    const exportPayload = {
-      catalog: books,
-      currentBookFile: appState.currentBook
-    };
+    const catalogJson = JSON.stringify(books, null, 2);
+    const currentBookJson = JSON.stringify(appState.currentBook || {}, null, 2);
 
-    dom.adminBooksJson.value = JSON.stringify(exportPayload, null, 2);
+    if (dom.adminCatalogJson) {
+      dom.adminCatalogJson.value = catalogJson;
+    }
+
+    if (dom.adminBookJson) {
+      dom.adminBookJson.value = currentBookJson;
+    }
   } catch (e) {
-    console.error('Ошибка при генерации JSON библиотеки', e);
-    alert('Ошибка при генерации JSON библиотеки.');
+    console.error('Ошибка при генерации JSON каталога и книги', e);
+    alert('Ошибка при генерации JSON каталога и книги.');
   }
 }
 

@@ -44,7 +44,8 @@ const dom = {
   adminSaveUpdateButton: document.querySelector('#admin-save-update'),
   adminSaveNewButton: document.querySelector('#admin-save-new'),
   adminExportBooksButton: document.querySelector('#admin-export-books'),
-  adminBooksJson: document.querySelector('#admin-books-json')
+  adminCatalogJson: document.querySelector('#admin-catalog-json'),
+  adminBookJson: document.querySelector('#admin-book-json')
 };
 
 const sections = {
