@@ -37,7 +37,13 @@ function handleAdminPreview() {
   dom.adminPreviewBlock.classList.remove('hidden');
 }
 
-function buildBookFilePayload(baseBook, fallbackId = null) {
+function buildBookFilePayload(options = {}) {
+  const {
+    id,
+    baseBook = null,
+    preserveCollections = true
+  } = options;
+
   const title = dom.adminTitle.value.trim();
   const description = dom.adminDescription.value.trim();
   const paragraphs = splitTextIntoParagraphs(dom.adminFulltext.value);
@@ -49,26 +55,28 @@ function buildBookFilePayload(baseBook, fallbackId = null) {
   }
 
   return {
-    id: baseBook?.id || fallbackId,
+    id: Number(id),
     title,
     author: baseBook?.author || 'А.П. Чехов',
     yearwriting: yearValue,
     description,
     cover: baseBook?.cover || 'img/chekhov-default-cover.jpg',
-    collections: Array.isArray(baseBook?.collections) ? baseBook.collections : [],
+    collections: preserveCollections && Array.isArray(baseBook?.collections)
+      ? [...baseBook.collections]
+      : [],
     fullText: paragraphs
   };
 }
 
 function buildCatalogItemFromBook(book) {
   return {
-    id: book.id,
+    id: Number(book.id),
     title: book.title,
     author: book.author,
     yearwriting: book.yearwriting,
     description: book.description,
     cover: book.cover,
-    collections: Array.isArray(book.collections) ? book.collections : [],
+    collections: Array.isArray(book.collections) ? [...book.collections] : [],
     file: `data/books/${book.id}.json`
   };
 }
@@ -77,7 +85,12 @@ function handleAdminSaveUpdate() {
   const currentBook = appState.currentBook;
   if (!currentBook) return;
 
-  const updatedBook = buildBookFilePayload(currentBook);
+  const updatedBook = buildBookFilePayload({
+    id: currentBook.id,
+    baseBook: currentBook,
+    preserveCollections: true
+  });
+
   if (!updatedBook) return;
 
   appState.currentBookId = updatedBook.id;
@@ -97,10 +110,17 @@ function handleAdminSaveNew() {
   const baseBook = appState.currentBook;
   const newId = generateNextId();
 
-  const newBook = buildBookFilePayload(baseBook, newId);
+  const newBook = buildBookFilePayload({
+    id: newId,
+    baseBook,
+    preserveCollections: false
+  });
+
   if (!newBook) return;
 
-  books.push(buildCatalogItemFromBook(newBook));
+  const newCatalogItem = buildCatalogItemFromBook(newBook);
+
+  books.push(newCatalogItem);
 
   appState.currentBookId = newBook.id;
   appState.currentBook = newBook;
