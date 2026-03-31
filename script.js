@@ -5,6 +5,7 @@ window.addEventListener('error', (e) => {
 
 
 // =============== 1. ДАННЫЕ / СОСТОЯНИЕ ПРИЛОЖЕНИЯ ===============
+// books хранит каталог библиотеки, а не полные тексты всех книг.
 let books = [];
 
 const appState = {
@@ -14,7 +15,7 @@ const appState = {
 };
 
 // ID администратора проекта.
-// Само сравнение с Telegram user id теперь выполняется в платформенном слое.
+// Сравнение с Telegram user id выполняется в платформенном слое.
 const ADMIN_ID = 6283474141;
 
 
@@ -304,9 +305,37 @@ function openLibrary() {
   showLibrary();
 }
 
-function openReader(bookId) {
-  const book = findBookById(bookId);
+async function loadBookById(bookId) {
+  const catalogItem = findBookById(bookId);
+  if (!catalogItem || !catalogItem.file) return null;
 
+  try {
+    const response = await fetch(catalogItem.file);
+    if (!response.ok) {
+      throw new Error('Ошибка загрузки файла книги: ' + response.status);
+    }
+
+    const book = await response.json();
+    if (!book || typeof book !== 'object') return null;
+
+    return book;
+  } catch (err) {
+    console.log('[BOOK FILE LOAD ERROR]', err);
+    return null;
+  }
+}
+
+async function openReader(bookId) {
+  const catalogItem = findBookById(bookId);
+
+  if (!catalogItem) {
+    appState.currentBookId = null;
+    appState.currentBook = null;
+    showLibrary();
+    return;
+  }
+
+  const book = await loadBookById(bookId);
   if (!book) {
     appState.currentBookId = null;
     appState.currentBook = null;
@@ -339,38 +368,33 @@ function openReader(bookId) {
 }
 
 
-// =============== 9. ЗАГРУЗКА КНИГ ===============
+// =============== 9. ЗАГРУЗКА КАТАЛОГА БИБЛИОТЕКИ ===============
 function loadBooks() {
-  return fetch('data/books.json')
+  return fetch('data/catalog.json')
     .then(response => {
       if (!response.ok) {
-        throw new Error('Ошибка загрузки books.json: ' + response.status);
+        throw new Error('Ошибка загрузки catalog.json: ' + response.status);
       }
       return response.json();
     })
     .then(data => {
       if (!Array.isArray(data)) {
-        throw new Error('Неверный формат books.json: ожидается массив');
+        throw new Error('Неверный формат catalog.json: ожидается массив');
       }
       books = data;
     })
     .catch(err => {
-      console.log('[BOOKS LOAD ERROR]', err);
+      console.log('[CATALOG LOAD ERROR]', err);
       books = [];
     });
 }
 
 
 // =============== 10. СТАРТОВАЯ ЛОГИКА ПРИЛОЖЕНИЯ ===============
-// Эта функция не запускает приложение сама.
-// Она принимает уже готовый стартовый id книги из платформенного слоя.
 function runApp(launchBookId = null) {
   if (launchBookId !== null) {
-    const book = findBookById(launchBookId);
-    if (book) {
-      openReader(book.id);
-      return;
-    }
+    openReader(launchBookId);
+    return;
   }
 
   openLibrary();

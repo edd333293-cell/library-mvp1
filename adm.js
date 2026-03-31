@@ -37,10 +37,7 @@ function handleAdminPreview() {
   dom.adminPreviewBlock.classList.remove('hidden');
 }
 
-function handleAdminSaveUpdate() {
-  const book = appState.currentBook;
-  if (!book) return;
-
+function buildBookFilePayload(baseBook, fallbackId = null) {
   const title = dom.adminTitle.value.trim();
   const description = dom.adminDescription.value.trim();
   const paragraphs = splitTextIntoParagraphs(dom.adminFulltext.value);
@@ -48,46 +45,62 @@ function handleAdminSaveUpdate() {
 
   if (!title || paragraphs.length === 0) {
     alert('Нужно указать название и текст произведения.');
-    return;
+    return null;
   }
 
-  book.title = title;
-  book.description = description;
-  book.yearwriting = yearValue;
-  book.fullText = paragraphs;
+  return {
+    id: baseBook?.id || fallbackId,
+    title,
+    author: baseBook?.author || 'А.П. Чехов',
+    yearwriting: yearValue,
+    description,
+    cover: baseBook?.cover || 'img/chekhov-default-cover.jpg',
+    collections: Array.isArray(baseBook?.collections) ? baseBook.collections : [],
+    fullText: paragraphs
+  };
+}
+
+function buildCatalogItemFromBook(book) {
+  return {
+    id: book.id,
+    title: book.title,
+    author: book.author,
+    yearwriting: book.yearwriting,
+    description: book.description,
+    cover: book.cover,
+    collections: Array.isArray(book.collections) ? book.collections : [],
+    file: `data/books/${book.id}.json`
+  };
+}
+
+function handleAdminSaveUpdate() {
+  const currentBook = appState.currentBook;
+  if (!currentBook) return;
+
+  const updatedBook = buildBookFilePayload(currentBook);
+  if (!updatedBook) return;
+
+  appState.currentBookId = updatedBook.id;
+  appState.currentBook = updatedBook;
+
+  const idx = books.findIndex(item => Number(item.id) === Number(updatedBook.id));
+  if (idx >= 0) {
+    books[idx] = buildCatalogItemFromBook(updatedBook);
+  }
 
   renderRecommended();
   renderAllBooksRow();
-  openReader(book.id);
+  openReader(updatedBook.id);
 }
 
 function handleAdminSaveNew() {
   const baseBook = appState.currentBook;
-
-  const title = dom.adminTitle.value.trim();
-  const description = dom.adminDescription.value.trim();
-  const paragraphs = splitTextIntoParagraphs(dom.adminFulltext.value);
-  const yearValue = Number(dom.adminYear.value) || new Date().getFullYear();
-
-  if (!title || paragraphs.length === 0) {
-    alert('Нужно указать название и текст произведения.');
-    return;
-  }
-
   const newId = generateNextId();
 
-  const newBook = {
-    id: newId,
-    title: title,
-    author: baseBook?.author || 'А.П. Чехов',
-    yearwriting: yearValue,
-    description: description,
-    cover: baseBook?.cover || 'img/chekhov-default-cover.jpg',
-    collections: [],
-    fullText: paragraphs
-  };
+  const newBook = buildBookFilePayload(baseBook, newId);
+  if (!newBook) return;
 
-  books.push(newBook);
+  books.push(buildCatalogItemFromBook(newBook));
 
   appState.currentBookId = newBook.id;
   appState.currentBook = newBook;
@@ -99,8 +112,12 @@ function handleAdminSaveNew() {
 
 function handleAdminExportBooks() {
   try {
-    const json = JSON.stringify(books, null, 2);
-    dom.adminBooksJson.value = json;
+    const exportPayload = {
+      catalog: books,
+      currentBookFile: appState.currentBook
+    };
+
+    dom.adminBooksJson.value = JSON.stringify(exportPayload, null, 2);
   } catch (e) {
     console.error('Ошибка при генерации JSON библиотеки', e);
     alert('Ошибка при генерации JSON библиотеки.');
