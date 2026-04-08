@@ -1,1 +1,31 @@
-
+{
+  "id": 4,
+  "slug": "chinovnik",
+  "title": "Смерть чиновника",
+  "author": "А.П. Чехов",
+  "yearwriting": 1883,
+  "description": "Юмористический рассказ (1883) о трагикомической силе страха перед начальством.",
+  "collections": [
+    "recommended"
+  ],
+  "covers": {
+    "main": "data/books/1/cover-main.jpg",
+    "thumb": "data/books/1/cover-thumb.jpg"
+  },
+  "illustrations": [
+    "data/books/1/pic-01.jpg",
+    "data/books/1/pic-02.jpg"
+  ],
+  "structure": {
+    "type": "plain"
+  },
+  "content": [
+    {
+      "paragraphs": [
+      "Однажды вечером экзекутор Иван Дмитрич Червяков сидел во втором ряду.",
+      "Он чихнул и обрызгал лысину генерала.",
+      "Через несколько дней Червяков умер."
+      ]
+    }
+  ]
+}
