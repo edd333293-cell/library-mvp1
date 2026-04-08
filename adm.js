@@ -1,8 +1,68 @@
 // =============== ADM.JS — АДМИНСКАЯ ЛОГИКА ===============
 
 function generateNextId() {
-  const ids = books.map(b => Number(b.id)).filter(n => Number.isFinite(n));
+  const ids = books.map((b) => Number(b.id)).filter((n) => Number.isFinite(n));
   return ids.length ? Math.max(...ids) + 1 : 1;
+}
+
+function slugify(text) {
+  return String(text || '')
+    .toLowerCase()
+    .trim()
+    .replace(/ё/g, 'е')
+    .replace(/[^\p{L}\p{N}\s-]/gu, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+}
+
+function buildBookFolderPath(id) {
+  return `data/books/${id}`;
+}
+
+function buildDefaultCovers(id) {
+  const base = buildBookFolderPath(id);
+  return {
+    main: `${base}/cover-main.jpg`,
+    thumb: `${base}/cover-thumb.jpg`
+  };
+}
+
+function buildDefaultIllustrations(id) {
+  const base = buildBookFolderPath(id);
+  return [
+    `${base}/ill-01.jpg`,
+    `${base}/ill-02.jpg`
+  ];
+}
+
+function getBookParagraphsForAdmin(book) {
+  if (!book) return [];
+
+  if (book?.structure?.type === 'sections' && Array.isArray(book.content)) {
+    const paragraphs = [];
+
+    book.content.forEach((section) => {
+      if (section?.title) {
+        paragraphs.push(`## ${section.title}`);
+      }
+
+      if (Array.isArray(section?.paragraphs)) {
+        section.paragraphs.forEach((paragraph) => {
+          if (typeof paragraph === 'string' && paragraph.trim()) {
+            paragraphs.push(paragraph.trim());
+          }
+        });
+      }
+    });
+
+    return paragraphs;
+  }
+
+  if (Array.isArray(book.content) && book.content[0] && Array.isArray(book.content[0].paragraphs)) {
+    return book.content[0].paragraphs;
+  }
+
+  return [];
 }
 
 function fillAdminFormFromCurrentBook() {
@@ -13,7 +73,7 @@ function fillAdminFormFromCurrentBook() {
   dom.adminDescription.value = book.description || '';
   dom.adminYear.value = book.yearwriting || '';
 
-  const paragraphs = Array.isArray(book.fullText) ? book.fullText : [];
+  const paragraphs = getBookParagraphsForAdmin(book);
   dom.adminFulltext.value = paragraphs.join('\n\n');
 }
 
@@ -28,13 +88,26 @@ function handleAdminPreview() {
 
   dom.adminPreviewContent.innerHTML = '';
 
-  paragraphs.forEach(paragraph => {
+  paragraphs.forEach((paragraph) => {
     const el = document.createElement('p');
     el.textContent = paragraph;
     dom.adminPreviewContent.appendChild(el);
   });
 
   dom.adminPreviewBlock.classList.remove('hidden');
+}
+
+function buildPlainStructureAndContent(paragraphs) {
+  return {
+    structure: {
+      type: 'plain'
+    },
+    content: [
+      {
+        paragraphs
+      }
+    ]
+  };
 }
 
 function buildBookFilePayload(options = {}) {
@@ -44,6 +117,7 @@ function buildBookFilePayload(options = {}) {
     preserveCollections = true
   } = options;
 
+  const numericId = Number(id);
   const title = dom.adminTitle.value.trim();
   const description = dom.adminDescription.value.trim();
   const paragraphs = splitTextIntoParagraphs(dom.adminFulltext.value);
@@ -54,30 +128,49 @@ function buildBookFilePayload(options = {}) {
     return null;
   }
 
+  const plainData = buildPlainStructureAndContent(paragraphs);
+  const defaultCovers = buildDefaultCovers(numericId);
+
   return {
-    id: Number(id),
+    id: numericId,
+    slug: slugify(title),
     title,
     author: baseBook?.author || 'А.П. Чехов',
     yearwriting: yearValue,
     description,
-    cover: baseBook?.cover || 'img/chekhov-default-cover.jpg',
     collections: preserveCollections && Array.isArray(baseBook?.collections)
       ? [...baseBook.collections]
       : [],
-    fullText: paragraphs
+    covers: {
+      main: baseBook?.covers?.main || defaultCovers.main,
+      thumb: baseBook?.covers?.thumb || defaultCovers.thumb
+    },
+    illustrations: Array.isArray(baseBook?.illustrations)
+      ? [...baseBook.illustrations]
+      : buildDefaultIllustrations(numericId),
+    structure: plainData.structure,
+    content: plainData.content
   };
 }
 
 function buildCatalogItemFromBook(book) {
+  const numericId = Number(book.id);
+  const defaultCovers = buildDefaultCovers(numericId);
+
   return {
-    id: Number(book.id),
+    id: numericId,
+    slug: book.slug,
     title: book.title,
     author: book.author,
     yearwriting: book.yearwriting,
     description: book.description,
-    cover: book.cover,
+    covers: {
+      main: book?.covers?.main || defaultCovers.main,
+      thumb: book?.covers?.thumb || defaultCovers.thumb
+    },
     collections: Array.isArray(book.collections) ? [...book.collections] : [],
-    file: `data/books/${book.id}.json`
+    structureType: book?.structure?.type || 'plain',
+    file: `/data/books/${numericId}/book.json`
   };
 }
 
@@ -96,7 +189,7 @@ function handleAdminSaveUpdate() {
   appState.currentBookId = updatedBook.id;
   appState.currentBook = updatedBook;
 
-  const idx = books.findIndex(item => Number(item.id) === Number(updatedBook.id));
+  const idx = books.findIndex((item) => Number(item.id) === Number(updatedBook.id));
   if (idx >= 0) {
     books[idx] = buildCatalogItemFromBook(updatedBook);
   }
@@ -104,13 +197,10 @@ function handleAdminSaveUpdate() {
   renderRecommended();
   renderAllBooksRow();
 
-  // После перезаписи остаемся в админке.
-  // В reader не переходим, потому что файл книги на диске
-  // еще не обновлен автоматически.
   fillAdminFormFromCurrentBook();
   showAdmin();
 
-  alert('Текущая книга обновлена в рабочем состоянии админки. Скопируйте экспорт и обновите файл книги.');
+  alert('Текущая книга обновлена в рабочем состоянии админки. Скопируйте JSON каталога и JSON книги.');
 }
 
 function handleAdminSaveNew() {
@@ -135,12 +225,10 @@ function handleAdminSaveNew() {
   renderRecommended();
   renderAllBooksRow();
 
-  // После создания остаемся в админке,
-  // чтобы можно было сразу проверить поля и скопировать экспорт.
   fillAdminFormFromCurrentBook();
   showAdmin();
 
-  alert('Новая книга добавлена в рабочее состояние админки. Скопируйте экспорт и создайте файл новой книги.');
+  alert('Новая книга добавлена в рабочее состояние админки. Скопируйте JSON каталога и JSON книги.');
 }
 
 function handleAdminExportBooks() {

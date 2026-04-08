@@ -30,7 +30,8 @@ body.admin-active #admin {
   gap: 10px;
 }
 
-#admin-form label {
+#admin-form label,
+#admin-export-block label {
   font-size: 14px;
   color: var(--text-main);
   font-weight: 600;
@@ -38,7 +39,8 @@ body.admin-active #admin {
 
 #admin-form input,
 #admin-form textarea,
-#admin-books-json {
+#admin-catalog-json,
+#admin-book-json {
   width: 100%;
   padding: 10px;
   font-size: 14px;
@@ -85,7 +87,8 @@ body.admin-active #admin {
   line-height: 1.5;
 }
 
-#admin-books-json {
+#admin-catalog-json,
+#admin-book-json {
   margin-top: 8px;
   min-height: 220px;
   font-family: monospace;

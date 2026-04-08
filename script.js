@@ -5,7 +5,7 @@ window.addEventListener('error', (e) => {
 
 
 // =============== 1. ДАННЫЕ / СОСТОЯНИЕ ПРИЛОЖЕНИЯ ===============
-// books хранит каталог библиотеки, а не полные тексты всех книг.
+// books хранит каталог библиотеки.
 let books = [];
 
 const appState = {
@@ -67,8 +67,34 @@ function splitTextIntoParagraphs(input) {
 
   return text
     .split(/\n\s*\n+/)
-    .map(p => p.replace(/[ \t]+/g, ' ').trim())
-    .filter(p => p.length > 0);
+    .map((p) => p.replace(/[ \t]+/g, ' ').trim())
+    .filter((p) => p.length > 0);
+}
+
+function getBookThumb(book) {
+  return book?.covers?.thumb || book?.covers?.main || '';
+}
+
+function getBookMainCover(book) {
+  return book?.covers?.main || book?.covers?.thumb || '';
+}
+
+function getFlatParagraphsFromBook(book) {
+  if (!book || !Array.isArray(book.content)) return [];
+
+  const paragraphs = [];
+
+  book.content.forEach((section) => {
+    if (Array.isArray(section?.paragraphs)) {
+      section.paragraphs.forEach((paragraph) => {
+        if (typeof paragraph === 'string' && paragraph.trim()) {
+          paragraphs.push(paragraph.trim());
+        }
+      });
+    }
+  });
+
+  return paragraphs;
 }
 
 
@@ -113,8 +139,10 @@ function createCompactBookCard(book) {
       ? `${book.yearwriting} г.`
       : '';
 
+  const coverSrc = getBookThumb(book);
+
   card.innerHTML = `
-    <img class="book-cover" src="${book.cover}" alt="">
+    <img class="book-cover" src="${coverSrc}" alt="">
     <h3 class="book-title">${book.title}</h3>
     <p class="book-meta">${book.author || ''}${yearText ? ', ' + yearText : ''}</p>
   `;
@@ -133,12 +161,12 @@ function renderRecommended() {
 
   container.innerHTML = '';
 
-  const filtered = books.filter(book =>
+  const filtered = books.filter((book) =>
     Array.isArray(book.collections) &&
     book.collections.includes('recommended')
   );
 
-  filtered.forEach(book => {
+  filtered.forEach((book) => {
     container.appendChild(createCompactBookCard(book));
   });
 }
@@ -153,7 +181,7 @@ function renderAllBooksRow() {
     (a, b) => (a.yearwriting || 0) - (b.yearwriting || 0)
   );
 
-  sorted.forEach(book => {
+  sorted.forEach((book) => {
     container.appendChild(createCompactBookCard(book));
   });
 }
@@ -167,11 +195,11 @@ function highlightLastReadInAllRow() {
 
   const cards = Array.from(container.querySelectorAll('.book-card-compact'));
 
-  cards.forEach(card => {
+  cards.forEach((card) => {
     card.classList.remove('book-card-compact--current');
   });
 
-  const target = cards.find(card => Number(card.dataset.bookId) === Number(lastId));
+  const target = cards.find((card) => Number(card.dataset.bookId) === Number(lastId));
   if (!target) return;
 
   target.classList.add('book-card-compact--current');
@@ -188,7 +216,7 @@ function highlightLastReadInAllRow() {
 }
 
 
-// =============== 6. РЕНДЕР ЧИТАЛКИ (fullText) ===============
+// =============== 6. РЕНДЕР ЧИТАЛКИ ===============
 function renderReader(book) {
   if (!book) {
     dom.readerTitle.textContent = 'Книга не найдена';
@@ -208,12 +236,44 @@ function renderReader(book) {
   const textWrap = document.createElement('div');
   textWrap.className = 'reader-text-page';
 
-  const paragraphs = Array.isArray(book.fullText) ? book.fullText : [];
-  paragraphs.forEach(paragraphText => {
-    const p = document.createElement('p');
-    p.textContent = paragraphText;
-    textWrap.appendChild(p);
-  });
+  if (book?.structure?.type === 'sections' && Array.isArray(book?.structure?.sections)) {
+    const sectionMap = new Map();
+
+    if (Array.isArray(book.content)) {
+      book.content.forEach((section) => {
+        if (section?.id) {
+          sectionMap.set(section.id, section);
+        }
+      });
+    }
+
+    book.structure.sections.forEach((sectionInfo) => {
+      const sectionContent = sectionInfo?.id ? sectionMap.get(sectionInfo.id) : null;
+
+      if (sectionInfo?.title) {
+        const heading = document.createElement('h3');
+        heading.className = 'reader-section-title';
+        heading.textContent = sectionInfo.title;
+        textWrap.appendChild(heading);
+      }
+
+      if (Array.isArray(sectionContent?.paragraphs)) {
+        sectionContent.paragraphs.forEach((paragraphText) => {
+          const p = document.createElement('p');
+          p.textContent = paragraphText;
+          textWrap.appendChild(p);
+        });
+      }
+    });
+  } else {
+    const flatParagraphs = getFlatParagraphsFromBook(book);
+
+    flatParagraphs.forEach((paragraphText) => {
+      const p = document.createElement('p');
+      p.textContent = paragraphText;
+      textWrap.appendChild(p);
+    });
+  }
 
   dom.readerContent.appendChild(meta);
   dom.readerContent.appendChild(textWrap);
@@ -299,7 +359,7 @@ function handleReaderScroll() {
 function findBookById(id) {
   const num = Number(id);
   if (!Number.isFinite(num)) return undefined;
-  return books.find(book => Number(book.id) === num);
+  return books.find((book) => Number(book.id) === num);
 }
 
 function openLibrary() {
@@ -316,10 +376,29 @@ async function loadBookById(bookId) {
       throw new Error('Ошибка загрузки файла книги: ' + response.status);
     }
 
-    const book = await response.json();
-    if (!book || typeof book !== 'object') return null;
+    const rawBook = await response.json();
+    if (!rawBook || typeof rawBook !== 'object') return null;
 
-    return book;
+    const normalizedBook = {
+      id: Number(rawBook.id),
+      slug: rawBook.slug || '',
+      title: rawBook.title || '',
+      author: rawBook.author || '',
+      yearwriting: rawBook.yearwriting || '',
+      description: rawBook.description || '',
+      collections: Array.isArray(rawBook.collections) ? rawBook.collections : [],
+      covers: {
+        main: rawBook?.covers?.main || '',
+        thumb: rawBook?.covers?.thumb || rawBook?.covers?.main || ''
+      },
+      illustrations: Array.isArray(rawBook.illustrations) ? rawBook.illustrations : [],
+      structure: rawBook?.structure && typeof rawBook.structure === 'object'
+        ? rawBook.structure
+        : { type: 'plain' },
+      content: Array.isArray(rawBook.content) ? rawBook.content : []
+    };
+
+    return normalizedBook;
   } catch (err) {
     console.log('[BOOK FILE LOAD ERROR]', err);
     return null;
@@ -372,19 +451,34 @@ async function openReader(bookId) {
 // =============== 9. ЗАГРУЗКА КАТАЛОГА БИБЛИОТЕКИ ===============
 function loadBooks() {
   return fetch('data/catalog.json')
-    .then(response => {
+    .then((response) => {
       if (!response.ok) {
         throw new Error('Ошибка загрузки catalog.json: ' + response.status);
       }
       return response.json();
     })
-    .then(data => {
+    .then((data) => {
       if (!Array.isArray(data)) {
         throw new Error('Неверный формат catalog.json: ожидается массив');
       }
-      books = data;
+
+      books = data.map((item) => ({
+        id: Number(item.id),
+        slug: item.slug || '',
+        title: item.title || '',
+        author: item.author || '',
+        yearwriting: item.yearwriting || '',
+        description: item.description || '',
+        collections: Array.isArray(item.collections) ? item.collections : [],
+        covers: {
+          main: item?.covers?.main || '',
+          thumb: item?.covers?.thumb || item?.covers?.main || ''
+        },
+        structureType: item.structureType || 'plain',
+        file: item.file || ''
+      }));
     })
-    .catch(err => {
+    .catch((err) => {
       console.log('[CATALOG LOAD ERROR]', err);
       books = [];
     });
