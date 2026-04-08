@@ -1,92 +1,132 @@
 [
   {
-    "id": 4,
-    "title": "Смерть чиновника",
-    "author": "А.П. Чехов",
-    "yearwriting": 1883,
-    "description": "Юмористический рассказ (1883) о трагикомической силе страха перед начальством.",
-    "cover": "img/chinovnik.jpg",
-    "collections": [
-      "recommended"
-    ],
-    "file": "data/books/4.json"
-  },
-  {
-    "id": 5,
-    "title": "Прощение",
-    "author": "А.П. Чехов",
-    "yearwriting": 1884,
-    "description": "Юмористический рассказ (1884), опубликованный в журнале «Осколки».",
-    "cover": "img/proshenie.jpg",
-    "collections": [
-      "recommended"
-    ],
-    "file": "data/books/5.json"
-  },
-  {
-    "id": 2,
-    "title": "Студент",
-    "author": "А.П. Чехов",
-    "yearwriting": 1894,
-    "description": "Рассказ (1894) о студенте духовной академии, пережившем внезапное чувство исторической связи времён.",
-    "cover": "img/student.jpg",
-    "collections": [
-      "recommended"
-    ],
-    "file": "data/books/2.json"
-  },
-  {
     "id": 1,
+    "slug": "ionych",
     "title": "Ионыч",
     "author": "А.П. Чехов",
     "yearwriting": 1898,
     "description": "Повесть (1898) о постепенной духовной деградации земского врача Дмитрия Старцева.",
-    "cover": "img/ionych.jpg",
+    "covers": {
+      "main": "data/books/1/cover-main.jpg",
+      "thumb": "data/books/1/cover-thumb.jpg"
+    },
     "collections": [
       "recommended"
     ],
-    "file": "data/books/1.json"
+    "structureType": "plain",
+    "file": "data/books/1/book.json"
+  },
+  {
+    "id": 2,
+    "slug": "student",
+    "title": "Студент",
+    "author": "А.П. Чехов",
+    "yearwriting": 1894,
+    "description": "Рассказ (1894) о студенте духовной академии, пережившем внезапное чувство исторической связи времён.",
+    "covers": {
+      "main": "data/books/2/cover-main.jpg",
+      "thumb": "data/books/2/cover-thumb.jpg"
+    },
+    "collections": [
+      "recommended"
+    ],
+    "structureType": "plain",
+    "file": "data/books/2/book.json"
   },
   {
     "id": 3,
+    "slug": "chelovek-v-futlyare",
     "title": "Человек в футляре",
     "author": "А.П. Чехов",
     "yearwriting": 1898,
     "description": "Рассказ (1898) о страхе перед жизнью и человеке, прячущемся в собственных ограничениях.",
-    "cover": "img/futlyar.jpg",
+    "covers": {
+      "main": "data/books/3/cover-main.jpg",
+      "thumb": "data/books/3/cover-thumb.jpg"
+    },
     "collections": [
       "recommended"
     ],
-    "file": "data/books/3.json"
+    "structureType": "plain",
+    "file": "data/books/3/book.json"
+  },
+  {
+    "id": 4,
+    "slug": "smert-chinovnika",
+    "title": "Смерть чиновника",
+    "author": "А.П. Чехов",
+    "yearwriting": 1883,
+    "description": "Юмористический рассказ (1883) о трагикомической силе страха перед начальством.",
+    "covers": {
+      "main": "data/books/4/cover-main.jpg",
+      "thumb": "data/books/4/cover-thumb.jpg"
+    },
+    "collections": [
+      "recommended"
+    ],
+    "structureType": "plain",
+    "file": "data/books/4/book.json"
+  },
+  {
+    "id": 5,
+    "slug": "proshenie",
+    "title": "Прощение",
+    "author": "А.П. Чехов",
+    "yearwriting": 1884,
+    "description": "Юмористический рассказ (1884), опубликованный в журнале «Осколки».",
+    "covers": {
+      "main": "data/books/5/cover-main.jpg",
+      "thumb": "data/books/5/cover-thumb.jpg"
+    },
+    "collections": [
+      "recommended"
+    ],
+    "structureType": "plain",
+    "file": "data/books/5/book.json"
   },
   {
     "id": 6,
+    "slug": "novaya-6",
     "title": "Новая 6",
     "author": "А.П. Чехов",
     "yearwriting": 1889,
-    "description": "Юмористический рассказ 6",
-    "cover": "img/chinovnik.jpg",
+    "description": "Юмористический рассказ 6.",
+    "covers": {
+      "main": "data/books/6/cover-main.jpg",
+      "thumb": "data/books/6/cover-thumb.jpg"
+    },
     "collections": [],
-    "file": "data/books/6.json"
+    "structureType": "plain",
+    "file": "data/books/6/book.json"
   },
   {
     "id": 7,
+    "slug": "pevchie",
     "title": "Певчие",
     "author": "А.П. Чехов",
     "yearwriting": 1884,
     "description": "",
-    "cover": "img/chinovnik.jpg",
+    "covers": {
+      "main": "data/books/7/cover-main.jpg",
+      "thumb": "data/books/7/cover-thumb.jpg"
+    },
     "collections": [],
-    "file": "data/books/7.json"
+    "structureType": "plain",
+    "file": "data/books/7/book.json"
   },
   {
     "id": 8,
+    "slug": "beseda-pyanogo-s-trezvym-chertom",
     "title": "Беседа пьяного с трезвым чёртом",
     "author": "А.П. Чехов",
     "yearwriting": 1886,
     "description": "",
-    "cover": "img/chinovnik.jpg",
+    "covers": {
+      "main": "data/books/8/cover-main.jpg",
+      "thumb": "data/books/8/cover-thumb.jpg"
+    },
     "collections": [],
-    "file": "data/books/8.json"
+    "structureType": "plain",
+    "file": "data/books/8/book.json"
   }
 ]
