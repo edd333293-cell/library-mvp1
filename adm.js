@@ -5,14 +5,38 @@ function generateNextId() {
   return ids.length ? Math.max(...ids) + 1 : 1;
 }
 
-function slugify(text) {
+function transliterateRuToLat(text) {
+  const map = {
+    а: 'a', б: 'b', в: 'v', г: 'g', д: 'd',
+    е: 'e', ё: 'e', ж: 'zh', з: 'z', и: 'i',
+    й: 'y', к: 'k', л: 'l', м: 'm', н: 'n',
+    о: 'o', п: 'p', р: 'r', с: 's', т: 't',
+    у: 'u', ф: 'f', х: 'kh', ц: 'ts', ч: 'ch',
+    ш: 'sh', щ: 'shch', ъ: '', ы: 'y', ь: '',
+    э: 'e', ю: 'yu', я: 'ya'
+  };
+
   return String(text || '')
+    .split('')
+    .map((char) => {
+      const lower = char.toLowerCase();
+      if (!(lower in map)) return char;
+      const converted = map[lower];
+      return char === lower
+        ? converted
+        : converted.charAt(0).toUpperCase() + converted.slice(1);
+    })
+    .join('');
+}
+
+function slugify(text) {
+  return transliterateRuToLat(text)
     .toLowerCase()
     .trim()
-    .replace(/ё/g, 'е')
-    .replace(/[^\p{L}\p{N}\s-]/gu, '')
+    .replace(/[^a-z0-9\s-]/g, '')
     .replace(/\s+/g, '-')
-    .replace(/-+/g, '-');
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 function buildBookFolderPath(id) {
@@ -30,8 +54,8 @@ function buildDefaultCovers(id) {
 function buildDefaultIllustrations(id) {
   const base = buildBookFolderPath(id);
   return [
-    `${base}/ill-01.jpg`,
-    `${base}/ill-02.jpg`
+    `${base}/pic-01.jpg`,
+    `${base}/pic-02.jpg`
   ];
 }
 
@@ -130,6 +154,7 @@ function buildBookFilePayload(options = {}) {
 
   const plainData = buildPlainStructureAndContent(paragraphs);
   const defaultCovers = buildDefaultCovers(numericId);
+  const defaultIllustrations = buildDefaultIllustrations(numericId);
 
   return {
     id: numericId,
@@ -147,7 +172,7 @@ function buildBookFilePayload(options = {}) {
     },
     illustrations: Array.isArray(baseBook?.illustrations)
       ? [...baseBook.illustrations]
-      : buildDefaultIllustrations(numericId),
+      : [...defaultIllustrations],
     structure: plainData.structure,
     content: plainData.content
   };
@@ -170,7 +195,7 @@ function buildCatalogItemFromBook(book) {
     },
     collections: Array.isArray(book.collections) ? [...book.collections] : [],
     structureType: book?.structure?.type || 'plain',
-    file: `/data/books/${numericId}/book.json`
+    file: `data/books/${numericId}/book.json`
   };
 }
 
