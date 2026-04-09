@@ -143,5 +143,20 @@
     },
     "structureType": "plain",
     "file": "data/books/9/book.json"
+  },
+  {
+    "id": 10,
+    "slug": "kozel-ili-negodyay",
+    "title": "Козёл или негодяй?",
+    "author": "А.П. Чехов",
+    "yearwriting": 1883,
+    "description": "",
+    "collections": [],
+    "covers": {
+      "main": "data/books/10/cover-main.jpg",
+      "thumb": "data/books/10/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/10/book.json"
   }
 ]
