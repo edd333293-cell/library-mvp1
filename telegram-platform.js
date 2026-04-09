@@ -1,4 +1,4 @@
-// =============== TELEGRAM-PLATFORM.JS — ПЛАТФОРМЕННЫЙ СЛОЙ TELEGRAM ===============
+// =============== TELEGRAM-PLATFORM.JS  v.1.2 — ПЛАТФОРМЕННЫЙ СЛОЙ TELEGRAM ===============
 
 // Этот файл отвечает только за Telegram-зависимую интеграцию.
 // Здесь не храним прикладную логику библиотеки, reader или админки.
@@ -49,18 +49,26 @@ function isTelegramAdmin(adminId) {
   return uid !== null && uid === Number(adminId);
 }
 
+// Возвращает сырой стартовый параметр Telegram Mini App.
+// Поддерживаем внешний формат:
+// - startapp=<id>
+// - startapp=<slug>
+//
+// Примеры значений, которые может вернуть функция:
+// - "9"
+// - "beglets"
+// - null
+//
+// Важно:
+// этот файл только читает параметр из Telegram.
+// Преобразование этого значения во внутренний bookId
+// выполняется уже в общем клиентском ядре приложения.
 function getTelegramStartParam() {
   const params = new URLSearchParams(window.location.search);
-  return params.get('tgWebAppStartParam') || null;
-}
+  const raw = params.get('tgWebAppStartParam');
 
-function getTelegramLaunchBookId() {
-  const raw = getTelegramStartParam();
-  if (!raw) return null;
-  if (!raw.startsWith('book_')) return null;
+  if (raw == null) return null;
 
-  const num = Number(raw.slice('book_'.length));
-  if (!Number.isFinite(num)) return null;
-
-  return num;
+  const normalized = String(raw).trim();
+  return normalized || null;
 }

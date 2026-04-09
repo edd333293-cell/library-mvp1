@@ -1,4 +1,4 @@
-// =============== APP.JS — ТОЧКА ВХОДА ПРИЛОЖЕНИЯ ===============
+// =============== APP.JS v.1.1 — ТОЧКА ВХОДА ПРИЛОЖЕНИЯ ===============
 
 document.addEventListener('DOMContentLoaded', () => {
   if (typeof initTelegramPlatform === 'function') {
@@ -28,9 +28,22 @@ document.addEventListener('DOMContentLoaded', () => {
     renderRecommended();
     renderAllBooksRow();
 
+    // Получаем исходный стартовый параметр Telegram Mini App.
+    // Он может быть:
+    // - числовым id книги: startapp=9
+    // - slug книги: startapp=beglets
+    // - пустым, если приложение открыто без startapp
+    const rawStartParam =
+      typeof getTelegramStartParam === 'function'
+        ? getTelegramStartParam()
+        : null;
+
+    // Один раз преобразуем внешний параметр запуска
+    // во внутренний числовой id книги.
+    // После этого приложение работает только с id.
     const launchBookId =
-      typeof getTelegramLaunchBookId === 'function'
-        ? getTelegramLaunchBookId()
+      typeof resolveLaunchBookId === 'function'
+        ? resolveLaunchBookId(rawStartParam)
         : null;
 
     runApp(launchBookId);

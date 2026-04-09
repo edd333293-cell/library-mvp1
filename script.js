@@ -355,23 +355,75 @@ function handleReaderScroll() {
 }
 
 
+
 // =============== 8. ВЫСОКОУРОВНЕВЫЕ ДЕЙСТВИЯ ===============
+
+// Поиск книги по числовому id в уже загруженном каталоге.
+// Это основной внутренний способ работы приложения с книгой.
 function findBookById(id) {
   const num = Number(id);
   if (!Number.isFinite(num)) return undefined;
+
   return books.find((book) => Number(book.id) === num);
 }
 
+// Поиск книги по slug в уже загруженном каталоге.
+// Нужен только на этапе стартового входа,
+// если Telegram передал startapp=<slug>.
+function findBookBySlug(slug) {
+  const normalized = String(slug || '').trim().toLowerCase();
+  if (!normalized) return undefined;
+
+  return books.find((book) => {
+    return String(book.slug || '').trim().toLowerCase() === normalized;
+  });
+}
+
+// Преобразует внешний стартовый параметр в внутренний bookId.
+//
+// Поддерживаем два варианта:
+// - startapp=<id>
+// - startapp=<slug>
+//
+// Возвращает:
+// - числовой id книги, если удалось определить книгу;
+// - null, если параметр пустой, некорректный или книга не найдена.
+//
+// Важно:
+// после этой функции все дальнейшее приложение работает только с id.
+function resolveLaunchBookId(rawStartParam) {
+  const normalized = String(rawStartParam || '').trim();
+  if (!normalized) return null;
+
+  // Если параметр состоит только из цифр, считаем, что это id книги.
+  if (/^\d+$/.test(normalized)) {
+    const num = Number(normalized);
+    return Number.isFinite(num) ? num : null;
+  }
+
+  // Иначе считаем, что это slug книги.
+  const book = findBookBySlug(normalized);
+  return book ? Number(book.id) : null;
+}
+
+// Высокоуровневое действие: показать библиотеку.
 function openLibrary() {
   showLibrary();
 }
 
+// Загружает полную книгу по id.
+// Логика такая:
+// 1) в catalog.json находим карточку книги;
+// 2) из карточки берем путь к book.json;
+// 3) загружаем полный файл книги;
+// 4) нормализуем структуру данных для дальнейшей работы приложения.
 async function loadBookById(bookId) {
   const catalogItem = findBookById(bookId);
   if (!catalogItem || !catalogItem.file) return null;
 
   try {
     const response = await fetch(catalogItem.file);
+
     if (!response.ok) {
       throw new Error('Ошибка загрузки файла книги: ' + response.status);
     }
@@ -405,6 +457,9 @@ async function loadBookById(bookId) {
   }
 }
 
+// Высокоуровневое действие: открыть читалку по id книги.
+// После стартовой инициализации приложение работает именно так:
+// только через id.
 async function openReader(bookId) {
   const catalogItem = findBookById(bookId);
 
@@ -416,6 +471,7 @@ async function openReader(bookId) {
   }
 
   const book = await loadBookById(bookId);
+
   if (!book) {
     appState.currentBookId = null;
     appState.currentBook = null;
@@ -446,7 +502,6 @@ async function openReader(bookId) {
   readerLastScrollY = window.scrollY || document.documentElement.scrollTop || 0;
   updateTopProgress();
 }
-
 
 // =============== 9. ЗАГРУЗКА КАТАЛОГА БИБЛИОТЕКИ ===============
 function loadBooks() {
@@ -486,6 +541,15 @@ function loadBooks() {
 
 
 // =============== 10. СТАРТОВАЯ ЛОГИКА ПРИЛОЖЕНИЯ ===============
+
+// Старт приложения после загрузки каталога.
+//
+// На вход приходит уже не slug и не сырой startapp,
+// а готовый внутренний launchBookId.
+//
+// Логика простая:
+// - если id книги определен, открываем читалку;
+// - если нет, открываем библиотеку.
 function runApp(launchBookId = null) {
   if (launchBookId !== null) {
     openReader(launchBookId);
