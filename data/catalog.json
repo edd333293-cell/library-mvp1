@@ -6,13 +6,13 @@
     "author": "А.П. Чехов",
     "yearwriting": 1898,
     "description": "Повесть (1898) о постепенной духовной деградации земского врача Дмитрия Старцева.",
+    "collections": [
+      "recommended"
+    ],
     "covers": {
       "main": "data/books/1/cover-main.jpg",
       "thumb": "data/books/1/cover-thumb.jpg"
     },
-    "collections": [
-      "recommended"
-    ],
     "structureType": "plain",
     "file": "data/books/1/book.json"
   },
@@ -24,14 +24,14 @@
     "yearwriting": 1894,
     "description": "Рассказ (1894) о студенте духовной академии, пережившем внезапное чувство исторической связи времён.",
     "covers": {
-      "main": "data/books/2/cover-main.jpg",
-      "thumb": "data/books/2/cover-thumb.jpg"
+      "main": "data/books/1/cover-main.jpg",
+      "thumb": "data/books/1/cover-thumb.jpg"
     },
     "collections": [
       "recommended"
     ],
     "structureType": "plain",
-    "file": "data/books/2/book.json"
+    "file": "/data/books/2/book.json"
   },
   {
     "id": 3,
@@ -40,13 +40,13 @@
     "author": "А.П. Чехов",
     "yearwriting": 1898,
     "description": "Рассказ (1898) о страхе перед жизнью и человеке, прячущемся в собственных ограничениях.",
+    "collections": [
+      "recommended"
+    ],
     "covers": {
       "main": "data/books/3/cover-main.jpg",
       "thumb": "data/books/3/cover-thumb.jpg"
     },
-    "collections": [
-      "recommended"
-    ],
     "structureType": "plain",
     "file": "data/books/3/book.json"
   },
@@ -57,13 +57,13 @@
     "author": "А.П. Чехов",
     "yearwriting": 1883,
     "description": "Юмористический рассказ (1883) о трагикомической силе страха перед начальством.",
+    "collections": [
+      "recommended"
+    ],
     "covers": {
       "main": "data/books/4/cover-main.jpg",
       "thumb": "data/books/4/cover-thumb.jpg"
     },
-    "collections": [
-      "recommended"
-    ],
     "structureType": "plain",
     "file": "data/books/4/book.json"
   },
@@ -74,13 +74,13 @@
     "author": "А.П. Чехов",
     "yearwriting": 1884,
     "description": "Юмористический рассказ (1884), опубликованный в журнале «Осколки».",
+    "collections": [
+      "recommended"
+    ],
     "covers": {
       "main": "data/books/5/cover-main.jpg",
       "thumb": "data/books/5/cover-thumb.jpg"
     },
-    "collections": [
-      "recommended"
-    ],
     "structureType": "plain",
     "file": "data/books/5/book.json"
   },
@@ -91,11 +91,11 @@
     "author": "А.П. Чехов",
     "yearwriting": 1889,
     "description": "Юмористический рассказ 6.",
+    "collections": [],
     "covers": {
       "main": "data/books/6/cover-main.jpg",
       "thumb": "data/books/6/cover-thumb.jpg"
     },
-    "collections": [],
     "structureType": "plain",
     "file": "data/books/6/book.json"
   },
@@ -106,11 +106,11 @@
     "author": "А.П. Чехов",
     "yearwriting": 1884,
     "description": "",
+    "collections": [],
     "covers": {
       "main": "data/books/7/cover-main.jpg",
       "thumb": "data/books/7/cover-thumb.jpg"
     },
-    "collections": [],
     "structureType": "plain",
     "file": "data/books/7/book.json"
   },
@@ -121,11 +121,11 @@
     "author": "А.П. Чехов",
     "yearwriting": 1886,
     "description": "",
+    "collections": [],
     "covers": {
       "main": "data/books/8/cover-main.jpg",
       "thumb": "data/books/8/cover-thumb.jpg"
     },
-    "collections": [],
     "structureType": "plain",
     "file": "data/books/8/book.json"
   }
