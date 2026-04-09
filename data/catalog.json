@@ -24,14 +24,14 @@
     "yearwriting": 1894,
     "description": "Рассказ (1894) о студенте духовной академии, пережившем внезапное чувство исторической связи времён.",
     "covers": {
-      "main": "data/books/1/cover-main.jpg",
-      "thumb": "data/books/1/cover-thumb.jpg"
+      "main": "data/books/2/cover-main.jpg",
+      "thumb": "data/books/2/cover-thumb.jpg"
     },
     "collections": [
       "recommended"
     ],
     "structureType": "plain",
-    "file": "/data/books/2/book.json"
+    "file": "data/books/2/book.json"
   },
   {
     "id": 3,
