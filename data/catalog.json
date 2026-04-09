@@ -128,5 +128,20 @@
     },
     "structureType": "plain",
     "file": "data/books/8/book.json"
+  },
+  {
+    "id": 9,
+    "slug": "beglets",
+    "title": "Беглец",
+    "author": "А.П. Чехов",
+    "yearwriting": 1887,
+    "description": "",
+    "collections": [],
+    "covers": {
+      "main": "data/books/9/cover-main.jpg",
+      "thumb": "data/books/9/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/9/book.json"
   }
 ]
