@@ -1,4 +1,4 @@
-// =============== ADM.JS — АДМИНСКАЯ ЛОГИКА ===============
+// =============== ADM.JS 1.10 — АДМИНСКАЯ ЛОГИКА ===============
 
 function generateNextId() {
   const ids = books.map((b) => Number(b.id)).filter((n) => Number.isFinite(n));
@@ -138,7 +138,8 @@ function buildBookFilePayload(options = {}) {
   const {
     id,
     baseBook = null,
-    preserveCollections = true
+    preserveCollections = true,
+    preserveMedia = true
   } = options;
 
   const numericId = Number(id);
@@ -166,11 +167,16 @@ function buildBookFilePayload(options = {}) {
     collections: preserveCollections && Array.isArray(baseBook?.collections)
       ? [...baseBook.collections]
       : [],
-    covers: {
-      main: baseBook?.covers?.main || defaultCovers.main,
-      thumb: baseBook?.covers?.thumb || defaultCovers.thumb
-    },
-    illustrations: Array.isArray(baseBook?.illustrations)
+    covers: preserveMedia
+      ? {
+          main: baseBook?.covers?.main || defaultCovers.main,
+          thumb: baseBook?.covers?.thumb || defaultCovers.thumb
+        }
+      : {
+          main: defaultCovers.main,
+          thumb: defaultCovers.thumb
+        },
+    illustrations: preserveMedia && Array.isArray(baseBook?.illustrations)
       ? [...baseBook.illustrations]
       : [...defaultIllustrations],
     structure: plainData.structure,
@@ -189,11 +195,11 @@ function buildCatalogItemFromBook(book) {
     author: book.author,
     yearwriting: book.yearwriting,
     description: book.description,
+    collections: Array.isArray(book.collections) ? [...book.collections] : [],
     covers: {
       main: book?.covers?.main || defaultCovers.main,
       thumb: book?.covers?.thumb || defaultCovers.thumb
     },
-    collections: Array.isArray(book.collections) ? [...book.collections] : [],
     structureType: book?.structure?.type || 'plain',
     file: `data/books/${numericId}/book.json`
   };
@@ -206,7 +212,8 @@ function handleAdminSaveUpdate() {
   const updatedBook = buildBookFilePayload({
     id: currentBook.id,
     baseBook: currentBook,
-    preserveCollections: true
+    preserveCollections: true,
+    preserveMedia: true
   });
 
   if (!updatedBook) return;
@@ -235,7 +242,8 @@ function handleAdminSaveNew() {
   const newBook = buildBookFilePayload({
     id: newId,
     baseBook,
-    preserveCollections: false
+    preserveCollections: false,
+    preserveMedia: false
   });
 
   if (!newBook) return;
