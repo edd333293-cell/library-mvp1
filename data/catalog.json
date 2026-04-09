@@ -23,13 +23,13 @@
     "author": "А.П. Чехов",
     "yearwriting": 1894,
     "description": "Рассказ (1894) о студенте духовной академии, пережившем внезапное чувство исторической связи времён.",
+    "collections": [
+      "recommended"
+    ],
     "covers": {
       "main": "data/books/2/cover-main.jpg",
       "thumb": "data/books/2/cover-thumb.jpg"
     },
-    "collections": [
-      "recommended"
-    ],
     "structureType": "plain",
     "file": "data/books/2/book.json"
   },
@@ -69,18 +69,18 @@
   },
   {
     "id": 5,
-    "slug": "proshenie",
+    "slug": "proshchenie",
     "title": "Прощение",
     "author": "А.П. Чехов",
     "yearwriting": 1884,
     "description": "Юмористический рассказ (1884), опубликованный в журнале «Осколки».",
-    "collections": [
-      "recommended"
-    ],
     "covers": {
       "main": "data/books/5/cover-main.jpg",
       "thumb": "data/books/5/cover-thumb.jpg"
     },
+    "collections": [
+      "recommended"
+    ],
     "structureType": "plain",
     "file": "data/books/5/book.json"
   },
