@@ -157,22 +157,30 @@ button:active {
   flex-direction: column;
   cursor: pointer;
   background-color: var(--card-bg);
-  border-radius: 12px;
-  padding: 6px;
+  border-radius: 0;
+  padding: 0;
   border: 1px solid var(--card-border);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
 }
 
 .book-card-compact .book-cover {
-  width: 116px;
-  height: 160px;
+  display: block;
+  width: 100%;
+  aspect-ratio: 348 / 480;
   object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 6px;
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+  background: #f2f2f2;
+}
+
+.book-card-compact__body {
+  padding: 10px 10px 12px;
 }
 
 .book-card-compact .book-title {
-  margin: 0 0 3px;
+  margin: 0 0 4px;
   font-size: 15px;
   font-weight: 700;
   line-height: 1.25;
@@ -184,6 +192,7 @@ button:active {
 }
 
 .book-card-compact .book-meta {
+  margin: 0;
   font-size: 13px;
   color: var(--text-muted);
   line-height: 1.2;

@@ -142,9 +142,16 @@ function createCompactBookCard(book) {
   const coverSrc = getBookThumb(book);
 
   card.innerHTML = `
-    <img class="book-cover" src="${coverSrc}" alt="">
-    <h3 class="book-title">${book.title}</h3>
-    <p class="book-meta">${book.author || ''}${yearText ? ', ' + yearText : ''}</p>
+    <img
+      class="book-cover"
+      src="${coverSrc}"
+      alt="${book.title} — ${book.author || ''}"
+      loading="lazy"
+    >
+    <div class="book-card-compact__body">
+      <h3 class="book-title">${book.title}</h3>
+      <p class="book-meta">${book.author || ''}${yearText ? ', ' + yearText : ''}</p>
+    </div>
   `;
 
   card.addEventListener('click', () => {
