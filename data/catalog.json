@@ -87,12 +87,14 @@
   },
   {
     "id": 6,
-    "slug": "novaya-6",
-    "title": "Новая 6",
+    "slug": "o-lyubvi",
+    "title": "О любви",
     "author": "А.П. Чехов",
-    "yearwriting": 1889,
-    "description": "Юмористический рассказ 6.",
-    "collections": [],
+    "yearwriting": 1898,
+    "description": "",
+    "collections": [
+      "recommended"
+    ],
     "covers": {
       "main": "data/books/6/cover-main.jpg",
       "thumb": "data/books/6/cover-thumb.jpg"
