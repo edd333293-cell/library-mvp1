@@ -10,12 +10,12 @@
   ],
   "series": [],
   "covers": {
-    "main": "data/books/1/cover-main.jpg",
-    "thumb": "data/books/1/cover-thumb.jpg"
+    "main": "data/books/3/cover-main.jpg",
+    "thumb": "data/books/3/cover-thumb.jpg"
   },
   "illustrations": [
-    "data/books/1/pic-01.jpg",
-    "data/books/1/pic-02.jpg"
+    "data/books/3/pic-01.jpg",
+    "data/books/3/pic-02.jpg"
   ],
   "structure": {
     "type": "plain"
