@@ -45,8 +45,8 @@
     ],
     "series": [],
     "covers": {
-      "main": "data/books/1/cover-main.jpg",
-      "thumb": "data/books/1/cover-thumb.jpg"
+      "main": "data/books/3/cover-main.jpg",
+      "thumb": "data/books/3/cover-thumb.jpg"
     },
     "structureType": "plain",
     "file": "data/books/3/book.json"
