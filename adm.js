@@ -1,4 +1,4 @@
-// =============== ADM.JS 1.12 — АДМИНСКАЯ ЛОГИКА ===============
+// =============== ADM.JS 1.10 — АДМИНСКАЯ ЛОГИКА ===============
 
 function generateNextId() {
   const ids = books.map((b) => Number(b.id)).filter((n) => Number.isFinite(n));
@@ -139,7 +139,7 @@ function buildBookFilePayload(options = {}) {
     id,
     baseBook = null,
     preserveCollections = true,
-    preserveSeries = true
+    preserveMedia = true
   } = options;
 
   const numericId = Number(id);
@@ -167,14 +167,18 @@ function buildBookFilePayload(options = {}) {
     collections: preserveCollections && Array.isArray(baseBook?.collections)
       ? [...baseBook.collections]
       : [],
-    series: preserveSeries && Array.isArray(baseBook?.series)
-      ? [...baseBook.series]
-      : [],
-    covers: {
-      main: defaultCovers.main,
-      thumb: defaultCovers.thumb
-    },
-    illustrations: [...defaultIllustrations],
+    covers: preserveMedia
+      ? {
+          main: baseBook?.covers?.main || defaultCovers.main,
+          thumb: baseBook?.covers?.thumb || defaultCovers.thumb
+        }
+      : {
+          main: defaultCovers.main,
+          thumb: defaultCovers.thumb
+        },
+    illustrations: preserveMedia && Array.isArray(baseBook?.illustrations)
+      ? [...baseBook.illustrations]
+      : [...defaultIllustrations],
     structure: plainData.structure,
     content: plainData.content
   };
@@ -192,7 +196,6 @@ function buildCatalogItemFromBook(book) {
     yearwriting: book.yearwriting,
     description: book.description,
     collections: Array.isArray(book.collections) ? [...book.collections] : [],
-    series: Array.isArray(book.series) ? [...book.series] : [],
     covers: {
       main: book?.covers?.main || defaultCovers.main,
       thumb: book?.covers?.thumb || defaultCovers.thumb
@@ -210,7 +213,7 @@ function handleAdminSaveUpdate() {
     id: currentBook.id,
     baseBook: currentBook,
     preserveCollections: true,
-    preserveSeries: true
+    preserveMedia: true
   });
 
   if (!updatedBook) return;
@@ -240,7 +243,7 @@ function handleAdminSaveNew() {
     id: newId,
     baseBook,
     preserveCollections: false,
-    preserveSeries: false
+    preserveMedia: false
   });
 
   if (!newBook) return;
@@ -263,4 +266,50 @@ function handleAdminSaveNew() {
 
 function handleAdminExportBooks() {
   try {
-    const currentBook = appState.currentBook;
+    const catalogJson = JSON.stringify(books, null, 2);
+    const currentBookJson = JSON.stringify(appState.currentBook || {}, null, 2);
+
+    if (dom.adminCatalogJson) {
+      dom.adminCatalogJson.value = catalogJson;
+    }
+
+    if (dom.adminBookJson) {
+      dom.adminBookJson.value = currentBookJson;
+    }
+  } catch (e) {
+    console.error('Ошибка при генерации JSON каталога и книги', e);
+    alert('Ошибка при генерации JSON каталога и книги.');
+  }
+}
+
+function initAdminEvents() {
+  if (dom.adminOpenButton) {
+    dom.adminOpenButton.addEventListener('click', () => {
+      openAdmin();
+    });
+  }
+
+  if (dom.backFromAdminButton) {
+    dom.backFromAdminButton.addEventListener('click', () => {
+      openReader(appState.currentBookId);
+    });
+  }
+
+  if (dom.adminPreviewButton) {
+    dom.adminPreviewButton.addEventListener('click', handleAdminPreview);
+  }
+
+  if (dom.adminSaveUpdateButton) {
+    dom.adminSaveUpdateButton.addEventListener('click', handleAdminSaveUpdate);
+  }
+
+  if (dom.adminSaveNewButton) {
+    dom.adminSaveNewButton.addEventListener('click', handleAdminSaveNew);
+  }
+
+  if (dom.adminExportBooksButton) {
+    dom.adminExportBooksButton.addEventListener('click', handleAdminExportBooks);
+  }
+}
+
+window.initAdminEvents = initAdminEvents;
