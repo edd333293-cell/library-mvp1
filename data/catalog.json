@@ -1,11 +1,11 @@
 [
   {
     "id": 1,
-    "slug": "ionych",
-    "title": "Ионыч",
+    "slug": "kryzhovnik",
+    "title": "Крыжовник",
     "author": "А.П. Чехов",
     "yearwriting": 1898,
-    "description": "Повесть (1898) о постепенной духовной деградации земского врача Дмитрия Старцева.",
+    "description": "",
     "collections": [
       "recommended"
     ],
