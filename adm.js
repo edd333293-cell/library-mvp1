@@ -1,4 +1,4 @@
-// =============== ADM.JS 1.10 — АДМИНСКАЯ ЛОГИКА ===============
+// =============== ADM.JS 1.11 — АДМИНСКАЯ ЛОГИКА ===============
 
 function generateNextId() {
   const ids = books.map((b) => Number(b.id)).filter((n) => Number.isFinite(n));
@@ -167,6 +167,9 @@ function buildBookFilePayload(options = {}) {
     collections: preserveCollections && Array.isArray(baseBook?.collections)
       ? [...baseBook.collections]
       : [],
+    series: Array.isArray(baseBook?.series)
+      ? [...baseBook.series]
+      : [],
     covers: preserveMedia
       ? {
           main: baseBook?.covers?.main || defaultCovers.main,
@@ -196,6 +199,7 @@ function buildCatalogItemFromBook(book) {
     yearwriting: book.yearwriting,
     description: book.description,
     collections: Array.isArray(book.collections) ? [...book.collections] : [],
+    series: Array.isArray(book.series) ? [...book.series] : [],
     covers: {
       main: book?.covers?.main || defaultCovers.main,
       thumb: book?.covers?.thumb || defaultCovers.thumb
