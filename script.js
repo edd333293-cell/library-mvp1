@@ -25,6 +25,7 @@ const dom = {
   librarySection: document.querySelector('#library'),
   readerSection: document.querySelector('#reader'),
   adminSection: document.querySelector('#admin'),
+  loadingOverlay: document.querySelector('#loading-overlay'),
 
   // читалка
   readerTitle: document.querySelector('#reader-title'),
@@ -53,6 +54,19 @@ const sections = {
   reader: dom.readerSection,
   admin: dom.adminSection
 };
+
+// функция показа/скрытия loader
+function showLoadingOverlay() {
+  if (!dom.loadingOverlay) return;
+  dom.loadingOverlay.classList.remove('hidden');
+  dom.loadingOverlay.setAttribute('aria-hidden', 'false');
+}
+
+function hideLoadingOverlay() {
+  if (!dom.loadingOverlay) return;
+  dom.loadingOverlay.classList.add('hidden');
+  dom.loadingOverlay.setAttribute('aria-hidden', 'true');
+}
 
 
 // =============== 3. ТЕКСТОВЫЕ УТИЛИТЫ ===============
@@ -477,37 +491,56 @@ async function openReader(bookId) {
     return;
   }
 
-  const book = await loadBookById(bookId);
+  try {
+    showLoadingOverlay();//спиннер
 
-  if (!book) {
-    appState.currentBookId = null;
-    appState.currentBook = null;
-    showLibrary();
-    return;
+    const loaderStartedAt = Date.now();
+
+    await new Promise((resolve) => requestAnimationFrame(resolve));//чтобы браузер успел реально отрисовать кругляшок до начала загрузки и построения DOM читалки.
+
+    const book = await loadBookById(bookId);
+
+    if (!book) {
+      appState.currentBookId = null;
+      appState.currentBook = null;
+      showLibrary();
+      return;
+    }
+
+    appState.currentBookId = Number(book.id);
+    appState.currentBook = book;
+
+    renderReader(book);
+    showReader();
+
+    const toolbar = getReaderToolbar();
+    if (toolbar) {
+      toolbar.classList.remove('reader-toolbar--hidden');
+    }
+
+    const backButton = document.getElementById('back-to-library');
+    if (backButton) {
+      backButton.classList.remove(
+        'reader-back--hidden',
+        'reader-back--pressed'
+      );
+      backButton.classList.add('reader-back--peek');
+    }
+
+    readerLastScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+    updateTopProgress();
+
+    const loaderElapsed = Date.now() - loaderStartedAt;
+    const minimumLoaderTime = 500; //минимальное время задержки спиннера
+
+    if (loaderElapsed < minimumLoaderTime) {
+      await new Promise((resolve) => {
+        setTimeout(resolve, minimumLoaderTime - loaderElapsed);
+      });
+    }
+  } finally {
+    hideLoadingOverlay();
   }
-
-  appState.currentBookId = Number(book.id);
-  appState.currentBook = book;
-
-  renderReader(book);
-  showReader();
-
-  const toolbar = getReaderToolbar();
-  if (toolbar) {
-    toolbar.classList.remove('reader-toolbar--hidden');
-  }
-
-  const backButton = document.getElementById('back-to-library');
-  if (backButton) {
-    backButton.classList.remove(
-      'reader-back--hidden',
-      'reader-back--pressed'
-    );
-    backButton.classList.add('reader-back--peek');
-  }
-
-  readerLastScrollY = window.scrollY || document.documentElement.scrollTop || 0;
-  updateTopProgress();
 }
 
 // =============== 9. ЗАГРУЗКА КАТАЛОГА БИБЛИОТЕКИ ===============
