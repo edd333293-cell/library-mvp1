@@ -152,11 +152,11 @@ footer {
   flex: 0 0 18px;
 }
 
-.footer-link__icon--image img {
+.footer-svg {
   width: 18px;
   height: 18px;
   display: block;
-  object-fit: contain;
+  fill: currentColor;
 }
 
 .footer-link__text {
