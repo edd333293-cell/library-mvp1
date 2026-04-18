@@ -296,6 +296,22 @@ function renderReader(book) {
     });
   }
 
+//вензель
+const endOrnament = document.createElement('div');
+endOrnament.className = 'reader-end-ornament';
+endOrnament.setAttribute('aria-hidden', 'true');
+endOrnament.innerHTML = `
+  <img
+    class="reader-end-ornament__image"
+    src="data/ui/reader-end-vignette.svg"
+    alt=""
+    aria-hidden="true"
+  >
+`;
+
+textWrap.appendChild(endOrnament);
+// конец вензель
+
   dom.readerContent.appendChild(meta);
   dom.readerContent.appendChild(textWrap);
 }

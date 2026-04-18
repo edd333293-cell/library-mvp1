@@ -596,3 +596,29 @@ body.reader-active::after {
     transform: rotate(360deg);
   }
 }
+
+.reader-end-ornament {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 36px auto 8px;
+  user-select: none;
+  pointer-events: none;
+}
+
+.reader-end-ornament__image {
+  display: block;
+  width: min(170px, 56%);
+  height: auto;
+  opacity: 0.88;
+}
+
+@media (max-width: 480px) {
+  .reader-end-ornament {
+    margin: 30px auto 4px;
+  }
+
+  .reader-end-ornament__image {
+    width: min(145px, 60%);
+  }
+}
