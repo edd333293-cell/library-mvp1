@@ -111,6 +111,62 @@ function getFlatParagraphsFromBook(book) {
   return paragraphs;
 }
 
+// вставка вензель
+function getBookBaseDirById(bookId) {
+  const catalogItem = findBookById(bookId);
+  const filePath = String(catalogItem?.file || '').trim();
+  if (!filePath) return '';
+
+  const lastSlashIndex = filePath.lastIndexOf('/');
+  if (lastSlashIndex === -1) return '';
+
+  return filePath.slice(0, lastSlashIndex);
+}
+
+function getBookEndOrnamentPathById(bookId) {
+  const baseDir = getBookBaseDirById(bookId);
+  if (!baseDir) return '';
+  return `${baseDir}/ornament-end.svg`;
+}
+
+async function loadEndOrnamentSvgById(bookId) {
+  const ornamentPath = getBookEndOrnamentPathById(bookId);
+  if (!ornamentPath) return '';
+
+  try {
+    const response = await fetch(ornamentPath, { cache: 'no-cache' });
+
+    if (!response.ok) {
+      return '';
+    }
+
+    const svgMarkup = (await response.text()).trim();
+    if (!svgMarkup.startsWith('<svg')) return '';
+
+    return svgMarkup;
+  } catch (err) {
+    console.log('[ORNAMENT END LOAD SKIPPED]', ornamentPath, err);
+    return '';
+  }
+}
+
+function createReaderEndOrnamentSlot() {
+  const ornament = document.createElement('div');
+  ornament.className = 'reader-end-ornament hidden';
+  ornament.setAttribute('aria-hidden', 'true');
+  return ornament;
+}
+
+async function hydrateReaderEndOrnament(bookId, container) {
+  if (bookId == null || !container) return;
+
+  const svgMarkup = await loadEndOrnamentSvgById(bookId);
+  if (!svgMarkup) return;
+
+  container.innerHTML = svgMarkup;
+  container.classList.remove('hidden');
+}
+// конец вензель
 
 // =============== 4. НАВИГАЦИЯ (ЕДИНЫЙ ЦЕНТР) ===============
 function showSection(sectionId) {
@@ -296,25 +352,16 @@ function renderReader(book) {
     });
   }
 
-//вензель
-const endOrnament = document.createElement('div');
-endOrnament.className = 'reader-end-ornament';
-endOrnament.setAttribute('aria-hidden', 'true');
-endOrnament.innerHTML = `
-  <img
-    class="reader-end-ornament__image"
-    src="data/ui/reader-end-vignette.svg"
-    alt=""
-    aria-hidden="true"
-  >
-`;
-
-textWrap.appendChild(endOrnament);
-// конец вензель
-
-  dom.readerContent.appendChild(meta);
-  dom.readerContent.appendChild(textWrap);
+  //вензель
+  const endOrnament = createReaderEndOrnamentSlot();
+    textWrap.appendChild(endOrnament);
+  
+    dom.readerContent.appendChild(meta);
+    dom.readerContent.appendChild(textWrap);
+  
+    void hydrateReaderEndOrnament(book.id, endOrnament);
 }
+
 
 
 // =============== 7. TELEGRAPH MODE: TOOLBAR + PROGRESS ===============

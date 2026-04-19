@@ -349,6 +349,7 @@ button:active {
   margin: 0 auto;
   padding: 10px 18px 8px;
   background: #f7f3ea;
+  color: #2a2723;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -367,7 +368,7 @@ button:active {
   font-size: 18px;
   line-height: 1.72;
   letter-spacing: 0.01em;
-  color: #2a2723;
+  color: inherit;
   hanging-punctuation: first;
 }
 
@@ -602,11 +603,12 @@ body.reader-active::after {
   justify-content: center;
   align-items: center;
   margin: 36px auto 8px;
+  color: inherit;
   user-select: none;
   pointer-events: none;
 }
 
-.reader-end-ornament__image {
+.reader-end-ornament svg {
   display: block;
   width: min(170px, 56%);
   height: auto;
@@ -618,7 +620,7 @@ body.reader-active::after {
     margin: 30px auto 4px;
   }
 
-  .reader-end-ornament__image {
+  .reader-end-ornament svg {
     width: min(145px, 60%);
   }
 }
