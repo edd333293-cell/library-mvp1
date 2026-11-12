@@ -43,7 +43,6 @@
     "collections": [
       "recommended"
     ],
-    "series": [],
     "covers": {
       "main": "data/books/3/cover-main.jpg",
       "thumb": "data/books/3/cover-thumb.jpg"
@@ -75,13 +74,13 @@
     "author": "А.П. Чехов",
     "yearwriting": 1884,
     "description": "Юмористический рассказ (1884), опубликованный в журнале «Осколки».",
+    "collections": [
+      "recommended"
+    ],
     "covers": {
       "main": "data/books/5/cover-main.jpg",
       "thumb": "data/books/5/cover-thumb.jpg"
     },
-    "collections": [
-      "recommended"
-    ],
     "structureType": "plain",
     "file": "data/books/5/book.json"
   },
@@ -161,5 +160,324 @@
     },
     "structureType": "plain",
     "file": "data/books/10/book.json"
+  },
+  {
+    "id": 11,
+    "slug": "krasnaya-gorka",
+    "title": "Красная горка",
+    "author": "А.П. Чехов",
+    "yearwriting": 1885,
+    "description": "",
+    "collections": [],
+    "covers": {
+      "main": "data/books/11/cover-main.jpg",
+      "thumb": "data/books/11/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/11/book.json"
+  },
+  {
+    "id": 12,
+    "slug": "den-za-gorodom",
+    "title": "День за городом",
+    "author": "А.П. Чехов",
+    "yearwriting": 1886,
+    "description": "",
+    "collections": [],
+    "covers": {
+      "main": "data/books/12/cover-main.jpg",
+      "thumb": "data/books/12/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/12/book.json"
+  },
+  {
+    "id": 13,
+    "slug": "v-pansione",
+    "title": "В пансионе",
+    "author": "А.П. Чехов",
+    "yearwriting": 1886,
+    "description": "",
+    "collections": [],
+    "covers": {
+      "main": "data/books/13/cover-main.jpg",
+      "thumb": "data/books/13/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/13/book.json"
+  },
+  {
+    "id": 14,
+    "slug": "sirena",
+    "title": "Сирена",
+    "author": "А.П. Чехов",
+    "yearwriting": 1887,
+    "description": "",
+    "collections": [],
+    "covers": {
+      "main": "data/books/14/cover-main.jpg",
+      "thumb": "data/books/14/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/14/book.json"
+  },
+  {
+    "id": 15,
+    "slug": "psikhopaty",
+    "title": "Психопаты",
+    "author": "А.П. Чехов",
+    "yearwriting": 1885,
+    "description": "",
+    "collections": [
+      "recommended"
+    ],
+    "covers": {
+      "main": "data/books/15/cover-main.jpg",
+      "thumb": "data/books/15/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/15/book.json"
+  },
+  {
+    "id": 16,
+    "slug": "nevidimye-miru-slezy",
+    "title": "Невидимые миру слёзы",
+    "author": "А.П. Чехов",
+    "yearwriting": 1884,
+    "description": "",
+    "collections": [],
+    "covers": {
+      "main": "data/books/16/cover-main.jpg",
+      "thumb": "data/books/16/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/16/book.json"
+  },
+  {
+    "id": 17,
+    "slug": "talant",
+    "title": "Талант",
+    "author": "А.П. Чехов",
+    "yearwriting": 1886,
+    "description": "",
+    "collections": [],
+    "covers": {
+      "main": "data/books/17/cover-main.jpg",
+      "thumb": "data/books/17/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/17/book.json"
+  },
+  {
+    "id": 18,
+    "slug": "dvadtsat-shest-vypiski-iz-dnevnika",
+    "title": "Двадцать шесть (Выписки из дневника)",
+    "author": "А.П. Чехов",
+    "yearwriting": 1883,
+    "description": "",
+    "collections": [
+      "recommended"
+    ],
+    "covers": {
+      "main": "data/books/18/cover-main.jpg",
+      "thumb": "data/books/18/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/18/book.json"
+  },
+  {
+    "id": 19,
+    "slug": "bitaya-znamenitost",
+    "title": "Битая знаменитость, или Средство от запоя (Из актерской жизни)",
+    "author": "А.П. Чехов",
+    "yearwriting": 1885,
+    "description": "",
+    "collections": [],
+    "covers": {
+      "main": "data/books/19/cover-main.jpg",
+      "thumb": "data/books/19/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/19/book.json"
+  },
+  {
+    "id": 20,
+    "slug": "baran-i-baryshnya",
+    "title": "Баран и барышня",
+    "author": "А.П. Чехов",
+    "yearwriting": 1883,
+    "description": "",
+    "collections": [],
+    "covers": {
+      "main": "data/books/20/cover-main.jpg",
+      "thumb": "data/books/20/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/20/book.json"
+  },
+  {
+    "id": 21,
+    "slug": "baby",
+    "title": "Бабы",
+    "author": "А.П. Чехов",
+    "yearwriting": 1891,
+    "description": "",
+    "collections": [],
+    "covers": {
+      "main": "data/books/21/cover-main.jpg",
+      "thumb": "data/books/21/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/21/book.json"
+  },
+  {
+    "id": 22,
+    "slug": "rasskaz-gospozhi-nn",
+    "title": "Рассказ госпожи NN",
+    "author": "А.П. Чехов",
+    "yearwriting": 1887,
+    "description": "",
+    "collections": [],
+    "covers": {
+      "main": "data/books/22/cover-main.jpg",
+      "thumb": "data/books/22/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/22/book.json"
+  },
+  {
+    "id": 23,
+    "slug": "muzh",
+    "title": "Муж",
+    "author": "А.П. Чехов",
+    "yearwriting": 1886,
+    "description": "",
+    "collections": [],
+    "covers": {
+      "main": "data/books/23/cover-main.jpg",
+      "thumb": "data/books/23/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/23/book.json"
+  },
+  {
+    "id": 24,
+    "slug": "schastlivchik",
+    "title": "Счастливчик",
+    "author": "А.П. Чехов",
+    "yearwriting": 1886,
+    "description": "",
+    "collections": [],
+    "covers": {
+      "main": "data/books/24/cover-main.jpg",
+      "thumb": "data/books/24/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/24/book.json"
+  },
+  {
+    "id": 25,
+    "slug": "trifon",
+    "title": "Трифон",
+    "author": "А.П. Чехов",
+    "yearwriting": 1884,
+    "description": "",
+    "collections": [],
+    "covers": {
+      "main": "data/books/25/cover-main.jpg",
+      "thumb": "data/books/25/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/25/book.json"
+  },
+  {
+    "id": 26,
+    "slug": "ispoved",
+    "title": "Исповедь",
+    "author": "А.П. Чехов",
+    "yearwriting": 1883,
+    "description": "",
+    "collections": [],
+    "covers": {
+      "main": "data/books/26/cover-main.jpg",
+      "thumb": "data/books/26/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/26/book.json"
+  },
+  {
+    "id": 27,
+    "slug": "moi-zheny",
+    "title": "Мои жены. Письмо в редакцию — Рауля Синей Бороды",
+    "author": "А.П. Чехов",
+    "yearwriting": 1885,
+    "description": "",
+    "collections": [],
+    "covers": {
+      "main": "data/books/27/cover-main.jpg",
+      "thumb": "data/books/27/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/27/book.json"
+  },
+  {
+    "id": 28,
+    "slug": "neschaste",
+    "title": "Несчастье",
+    "author": "А.П. Чехов",
+    "yearwriting": 1886,
+    "description": "",
+    "collections": [],
+    "covers": {
+      "main": "data/books/28/cover-main.jpg",
+      "thumb": "data/books/28/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/28/book.json"
+  },
+  {
+    "id": 29,
+    "slug": "schaste",
+    "title": "Счастье",
+    "author": "А.П. Чехов",
+    "yearwriting": 1887,
+    "description": "",
+    "collections": [],
+    "covers": {
+      "main": "data/books/29/cover-main.jpg",
+      "thumb": "data/books/29/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/29/book.json"
+  },
+  {
+    "id": 30,
+    "slug": "pismo",
+    "title": "Письмо",
+    "author": "А.П. Чехов",
+    "yearwriting": 1887,
+    "description": "",
+    "collections": [],
+    "covers": {
+      "main": "data/books/30/cover-main.jpg",
+      "thumb": "data/books/30/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/30/book.json"
+  },
+  {
+    "id": 31,
+    "slug": "lyubov",
+    "title": "Любовь",
+    "author": "А.П. Чехов",
+    "yearwriting": 1886,
+    "description": "",
+    "collections": [],
+    "covers": {
+      "main": "data/books/31/cover-main.jpg",
+      "thumb": "data/books/31/cover-thumb.jpg"
+    },
+    "structureType": "plain",
+    "file": "data/books/31/book.json"
   }
 ]

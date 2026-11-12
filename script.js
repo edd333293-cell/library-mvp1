@@ -70,6 +70,20 @@ function hideLoadingOverlay() {
 
 
 // =============== 3. ТЕКСТОВЫЕ УТИЛИТЫ ===============
+// Безопасный вывод текста абзаца книги.
+// Поддерживает:
+// - курсив: <i>...</i>
+// - выравнивание фрагмента/абзаца вправо: <right>...</right>
+function renderBookParagraphText(element, text) {
+  element.textContent = String(text ?? '');
+
+  element.innerHTML = element.innerHTML
+    .replaceAll('&lt;i&gt;', '<i>')
+    .replaceAll('&lt;/i&gt;', '</i>')
+    .replaceAll('&lt;right&gt;', '<right>')
+    .replaceAll('&lt;/right&gt;', '</right>');
+}
+//
 function splitTextIntoParagraphs(input) {
   let text = input;
 
@@ -337,7 +351,7 @@ function renderReader(book) {
       if (Array.isArray(sectionContent?.paragraphs)) {
         sectionContent.paragraphs.forEach((paragraphText) => {
           const p = document.createElement('p');
-          p.textContent = paragraphText;
+          renderBookParagraphText(p, paragraphText);// через безопасный вывод текста абзаца книги с поддержкой курсива <i>...</i>.
           textWrap.appendChild(p);
         });
       }
@@ -347,7 +361,7 @@ function renderReader(book) {
 
     flatParagraphs.forEach((paragraphText) => {
       const p = document.createElement('p');
-      p.textContent = paragraphText;
+      renderBookParagraphText(p, paragraphText);// через безопасный вывод текста абзаца книги с поддержкой курсива <i>...</i>.
       textWrap.appendChild(p);
     });
   }

@@ -624,3 +624,12 @@ body.reader-active::after {
     width: min(145px, 60%);
   }
 }
+
+.reader-text-page i {
+  font-style: italic;
+}
+
+.reader-text-page right {
+  display: block;
+  text-align: right;
+}
